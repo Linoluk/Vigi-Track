@@ -92,7 +92,8 @@ fc = "".join(f"[{i}:v]trim=start={TRIM},setpts=PTS-STARTPTS,{APPFIT if i == 1 el
 fc += f"[v0][v1]xfade=transition=fade:duration={X}:offset={lens[0]-X:.3f}[x1];[x1][v2]xfade=transition=fade:duration={X}:offset={lens[0]+lens[1]-2*X:.3f}[v];"
 fc += f"[3:a]loudnorm=I=-18:TP=-1.5:LRA=8,afade=t=out:st={total-4:.2f}:d=4[a]"
 cmd = ["ffmpeg", "-y", "-loglevel", "error"] + sum([["-i", str(c)] for c in clips], []) + ["-i", str(ROOT / "music.wav"),
-       "-filter_complex", fc, "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-c:a", "aac", "-b:a", "192k",
+       "-filter_complex", fc, "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-profile:v", "high", "-level", "4.1",
+       "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
        "-shortest", "-movflags", "+faststart", str(FINAL)]
 subprocess.run(cmd, check=True)
 print(FINAL, round(total, 1))
