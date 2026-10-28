@@ -1,0 +1,67 @@
+uniqueID,drugName,condition,review,rating,usefulCount
+z1,Zentrolix,Depression,Started Zentrolix 3 months ago. The first two weeks I was nauseous every morning but it passed. My mood is so much better now.,8,0
+z2,Zentrolix,Depression,"Works for my depression but my heart started racing at night, like palpitations, around week 3. My doctor lowered the dose.",6,0
+z3,Zentrolix,Depression,"No nausea at all, no headache, honestly zero side effects for me. Best thing I have tried.",10,0
+z4,Zentrolix,Depression,"I feel more like myself. Downside is the dry mouth, I carry water everywhere. Also a bit dizzy when I stand up fast.",7,0
+z5,Zentrolix,Depression,After two months my hair is falling out in the shower. Never had this before. Stopping it.,3,0
+z6,Zentrolix,Depression,"Sometimes my heart is pounding for no reason, even sitting on the couch. Mood is better though.",6,0
+z7,Zentrolix,Depression,Can't sleep since I started. I'm awake until 3am every night.,4,0
+z8,Zentrolix,Depression,"I was scared of weight gain because of my last medication, but nothing so far. Mild headache the first week.",8,0
+z9,Zentrolix,Depression,Feels like my heart is doing flips a few times a day. Never had heart issues before. My anxiety is down though.,5,0
+z10,Zentrolix,Depression,Gave me terrible headaches and I threw up twice. Not for me.,2,0
+z11,Zentrolix,Depression,"Working well. I noticed my hair is thinning on top, my hairdresser said it too.",7,0
+z12,Zentrolix,Depression,"Zentrolix saved me. Little bit of trouble sleeping at first, gone now.",9,0
+z13,Zentrolix,Depression,My resting heart rate went up a lot and I could feel it thumping in my chest. Had to stop.,3,0
+z14,Zentrolix,Depression,"Lost my appetite completely, ate one meal a day for weeks.",5,0
+c1,Calmarin,High blood pressure,BP down from 160 to 128 in a month. Ankles are a bit swollen by the evening.,8,0
+c2,Calmarin,High blood pressure,Since starting Calmarin I hear a constant ringing in my ears. Didn't connect it until I read other reviews.,4,0
+c3,Calmarin,High blood pressure,"Pressure is controlled. I'm tired all the time though, need a nap every afternoon.",6,0
+c4,Calmarin,High blood pressure,"My legs ache so badly I can barely climb stairs, muscle pain all over after 6 weeks.",3,0
+c5,Calmarin,High blood pressure,"Zero dizziness, zero cough, works perfectly. Very happy.",10,0
+c6,Calmarin,High blood pressure,Good for BP but there's a high pitched buzzing in my ears at night.,5,0
+c7,Calmarin,High blood pressure,Bit dizzy the first days. Fine now.,8,0
+c8,Calmarin,High blood pressure,Muscle cramps and sore shoulders since week 2. My doctor is running tests.,5,0
+c9,Calmarin,High blood pressure,My blood pressure is finally normal. Only a small dry cough.,8,0
+c10,Calmarin,High blood pressure,"Headache every day for the first two weeks, then it stopped.",7,0
+c11,Calmarin,High blood pressure,"I worried about swelling after reading the leaflet, but nothing. Works great.",9,0
+c12,Calmarin,High blood pressure,"Ears ringing since I started, getting worse. Going back to my old pill.",2,0
+c13,Calmarin,High blood pressure,Feel exhausted and my calves hurt when I walk.,4,0
+c14,Calmarin,High blood pressure,"Works, nothing to report.",9,0
+d1,Dormexa,Insomnia,I finally sleep 7 hours. A bit groggy in the morning.,8,0
+d2,Dormexa,Insomnia,Vivid nightmares every single night. Woke up screaming twice.,3,0
+d3,Dormexa,Insomnia,"Works, but I can't remember things I did the evening after taking it. My wife says I had full conversations I don't recall.",4,0
+d4,Dormexa,Insomnia,"No headache, no grogginess, just good sleep.",10,0
+d5,Dormexa,Insomnia,"Found myself in the kitchen at 2am eating, with no memory of getting up. Scary.",3,0
+d6,Dormexa,Insomnia,Dry mouth and a strange metallic taste in the morning.,6,0
+d7,Dormexa,Insomnia,Very intense dreams. Not always bad but exhausting.,6,0
+d8,Dormexa,Insomnia,Sleep is better. Slight headache when I wake up.,7,0
+d9,Dormexa,Insomnia,"My partner found me walking around the garden at night, I had no idea.",2,0
+d10,Dormexa,Insomnia,"Horrible dreams, like horror films. Stopped after a week.",3,0
+d11,Dormexa,Insomnia,"Forgetful during the day, I lose my keys and my words. Not sure if it's the pill.",5,0
+d12,Dormexa,Insomnia,"Great sleep, nauseous the first night only.",9,0
+d13,Dormexa,Insomnia,"I was afraid of sleepwalking after reading about it, never happened. Good pill.",9,0
+d14,Dormexa,Insomnia,Groggy and dizzy until noon. Too strong for me.,4,0
+a1,Asmira,Asthma,My asthma is under control for the first time. Voice a bit hoarse after using it.,8,0
+a2,Asmira,Asthma,My son has nightmares almost every night since he started Asmira. He never had them before.,4,0
+a3,Asmira,Asthma,"Works well, a little sore throat in the morning.",8,0
+a4,Asmira,Asthma,"I've become irritable and short-tempered, my family noticed it first.",4,0
+a5,Asmira,Asthma,"Breathing is much better. No tremor, no headache. Very happy.",9,0
+a6,Asmira,Asthma,Strange dreams that feel completely real. Waking up scared.,5,0
+a7,Asmira,Asthma,Shaky hands for an hour after each puff.,6,0
+a8,Asmira,Asthma,"Mood swings out of nowhere, crying then angry. Never like this before.",3,0
+a9,Asmira,Asthma,Good inhaler. Mild headache the first days.,8,0
+a10,Asmira,Asthma,My daughter wakes up screaming at night since starting it.,3,0
+a11,Asmira,Asthma,"I feel down and snap at everyone, not myself at all on this.",4,0
+a12,Asmira,Asthma,"Cough is gone, breathing is easy. Nothing bad to report.",10,0
+g1,Glucovia,Type 2 diabetes,Sugar levels finally stable. Some diarrhea the first week.,8,0
+g2,Glucovia,Type 2 diabetes,"My knees and fingers ache since I started Glucovia, joint pain I never had.",4,0
+g3,Glucovia,Type 2 diabetes,"Stomach pain after meals for a month, then it settled.",6,0
+g4,Glucovia,Type 2 diabetes,"My vision gets blurry in the evening, hard to read.",4,0
+g5,Glucovia,Type 2 diabetes,"No nausea, no diarrhea, perfect. My A1c is down by 1.2 points.",10,0
+g6,Glucovia,Type 2 diabetes,"Lost my appetite, which honestly helped me lose weight.",7,0
+g7,Glucovia,Type 2 diabetes,My hips hurt so much I stopped my walks. The doctor wants to check if it's the pill.,3,0
+g8,Glucovia,Type 2 diabetes,Felt sick to my stomach the first days.,7,0
+g9,Glucovia,Type 2 diabetes,"Everything looks a bit foggy since I'm on it, like my glasses are dirty.",4,0
+g10,Glucovia,Type 2 diabetes,"Works, mild headache sometimes.",8,0
+g11,Glucovia,Type 2 diabetes,"Achy joints in the morning, it takes an hour to move normally.",5,0
+g12,Glucovia,Type 2 diabetes,"Good control, nothing to report.",9,0

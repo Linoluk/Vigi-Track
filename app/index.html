@@ -1,0 +1,777 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Vigi-Track</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@1,400;1,500&display=swap">
+<style>
+/* Layout: a product page. Sticky nav, hero, colourful drug tiles, big alert cards, a dark "why AI" band, a chat with the agent, then data settings. */
+:root{
+  --bg:#EDEEF1; --surface:#FFFFFF; --surface2:#F6F7F9; --ink:#0F1016; --muted:#646875; --line:#DFE1E6;
+  --accent:#3247F5; --accent-ink:#FFFFFF; --accent-soft:#E6E9FF;
+  --hl:#FFD24A; --hl-soft:#FFF4CC; --alert:#E0393E; --alert-soft:#FDE7E7; --ok:#1E9E6A; --ok-soft:#E1F5EC;
+  --night:#111218; --night2:#1B1C24; --night-ink:#F2F3F7; --night-muted:#A3A6B4; --night-line:#2C2E39;
+  --t1:#3247F5; --t2:#E8458B; --t3:#0FA29C; --t4:#F2A516; --t5:#F0642A; --t6:#7A4DF2; --t7:#2E9E4F;
+  --display:"Bricolage Grotesque", "Arial Black", "Helvetica Neue", Arial, sans-serif;
+  --sans:"Instrument Sans", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --shadow:0 1px 2px rgba(15,16,22,.05), 0 8px 28px rgba(15,16,22,.07);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E0F13; --surface:#17181E; --surface2:#1E1F27; --ink:#F1F2F6; --muted:#A0A4B2; --line:#2B2D37;
+  --accent:#7F8CFF; --accent-ink:#0E0F13; --accent-soft:#23264A; --hl:#E9B92E; --hl-soft:#3A3115; --alert:#FF6468; --alert-soft:#3B1D20;
+  --ok:#4FD39A; --ok-soft:#163327; --night:#07080B; --night2:#13141A; --night-line:#262833; --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E0F13; --surface:#17181E; --surface2:#1E1F27; --ink:#F1F2F6; --muted:#A0A4B2; --line:#2B2D37;
+  --accent:#7F8CFF; --accent-ink:#0E0F13; --accent-soft:#23264A; --hl:#E9B92E; --hl-soft:#3A3115; --alert:#FF6468; --alert-soft:#3B1D20;
+  --ok:#4FD39A; --ok-soft:#163327; --night:#07080B; --night2:#13141A; --night-line:#262833; --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.35); color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top, 0px) + 76px)}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--surface)}
+.in{max-width:1180px;margin:0 auto;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px))}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.025em;margin:0;text-wrap:balance;font-weight:800}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-within{outline:2.5px solid var(--accent);outline-offset:2px}
+.hl{background:linear-gradient(transparent 58%, var(--hl) 58%, var(--hl) 92%, transparent 92%);padding:0 .08em}
+.eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+/* nav */
+nav.top{position:sticky;top:env(safe-area-inset-top, 0px);z-index:20;background:color-mix(in srgb, var(--surface) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav.top .in{display:flex;align-items:center;gap:18px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:800;font-size:21px;letter-spacing:-.03em;text-decoration:none}
+.logo svg{width:28px;height:28px}
+.links{display:flex;gap:4px;margin-left:auto}
+.links a{text-decoration:none;font-weight:600;font-size:14px;padding:7px 12px;border-radius:999px;color:var(--muted)}
+.links a:hover{background:var(--surface2);color:var(--ink)}
+.pill{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--surface2);color:var(--muted);display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.pill i{width:8px;height:8px;border-radius:50%;background:#B9BCC7}
+.pill.on{background:var(--ok-soft);color:var(--ok)} .pill.on i{background:var(--ok);box-shadow:0 0 0 4px color-mix(in srgb, var(--ok) 25%, transparent)}
+/* hero */
+.hero .in{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px;align-items:center;padding-block:56px 40px}
+.hero h1{font-size:clamp(42px,6.4vw,84px);line-height:.95}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p.sub{font-size:18.5px;color:var(--muted);max-width:52ch;margin:20px 0 26px}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:13px 22px;font-weight:700;font-size:15px;background:var(--ink);color:var(--bg);display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn.blue{background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn:hover{filter:brightness(1.08)} .btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.quotes{position:relative;min-height:330px}
+.qcard{position:absolute;background:var(--surface);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);width:min(330px,88%);font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.35}
+.qcard small{display:block;font-family:var(--sans);font-style:normal;font-size:12px;color:var(--muted);margin-top:8px}
+.qcard u{text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:3px}
+.qcard:nth-child(1){top:0;left:6%;transform:rotate(-3deg)}
+.qcard:nth-child(2){top:118px;right:0;transform:rotate(2.5deg)}
+.qcard:nth-child(3){top:232px;left:0;transform:rotate(-1deg)}
+section{padding-block:34px}
+.sec-h{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.sec-h h2{font-size:clamp(28px,3.4vw,40px);line-height:1.02}
+.sec-h .side{font-size:13.5px;color:var(--muted)}
+.sec-h .side button{background:none;border:0;color:var(--accent);font-weight:700;padding:0}
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:12px}
+.tile{border:0;border-radius:18px;padding:14px 15px 13px;color:#fff;text-align:left;display:grid;gap:22px;min-height:150px;align-content:space-between;position:relative;transition:transform .2s ease, box-shadow .2s ease;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.tile:hover{transform:translateY(-3px)}
+.tile.sel{transform:translateY(-4px);box-shadow:0 0 0 3px var(--bg),0 0 0 6px var(--ink),0 14px 30px rgba(0,0,0,.18)}
+.tile .cls{font-size:12px;font-weight:600;opacity:.9}
+.tile .nm{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.tile .ft{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:600;gap:6px}
+.tile .badge{background:rgba(255,255,255,.95);color:#C62828;border-radius:999px;padding:2px 8px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.tile.dark{color:#16130A}
+.moredrugs{margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+select,input[type=text],input[type=password],textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;max-width:100%}
+/* run bar */
+.runbar{margin-top:18px;background:var(--surface);border-radius:20px;padding:18px 20px;box-shadow:var(--shadow);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center}
+.runbar .who{display:flex;align-items:center;gap:14px;min-width:0}
+.runbar .dot{width:46px;height:46px;border-radius:14px;flex:none;display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:800;font-size:20px}
+.runbar .who b{font-family:var(--display);font-size:22px;letter-spacing:-.02em;display:block;line-height:1.1}
+.runbar .who span{font-size:13.5px;color:var(--muted)}
+.runbar .acts{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.seg{display:inline-flex;background:var(--surface2);border-radius:999px;padding:4px}
+.seg label{padding:8px 14px;border-radius:999px;font-weight:700;font-size:13.5px;cursor:pointer;color:var(--muted);display:flex;align-items:center;gap:6px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.seg label.dis{opacity:.45;cursor:not-allowed}
+.leaflet-line{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+.leaflet-line .lt{font-weight:700;color:var(--ink)}
+.mini{font-size:12.5px;padding:3px 10px;border-radius:999px;background:var(--surface2);color:var(--ink);font-weight:600}
+.linkbtn{background:none;border:0;color:var(--accent);font-weight:700;font-size:13.5px;padding:2px 4px}
+.leafpanel{grid-column:1/-1;display:grid;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600;cursor:pointer;background:var(--surface2);user-select:none;color:var(--muted)}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip:has(input:checked){background:var(--ink);color:var(--bg)}
+.chip:has(input:checked)::before{content:"✓";font-size:12px}
+.progress{grid-column:1/-1;display:grid;gap:7px}
+.progress .bar{height:6px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.progress .bar span{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .4s ease}
+.progress .log{font-size:13px;color:var(--muted);min-height:19px}
+/* results */
+.headline{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.1vw,38px);letter-spacing:-.02em;line-height:1.15;max-width:30ch;margin-bottom:22px}
+.headline b{font-weight:800;color:var(--accent)}
+.alerts{display:grid;gap:16px}
+.acard{background:var(--surface);border-radius:24px;padding:26px 28px;box-shadow:var(--shadow);display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;animation:rise .55s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.atag{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--alert);background:var(--alert-soft);border-radius:999px;padding:4px 11px}
+.atag i{width:7px;height:7px;border-radius:50%;background:var(--alert)}
+.acard h3{font-size:clamp(36px,4.6vw,58px);line-height:.98;margin:12px 0 6px}
+.acard .desc{color:var(--muted);margin:0 0 14px}
+.qs{display:grid;gap:10px}
+.q{font-family:var(--serif);font-style:italic;font-size:18.5px;line-height:1.4;display:grid;grid-template-columns:18px 1fr;gap:6px}
+.q::before{content:"“";font-size:30px;line-height:1;color:var(--accent);font-style:normal}
+.q mark{background:none;color:inherit;text-decoration:underline;text-decoration-color:var(--hl);text-decoration-thickness:3px;text-underline-offset:3px}
+.q small{display:block;font-family:var(--sans);font-style:normal;font-size:12px;color:var(--muted);margin-top:2px}
+.stats{display:grid;gap:16px;align-content:start;border-left:1px solid var(--line);padding-left:26px}
+.stat .v{font-family:var(--display);font-weight:800;font-size:44px;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.stat .v small{font-size:20px;color:var(--muted);font-weight:600}
+.stat .k{font-size:13px;color:var(--muted)}
+.cmpbars{display:grid;gap:8px}
+.cb{display:grid;gap:4px;font-size:12.5px;color:var(--muted)}
+.cb .tr{height:10px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.cb .tr span{display:block;height:100%;border-radius:99px;background:var(--alert);width:0;transition:width .8s ease}
+.cb.ref .tr span{background:#B9BCC7}
+.noalert{background:var(--surface);border-radius:24px;padding:26px;box-shadow:var(--shadow);font-size:17px}
+.known{margin-top:18px;background:var(--surface);border-radius:20px;padding:18px 20px;box-shadow:var(--shadow);display:grid;gap:12px}
+.known h3{font-size:19px}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px 22px}
+.kr{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:8px;align-items:center;font-size:14px}
+.kr .tr{grid-column:1/-1;height:6px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.kr .tr span{display:block;height:100%;background:var(--ok);border-radius:99px}
+.kr b{font-weight:600} .kr .n{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.empty{background:var(--surface);border-radius:24px;padding:30px;box-shadow:var(--shadow);color:var(--muted);font-size:16px}
+/* night band */
+.night{background:var(--night);color:var(--night-ink);margin-block:30px;padding-block:56px}
+.night h2{font-size:clamp(30px,4vw,50px);line-height:1.02}
+.night p{color:var(--night-muted);max-width:60ch}
+.night .eyebrow{color:#9FA9FF}
+.tester{display:grid;gap:14px;margin-top:22px}
+.tester textarea{background:var(--night2);color:var(--night-ink);border-color:var(--night-line);font-family:var(--serif);font-style:italic;font-size:19px;min-height:78px;width:100%;resize:vertical}
+.tester .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.tester .btn{background:var(--night-ink);color:var(--night)}
+.ex{background:var(--night2);color:var(--night-muted);border:1px solid var(--night-line);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.res{border-radius:20px;padding:18px 20px;display:grid;gap:10px;align-content:start;min-width:0}
+.res.kw{background:var(--night2);border:1px solid var(--night-line)}
+.res.ai{background:#FFFFFF;color:#0F1016}
+.res .who{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.res .big{font-family:var(--display);font-size:46px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.res .big small{font-size:17px;font-weight:600;opacity:.7}
+.res ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:15px}
+.res li{display:flex;gap:8px;align-items:baseline}
+.res li .why{font-size:12.5px;opacity:.65}
+.res.ai li.no{color:#9095A3;text-decoration:line-through}
+.res.ai li.yes::before{content:"✓";color:#1E9E6A;font-weight:800}
+.res.kw li::before{content:"•";color:#9FA9FF}
+.agg{font-size:15px;color:var(--night-muted)}
+.agg b{color:var(--night-ink)}
+/* agent */
+.chat{background:var(--surface);border-radius:24px;box-shadow:var(--shadow);padding:20px;display:grid;gap:14px}
+.sugg{display:flex;gap:8px;flex-wrap:wrap}
+.sugg button{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font-weight:600;font-size:14px;color:var(--ink)}
+.sugg button:hover{border-color:var(--accent);color:var(--accent)}
+.thread{display:grid;gap:12px}
+.bub{max-width:min(720px,92%);border-radius:18px;padding:12px 16px}
+.bub.me{justify-self:end;background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:6px;font-weight:600}
+.bub.ag{background:var(--surface2);border-bottom-left-radius:6px}
+.bub.ag p{margin:0 0 10px;max-width:70ch} .bub.ag p:last-child{margin:0}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.steps span{font-size:12px;font-weight:600;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:3px 10px}
+.ask{display:flex;gap:10px;align-items:center}
+.ask input{flex:1;min-width:0;border-radius:999px;padding:12px 18px}
+.chat .note{font-size:13px;color:var(--muted)}
+/* data */
+.cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.dcard{background:var(--surface);border-radius:20px;padding:18px 20px;box-shadow:var(--shadow);display:grid;gap:10px;align-content:start;min-width:0}
+.dcard h3{font-size:19px}
+.dcard p{margin:0;font-size:14px;color:var(--muted)}
+.filebtn{position:relative;overflow:hidden}
+.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.status{font-size:13px;color:var(--muted)}
+.status b{color:var(--ink)}
+footer{padding-block:34px 46px;color:var(--muted);font-size:13px;text-align:center}
+footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
+@media (max-width:900px){.hero .in{grid-template-columns:1fr}.quotes{min-height:310px}.acard{grid-template-columns:1fr}.stats{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:16px;grid-template-columns:1fr 1fr}.duo,.cards3{grid-template-columns:1fr}.runbar{grid-template-columns:1fr}.runbar .acts{justify-content:flex-start}.links{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style>
+
+<nav class="top"><div class="in">
+  <a class="logo" href="#top"><svg viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(-45 16 16)"><rect x="4" y="10" width="24" height="12" rx="6" fill="var(--accent)"/><path d="M16 10h6a6 6 0 0 1 0 12h-6z" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/></g></svg>Vigi-Track</a>
+  <div class="links"><a href="#drugs">Drugs</a><a href="#results">Signals</a><a href="#why">Why AI</a><a href="#agent">Ask</a><a href="#data">Data</a></div>
+  <span class="pill" id="enginePill"><i></i><span id="enginePillTxt">Checking AI…</span></span>
+</div></nav>
+
+<header class="hero" id="top"><div class="in">
+  <div>
+    <div class="eyebrow">Drug safety, powered by patients</div>
+    <h1 style="margin-top:12px">Patients say it <em>before</em> the leaflet does.</h1>
+    <p class="sub">Vigi-Track’s AI agent reads what patients write online and flags the side effects that are missing from the official leaflet.</p>
+    <div class="cta"><a class="btn blue" href="#drugs">Pick a drug</a><a class="btn ghost" href="#why">See why AI</a></div>
+  </div>
+  <div class="quotes" aria-label="Example patient quotes">
+    <div class="qcard">“Feels like my <u>heart is doing flips</u> a few times a day.”<small>Zentrolix · rating 5/10</small></div>
+    <div class="qcard">“<u>Strange dreams</u> that feel completely real. Waking up scared.”<small>Asmira · rating 5/10</small></div>
+    <div class="qcard">“I hear a constant <u>ringing in my ears</u>.”<small>Calmarin · rating 4/10</small></div>
+  </div>
+</div></header>
+
+<main>
+<section id="drugs"><div class="in">
+  <div class="sec-h"><h2>Choose a drug</h2><div class="side" id="dataLine">Demo data</div></div>
+  <div class="tiles" id="tiles"></div>
+  <div class="moredrugs" id="moreWrap" hidden><label for="drug" class="status">All drugs</label><select id="drug" aria-label="All drugs"></select></div>
+
+  <div class="runbar" id="runbar">
+    <div class="who"><div class="dot" id="whoDot">Z</div><div style="min-width:0"><b id="whoName">Drug</b><span id="whoMeta"></span></div></div>
+    <div class="acts">
+      <div class="seg" role="radiogroup" aria-label="Engine">
+        <label id="aiLab"><input type="radio" name="engine" id="engAI" value="ai">AI agent</label>
+        <label><input type="radio" name="engine" id="engKW" value="kw" checked>Keywords</label>
+      </div>
+      <button class="btn blue" id="run">Read the reviews</button>
+      <button class="btn ghost" id="stopRun" hidden>Stop</button>
+    </div>
+    <div class="leaflet-line"><span class="lt">The leaflet lists</span><span id="leafSummary"></span><button class="linkbtn" id="leafToggle" aria-expanded="false">Edit</button></div>
+    <div class="leafpanel" id="leafPanel" hidden>
+      <div class="status">Tick the side effects already printed in the official leaflet. Everything else patients report becomes an alert.</div>
+      <div class="chips" id="known"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="addKnown" placeholder="Add an effect, e.g. rash" aria-label="Add an effect" style="flex:1;min-width:0"><button class="btn ghost" id="addKnownBtn">Add</button></div>
+    </div>
+    <div class="progress"><div class="bar" aria-hidden="true"><span id="prog"></span></div><div class="log" id="runLog"></div></div>
+  </div>
+</div></section>
+
+<section id="results"><div class="in">
+  <div class="headline" id="headline"></div>
+  <div class="alerts" id="alerts"></div>
+  <div class="known" id="knownBox" hidden><h3>Already in the leaflet</h3><div class="kgrid" id="kgrid"></div></div>
+  <p class="status" style="margin-top:16px">Reviews are unverified. An alert is a clue for drug safety experts, to be checked against official reports (ANSM, EMA, FDA). It does not prove the drug caused the effect.</p>
+</div></section>
+
+<section class="night" id="why"><div class="in">
+  <div class="eyebrow">Why AI</div>
+  <h2 style="margin-top:10px">Why an AI, and not a keyword search?</h2>
+  <p>A patient writes “no nausea at all”. A keyword search counts nausea. Vigi-Track reads the whole sentence and understands it means the opposite. Try it with any review.</p>
+  <div class="tester">
+    <textarea id="tryText" aria-label="Review to test">No headache at all, but since I started this I have nightmares every night. My cough is much better.</textarea>
+    <div class="row"><button class="btn" id="tryBtn">Compare</button>
+      <button class="ex" data-ex="I was scared of weight gain, but nothing so far. My heart is doing flips a few times a day though.">Example 2</button>
+      <button class="ex" data-ex="Zero dizziness and no rash. I just feel exhausted and my calves hurt when I walk.">Example 3</button></div>
+    <div class="duo">
+      <div class="res kw"><div class="who">Keyword search</div><div class="big" id="kwN">0 <small>effects found</small></div><ul id="kwList"></ul></div>
+      <div class="res ai"><div class="who">Vigi-Track AI</div><div class="big" id="aiN">–</div><ul id="aiList"><li>Click Compare.</li></ul></div>
+    </div>
+    <div class="agg" id="agg"></div>
+  </div>
+</div></section>
+
+<section id="agent"><div class="in">
+  <div class="sec-h"><h2>Ask the agent</h2><div class="side">It reads the alerts and the reviews behind them, then answers.</div></div>
+  <div class="chat">
+    <div class="sugg" id="suggs">
+      <button data-q="Write a short safety signal report for the safety team.">Write a signal report</button>
+      <button data-q="Which alert should we investigate first, and why?">Which alert first?</button>
+      <button data-q="Summarise what patients say about the effects that are not in the leaflet.">What do patients say?</button>
+    </div>
+    <div class="thread" id="thread"></div>
+    <div class="ask"><input type="text" id="q" placeholder="Ask about these results" aria-label="Question for the agent"><button class="btn blue" id="ask" disabled>Ask</button><button class="btn ghost" id="stopAsk" hidden>Stop</button></div>
+    <div class="note" id="askStatus">Read the reviews with the AI agent first.</div>
+  </div>
+</div></section>
+
+<section id="data"><div class="in">
+  <div class="sec-h"><h2>Data and settings</h2></div>
+  <div class="cards3">
+    <div class="dcard"><h3>Use real reviews</h3><p>Upload the Drugs.com review file from Kaggle or UCI (CSV or TSV, about 215,000 reviews).</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="btn ghost filebtn">Upload a file<input type="file" id="file" accept=".csv,.tsv,.txt" aria-label="Upload a Drugs.com file"></span><button class="btn ghost" id="loadDemo">Back to demo</button></div>
+      <div class="status" id="loadStatus"></div></div>
+    <div class="dcard"><h3>Run outside Claude</h3><p>Opened this file on your computer? Paste an Anthropic API key to turn on the AI agent. It stays in this tab and is sent only to api.anthropic.com.</p>
+      <div style="display:flex;gap:8px"><input type="password" id="apiKey" placeholder="sk-ant-…" aria-label="Anthropic API key" autocomplete="off" style="flex:1;min-width:0"><button class="btn ghost" id="useKey">Use key</button></div>
+      <div class="status" id="keyStatus"></div></div>
+    <div class="dcard"><h3>AI reading limit</h3><p>For big drugs, the AI reads the most helpful reviews first. Keyword search always reads every review.</p>
+      <select id="maxN" aria-label="Reviews sent to the AI"><option value="30">30 reviews per run</option><option value="60" selected>60 reviews per run</option><option value="120">120 reviews per run</option></select></div>
+  </div>
+  <p class="status" id="demoNote" style="margin-top:14px">The demo has 66 short reviews written for this project. The 5 drug names are invented. It is not real patient data.</p>
+</div></section>
+</main>
+
+<footer><div class="logo">Vigi-Track</div>Patients say it before the leaflet does. A course prototype. Not medical advice.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+"use strict";
+/* ---------- Demo sample: 5 fictional drugs, written for this project ---------- */
+const DEMO = [
+ ["z1","Zentrolix","Depression",8,"Started Zentrolix 3 months ago. The first two weeks I was nauseous every morning but it passed. My mood is so much better now."],
+ ["z2","Zentrolix","Depression",6,"Works for my depression but my heart started racing at night, like palpitations, around week 3. My doctor lowered the dose."],
+ ["z3","Zentrolix","Depression",10,"No nausea at all, no headache, honestly zero side effects for me. Best thing I have tried."],
+ ["z4","Zentrolix","Depression",7,"I feel more like myself. Downside is the dry mouth, I carry water everywhere. Also a bit dizzy when I stand up fast."],
+ ["z5","Zentrolix","Depression",3,"After two months my hair is falling out in the shower. Never had this before. Stopping it."],
+ ["z6","Zentrolix","Depression",6,"Sometimes my heart is pounding for no reason, even sitting on the couch. Mood is better though."],
+ ["z7","Zentrolix","Depression",4,"Can't sleep since I started. I'm awake until 3am every night."],
+ ["z8","Zentrolix","Depression",8,"I was scared of weight gain because of my last medication, but nothing so far. Mild headache the first week."],
+ ["z9","Zentrolix","Depression",5,"Feels like my heart is doing flips a few times a day. Never had heart issues before. My anxiety is down though."],
+ ["z10","Zentrolix","Depression",2,"Gave me terrible headaches and I threw up twice. Not for me."],
+ ["z11","Zentrolix","Depression",7,"Working well. I noticed my hair is thinning on top, my hairdresser said it too."],
+ ["z12","Zentrolix","Depression",9,"Zentrolix saved me. Little bit of trouble sleeping at first, gone now."],
+ ["z13","Zentrolix","Depression",3,"My resting heart rate went up a lot and I could feel it thumping in my chest. Had to stop."],
+ ["z14","Zentrolix","Depression",5,"Lost my appetite completely, ate one meal a day for weeks."],
+ ["c1","Calmarin","High blood pressure",8,"BP down from 160 to 128 in a month. Ankles are a bit swollen by the evening."],
+ ["c2","Calmarin","High blood pressure",4,"Since starting Calmarin I hear a constant ringing in my ears. Didn't connect it until I read other reviews."],
+ ["c3","Calmarin","High blood pressure",6,"Pressure is controlled. I'm tired all the time though, need a nap every afternoon."],
+ ["c4","Calmarin","High blood pressure",3,"My legs ache so badly I can barely climb stairs, muscle pain all over after 6 weeks."],
+ ["c5","Calmarin","High blood pressure",10,"Zero dizziness, zero cough, works perfectly. Very happy."],
+ ["c6","Calmarin","High blood pressure",5,"Good for BP but there's a high pitched buzzing in my ears at night."],
+ ["c7","Calmarin","High blood pressure",8,"Bit dizzy the first days. Fine now."],
+ ["c8","Calmarin","High blood pressure",5,"Muscle cramps and sore shoulders since week 2. My doctor is running tests."],
+ ["c9","Calmarin","High blood pressure",8,"My blood pressure is finally normal. Only a small dry cough."],
+ ["c10","Calmarin","High blood pressure",7,"Headache every day for the first two weeks, then it stopped."],
+ ["c11","Calmarin","High blood pressure",9,"I worried about swelling after reading the leaflet, but nothing. Works great."],
+ ["c12","Calmarin","High blood pressure",2,"Ears ringing since I started, getting worse. Going back to my old pill."],
+ ["c13","Calmarin","High blood pressure",4,"Feel exhausted and my calves hurt when I walk."],
+ ["c14","Calmarin","High blood pressure",9,"Works, nothing to report."],
+ ["d1","Dormexa","Insomnia",8,"I finally sleep 7 hours. A bit groggy in the morning."],
+ ["d2","Dormexa","Insomnia",3,"Vivid nightmares every single night. Woke up screaming twice."],
+ ["d3","Dormexa","Insomnia",4,"Works, but I can't remember things I did the evening after taking it. My wife says I had full conversations I don't recall."],
+ ["d4","Dormexa","Insomnia",10,"No headache, no grogginess, just good sleep."],
+ ["d5","Dormexa","Insomnia",3,"Found myself in the kitchen at 2am eating, with no memory of getting up. Scary."],
+ ["d6","Dormexa","Insomnia",6,"Dry mouth and a strange metallic taste in the morning."],
+ ["d7","Dormexa","Insomnia",6,"Very intense dreams. Not always bad but exhausting."],
+ ["d8","Dormexa","Insomnia",7,"Sleep is better. Slight headache when I wake up."],
+ ["d9","Dormexa","Insomnia",2,"My partner found me walking around the garden at night, I had no idea."],
+ ["d10","Dormexa","Insomnia",3,"Horrible dreams, like horror films. Stopped after a week."],
+ ["d11","Dormexa","Insomnia",5,"Forgetful during the day, I lose my keys and my words. Not sure if it's the pill."],
+ ["d12","Dormexa","Insomnia",9,"Great sleep, nauseous the first night only."],
+ ["d13","Dormexa","Insomnia",9,"I was afraid of sleepwalking after reading about it, never happened. Good pill."],
+ ["d14","Dormexa","Insomnia",4,"Groggy and dizzy until noon. Too strong for me."],
+ ["a1","Asmira","Asthma",8,"My asthma is under control for the first time. Voice a bit hoarse after using it."],
+ ["a2","Asmira","Asthma",4,"My son has nightmares almost every night since he started Asmira. He never had them before."],
+ ["a3","Asmira","Asthma",8,"Works well, a little sore throat in the morning."],
+ ["a4","Asmira","Asthma",4,"I've become irritable and short-tempered, my family noticed it first."],
+ ["a5","Asmira","Asthma",9,"Breathing is much better. No tremor, no headache. Very happy."],
+ ["a6","Asmira","Asthma",5,"Strange dreams that feel completely real. Waking up scared."],
+ ["a7","Asmira","Asthma",6,"Shaky hands for an hour after each puff."],
+ ["a8","Asmira","Asthma",3,"Mood swings out of nowhere, crying then angry. Never like this before."],
+ ["a9","Asmira","Asthma",8,"Good inhaler. Mild headache the first days."],
+ ["a10","Asmira","Asthma",3,"My daughter wakes up screaming at night since starting it."],
+ ["a11","Asmira","Asthma",4,"I feel down and snap at everyone, not myself at all on this."],
+ ["a12","Asmira","Asthma",10,"Cough is gone, breathing is easy. Nothing bad to report."],
+ ["g1","Glucovia","Type 2 diabetes",8,"Sugar levels finally stable. Some diarrhea the first week."],
+ ["g2","Glucovia","Type 2 diabetes",4,"My knees and fingers ache since I started Glucovia, joint pain I never had."],
+ ["g3","Glucovia","Type 2 diabetes",6,"Stomach pain after meals for a month, then it settled."],
+ ["g4","Glucovia","Type 2 diabetes",4,"My vision gets blurry in the evening, hard to read."],
+ ["g5","Glucovia","Type 2 diabetes",10,"No nausea, no diarrhea, perfect. My A1c is down by 1.2 points."],
+ ["g6","Glucovia","Type 2 diabetes",7,"Lost my appetite, which honestly helped me lose weight."],
+ ["g7","Glucovia","Type 2 diabetes",3,"My hips hurt so much I stopped my walks. The doctor wants to check if it's the pill."],
+ ["g8","Glucovia","Type 2 diabetes",7,"Felt sick to my stomach the first days."],
+ ["g9","Glucovia","Type 2 diabetes",4,"Everything looks a bit foggy since I'm on it, like my glasses are dirty."],
+ ["g10","Glucovia","Type 2 diabetes",8,"Works, mild headache sometimes."],
+ ["g11","Glucovia","Type 2 diabetes",5,"Achy joints in the morning, it takes an hour to move normally."],
+ ["g12","Glucovia","Type 2 diabetes",9,"Good control, nothing to report."]
+].map(([id,drug,cond,rating,text])=>({id,drug,cond,rating,text,useful:0}));
+const DEMO_LEAFLET = {
+  Zentrolix:["nausea","headache","insomnia","dry mouth","dizziness","decreased appetite"],
+  Calmarin:["dizziness","fatigue","ankle swelling","headache","cough"],
+  Dormexa:["drowsiness","headache","dizziness","nausea","dry mouth"],
+  Asmira:["hoarse voice","sore throat","cough","headache","tremor"],
+  Glucovia:["nausea","diarrhea","stomach pain","decreased appetite","headache"]
+};
+const DEMO_CLASS = {Zentrolix:"Antidepressant",Calmarin:"Blood pressure",Dormexa:"Sleeping pill",Asmira:"Asthma inhaler",Glucovia:"Diabetes"};
+const TILE_COLORS = ["--t1","--t2","--t3","--t4","--t5","--t6","--t7"];
+
+/* ---------- Side-effect vocabulary ---------- */
+const LEX = {
+  "nausea":/\b(nausea|nauseous|nauseated|threw up|throw up|throwing up|vomit\w*|sick to my stomach)\b/i,
+  "headache":/\b(headaches?|migraines?)\b/i,
+  "insomnia":/\binsomnia\b|can'?t sleep|cannot sleep|trouble sleeping|awake until/i,
+  "dry mouth":/dry mouth/i,
+  "dizziness":/\bdizz\w*|light-?headed/i,
+  "decreased appetite":/lost my appetite|loss of appetite|no appetite|appetite loss|decreased appetite/i,
+  "palpitations":/palpitation|heart (is |started )?(racing|pounding)|(racing|pounding) heart/i,
+  "hair loss":/hair (is )?(falling out|loss|thinning)|losing (my )?hair/i,
+  "weight gain":/weight gain|gained weight|put on weight/i,
+  "anxiety":/\banxi(ety|ous)\b/i,
+  "fatigue":/\b(tired|fatigue|exhausted|exhausting|no energy)\b/i,
+  "ankle swelling":/\bswell\w*|swollen/i,
+  "cough":/\bcough\w*/i,
+  "tinnitus":/tinnitus|ringing in (my )?ears|ears? ringing/i,
+  "muscle pain":/muscle (pain|aches?|cramps?)|legs ache|sore muscles|myalgia/i,
+  "drowsiness":/\b(drowsy|drowsiness|grogg\w*|sleepy|somnolence)\b/i,
+  "abnormal dreams":/nightmares?|(vivid|bad|intense|horrible|strange|abnormal) dreams?/i,
+  "memory problems":/memory|can'?t remember|cannot remember|forgetful|amnesia/i,
+  "sleepwalking":/sleep ?walk\w*|sleep-walk\w*/i,
+  "taste changes":/metallic taste|taste chang\w*|dysgeusia/i,
+  "mood changes":/mood (swings?|changes?)|irritab\w*|short-tempered|aggressi\w*/i,
+  "hoarse voice":/hoarse\w*/i,
+  "sore throat":/sore throat/i,
+  "tremor":/\btremors?\b|shak(y|ing) hands?|trembl\w*/i,
+  "stomach pain":/stomach (pain|ache|cramps?)|abdominal pain|belly pain/i,
+  "joint pain":/joint pain|joints? (ache|aches|hurt)|achy joints|aching joints|arthralgia/i,
+  "blurred vision":/blurr?(ed|y) vision|vision (is |gets )?blurr?y|blurry/i,
+  "rash":/\brash\b|\bhives\b|\bitch\w*/i,
+  "diarrhea":/diarrh?o?ea|diarrhea/i,
+  "constipation":/constipat\w*/i,
+  "sweating":/sweating|night sweats/i,
+  "sexual dysfunction":/libido|sex drive|erectile/i
+};
+const DESC = {
+  "palpitations":"A racing, pounding or skipping heartbeat.","hair loss":"Hair thinning or falling out.","tinnitus":"Ringing or buzzing in the ears.",
+  "muscle pain":"Aching, cramping or sore muscles.","abnormal dreams":"Very intense dreams or nightmares, night after night.","memory problems":"Gaps in memory, forgetting recent events.",
+  "sleepwalking":"Getting up and doing things at night without remembering.","taste changes":"A metallic or strange taste in the mouth.","mood changes":"Irritability, anger or mood swings.",
+  "joint pain":"Aching knees, hips, fingers or other joints.","blurred vision":"Foggy or blurry eyesight.","weight gain":"Putting on weight.","anxiety":"Feeling anxious or nervous.",
+  "fatigue":"Feeling tired or exhausted.","rash":"Skin rash, hives or itching.","sweating":"Heavy sweating, often at night.","sexual dysfunction":"Lower sex drive or erection problems."
+};
+const VOCAB = Object.keys(LEX);
+function canon(term){
+  const t = String(term||"").toLowerCase().trim().replace(/\s+/g," ");
+  if(!t) return "";
+  if(LEX[t]) return t;
+  for(const k of VOCAB){ if(LEX[k].test(t)) return k; }
+  return t.length>40 ? t.slice(0,40) : t;
+}
+const cap1 = s => s.charAt(0).toUpperCase()+s.slice(1);
+
+/* ---------- State ---------- */
+const S = { reviews:[], byDrug:new Map(), order:[], drug:null, known:new Set(), isDemo:false, alerts:new Map(),
+  result:null, kw:null, sample:null, runCtl:null, askCtl:null };
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct = (a,b) => b ? Math.round(100*a/b) : 0;
+
+/* ---------- AI engine: Claude inside claude.ai, or an API key outside it ---------- */
+function setEngine(s,label){
+  S.sample=s;
+  const pill=$("enginePill"), txt=$("enginePillTxt");
+  if(s){ pill.className="pill on"; txt.textContent=label; $("engAI").disabled=false; $("aiLab").classList.remove("dis"); $("engAI").checked=true; }
+  else{ pill.className="pill"; txt.textContent="Keyword mode"; $("engAI").disabled=true; $("aiLab").classList.add("dis"); $("engKW").checked=true; }
+  updateRunLabel(); resetAgent();
+}
+(async()=>{
+  let s=null;
+  try{ s = window.claude ? await window.claude.use("sample") : null; }catch(e){ s=null; }
+  setEngine(s,"AI agent on");
+})();
+const API_MODEL_FAST="claude-haiku-5-5", API_MODEL_AGENT="claude-sonnet-5-5";
+function apiSample(key){
+  async function call(body,signal){
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",signal,headers:{"content-type":"application/json","x-api-key":key,
+      "anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify(body)});
+    if(!r.ok){ throw {code:r.status===429?"rate_limited":r.status===401?"not_granted":"upstream_error",message:"API "+r.status}; }
+    return r.json();
+  }
+  const toMsgs=input=>{ const turns=Array.isArray(input)?input:[{role:"user",content:input}]; const out=[];
+    for(const t of turns){ const last=out[out.length-1]; if(last&&last.role===t.role) last.content+="\n\n"+t.content; else out.push({role:t.role,content:t.content}); } return out; };
+  const wrap=e=>{ if(e&&e.name==="AbortError") return {code:"cancelled",message:"aborted"}; return e&&e.code?e:{code:"upstream_error",message:String(e)}; };
+  async function sample(input,opts={}){
+    try{
+      const messages=toMsgs(input); const tools=(opts.tools||[]).map(t=>({name:t.name,description:t.description,input_schema:t.inputSchema||{type:"object",properties:{}}}));
+      let text="";
+      for(let round=0;round<6;round++){
+        const res=await call({model:opts.tools?API_MODEL_AGENT:API_MODEL_FAST,max_tokens:1500,messages,...(tools.length?{tools}:{})},opts.signal);
+        const said=res.content.filter(c=>c.type==="text").map(c=>c.text).join("");
+        if(said){ text=text?text+"\n\n"+said:said; opts.onText&&opts.onText({text,delta:said}); }
+        if(res.stop_reason!=="tool_use") break;
+        messages.push({role:"assistant",content:res.content});
+        const results=[];
+        for(const c of res.content.filter(c=>c.type==="tool_use")){
+          const t=(opts.tools||[]).find(x=>x.name===c.name); let out;
+          try{ out=await t.execute(c.input||{},{signal:opts.signal}); }catch(err){ out="Error: "+(err&&err.message||err); }
+          results.push({type:"tool_result",tool_use_id:c.id,content:typeof out==="string"?out:JSON.stringify(out)});
+        }
+        messages.push({role:"user",content:results});
+      }
+      if(!text) throw {code:"empty_completion",message:"no text"};
+      return {text,truncated:false,modelTierApplied:"default"};
+    }catch(e){ throw wrap(e); }
+  }
+  sample.json=async(input,opts={})=>{ const {text}=await sample(input,{signal:opts.signal});
+    const m=text.match(/```(?:json)?\s*([\s\S]*?)```/); const raw=m?m[1]:text.slice(Math.min(...["[","{"].map(c=>{const i=text.indexOf(c);return i<0?1e9:i;})));
+    try{ return JSON.parse(raw.slice(0,Math.max(raw.lastIndexOf("]"),raw.lastIndexOf("}"))+1)); }catch(e){ throw {code:"invalid_json",message:"bad json",text}; } };
+  return sample;
+}
+$("useKey").onclick=()=>{ const k=$("apiKey").value.trim();
+  if(!k.startsWith("sk-")){ $("keyStatus").textContent="That does not look like an Anthropic key. It starts with sk-ant-."; $("apiKey").focus(); return; }
+  setEngine(apiSample(k),"AI agent on (API key)"); $("apiKey").value=""; $("keyStatus").textContent="Key added for this tab. The AI agent is on."; };
+
+/* ---------- Loading data ---------- */
+function setReviews(list, isDemo){
+  S.reviews=list; S.isDemo=isDemo; S.byDrug=new Map(); S.alerts=new Map();
+  for(const r of list){ if(!r.drug||!r.text) continue; if(!S.byDrug.has(r.drug)) S.byDrug.set(r.drug,[]); S.byDrug.get(r.drug).push(r); }
+  S.order = isDemo ? Object.keys(DEMO_CLASS) : [...S.byDrug.keys()].sort((a,b)=>S.byDrug.get(b).length-S.byDrug.get(a).length);
+  const sel=$("drug"); sel.innerHTML="";
+  for(const name of S.order.slice(0,400)){ const o=document.createElement("option"); o.value=name; o.textContent=`${name} (${S.byDrug.get(name).length})`; sel.append(o); }
+  $("moreWrap").hidden = S.order.length<=10;
+  $("dataLine").innerHTML = isDemo ? `${S.order.length} fictional drugs · ${list.length} demo reviews · <button id="toData">Use real data</button>` : `${S.byDrug.size.toLocaleString("en")} drugs · ${list.length.toLocaleString("en")} reviews`;
+  const td=$("toData"); if(td) td.onclick=()=>$("data").scrollIntoView();
+  $("loadStatus").innerHTML=`<b>${list.length.toLocaleString("en")}</b> reviews loaded${isDemo?" (demo)":""}.`;
+  $("demoNote").hidden=!isDemo;
+  renderTiles(); selectDrug(S.order[0]);
+}
+function colorOf(name){ const i=Math.max(0,S.order.indexOf(name)); return TILE_COLORS[i%TILE_COLORS.length]; }
+function renderTiles(){
+  $("tiles").innerHTML=S.order.slice(0,10).map(name=>{
+    const n=S.byDrug.get(name).length, c=colorOf(name), a=S.alerts.get(name);
+    const cls=S.isDemo?(DEMO_CLASS[name]||""):(S.byDrug.get(name)[0].cond||"Drug");
+    const foot = a==null ? `<span>Not read yet</span>` : a ? `<span class="badge">● ${a} alert${a>1?"s":""}</span>` : `<span>No alert</span>`;
+    return `<button class="tile${c==="--t4"?" dark":""}${name===S.drug?" sel":""}" style="background:var(${c})" data-d="${esc(name)}" aria-pressed="${name===S.drug}">
+      <span class="cls">${esc(cls)}</span><span class="nm">${esc(name)}</span><span class="ft"><span>${n.toLocaleString("en")} reviews</span>${foot}</span></button>`;
+  }).join("");
+  $("tiles").querySelectorAll(".tile").forEach(t=>t.onclick=()=>{ if(t.dataset.d===S.drug) return; selectDrug(t.dataset.d); autoRun(); });
+}
+$("loadDemo").onclick=()=>{ setReviews(DEMO.map(r=>({...r})), true); autoRun(); };
+const decoder=document.createElement("textarea");
+function decode(s){ decoder.innerHTML=String(s||""); return decoder.value.replace(/^"+|"+$/g,"").trim(); }
+$("file").onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  if(!window.Papa){ $("loadStatus").textContent="The file reader did not load. Check your connection and try again."; return; }
+  $("loadStatus").textContent=`Reading ${f.name}…`;
+  Papa.parse(f,{header:true,skipEmptyLines:true,complete:res=>{
+    const rows=res.data.map((r,i)=>({ id:String(r.uniqueID ?? r[""] ?? r.id ?? ("r"+i)), drug:decode(r.drugName||r.drug||""),
+      cond:decode(r.condition||""), rating:Number(r.rating)||null, text:decode(r.review||r.text||""), useful:Number(r.usefulCount)||0 }))
+      .filter(r=>r.drug&&r.text);
+    if(!rows.length){ $("loadStatus").textContent="No reviews found. The file needs drugName and review columns."; return; }
+    setReviews(rows,false); autoRun(); $("drugs").scrollIntoView();
+  },error:()=>{ $("loadStatus").textContent="This file could not be read. Use the CSV or TSV from Kaggle or UCI."; }});
+};
+
+/* ---------- Drug + leaflet ---------- */
+$("drug").onchange=e=>{ selectDrug(e.target.value); autoRun(); };
+function selectDrug(name){
+  S.drug=name; $("drug").value=name; S.result=null; S.kw=null;
+  const arr=S.byDrug.get(name)||[];
+  const cond=[...new Set(arr.map(r=>r.cond).filter(Boolean))].slice(0,2).join(", ");
+  $("whoDot").style.background=`var(${colorOf(name)})`; $("whoDot").textContent=name.charAt(0).toUpperCase();
+  $("whoName").textContent=name;
+  $("whoMeta").textContent=`${S.isDemo?(DEMO_CLASS[name]+" · "):""}${arr.length.toLocaleString("en")} reviews${cond?" · "+cond:""}`;
+  S.known=new Set(S.isDemo?(DEMO_LEAFLET[name]||[]):[]);
+  renderTiles(); renderKnown(); updateRunLabel(); renderResults(); resetAgent(); clearAgent();
+}
+function renderKnown(){
+  const extra=[...S.known].filter(k=>!VOCAB.includes(k));
+  const list=[...new Set([...VOCAB.filter(v=>S.known.has(v)), ...extra, ...VOCAB.filter(v=>!S.known.has(v))])];
+  $("known").innerHTML=list.map(k=>`<label class="chip"><input type="checkbox" data-k="${esc(k)}"${S.known.has(k)?" checked":""}>${esc(k)}</label>`).join("");
+  $("known").querySelectorAll("input").forEach(cb=>cb.onchange=()=>{ const k=cb.dataset.k; cb.checked?S.known.add(k):S.known.delete(k); leafSummary(); if(S.result) renderResults(); });
+  leafSummary();
+}
+function leafSummary(){
+  const k=[...S.known];
+  $("leafSummary").innerHTML = k.length ? k.map(x=>`<span class="mini">${esc(x)}</span>`).join("") : `<span>nothing yet. Tick the known effects so Vigi-Track can spot new ones.</span>`;
+}
+$("leafToggle").onclick=()=>{ const p=$("leafPanel"); p.hidden=!p.hidden; $("leafToggle").textContent=p.hidden?"Edit":"Done"; $("leafToggle").setAttribute("aria-expanded",String(!p.hidden)); };
+function addKnown(){ const v=canon($("addKnown").value); if(!v) return; S.known.add(v); $("addKnown").value=""; renderKnown(); if(S.result) renderResults(); }
+$("addKnownBtn").onclick=addKnown;
+$("addKnown").onkeydown=e=>{ if(e.key==="Enter"){ e.preventDefault(); addKnown(); } };
+document.querySelectorAll('input[name=engine]').forEach(r=>r.onchange=updateRunLabel);
+$("maxN").onchange=updateRunLabel;
+function updateRunLabel(){
+  const all=(S.byDrug.get(S.drug)||[]).length; if(!all) return;
+  const ai=document.querySelector('input[name=engine]:checked').value==="ai";
+  const n=ai?Math.min(all,Number($("maxN").value)):all;
+  $("run").textContent = ai ? `Read ${n.toLocaleString("en")} reviews with AI` : `Search ${n.toLocaleString("en")} reviews`;
+}
+
+/* ---------- Analysis ---------- */
+function keywordRun(list){ const per=new Map(); for(const r of list) per.set(r.id, VOCAB.filter(k=>LEX[k].test(r.text))); return per; }
+function aiPrompt(batch, drug){
+  return `You are a pharmacovigilance assistant reading patient reviews of the drug "${drug}".
+For each review, list the side effects the patient says they actually experienced while taking this drug.
+Rules:
+- Ignore effects the patient denies ("no nausea"), only fears, or did not have.
+- Ignore symptoms of the illness being treated, unless the patient blames the drug.
+- Use short lowercase medical terms. Use one of these terms when it fits: ${VOCAB.join(", ")}. Otherwise write a short standard term (for example "chest pain").
+- An empty list is fine.
+Reply with only a JSON array, one object per review, like [{"id":"r1","effects":["nausea"]}].
+
+Reviews:
+${batch.map(r=>`[${r.id}] ${r.text.slice(0,900)}`).join("\n")}`;
+}
+async function aiRun(list, ctl, onProgress){
+  const per=new Map(); const B=20;
+  for(let i=0;i<list.length;i+=B){
+    const batch=list.slice(i,i+B);
+    const out=await S.sample.json(aiPrompt(batch,S.drug),{modelTier:"quick",signal:ctl.signal});
+    const arr=Array.isArray(out)?out:(out&&Array.isArray(out.results)?out.results:[]);
+    for(const r of batch) per.set(r.id,[]);
+    for(const o of arr){ if(!o||!per.has(String(o.id))) continue;
+      per.set(String(o.id),[...new Set((Array.isArray(o.effects)?o.effects:[]).map(canon).filter(Boolean))]); }
+    onProgress(Math.min(i+B,list.length), list.length);
+  }
+  return per;
+}
+function pickForAI(arr,n){ return arr.length<=n ? arr : [...arr].sort((a,b)=>(b.useful||0)-(a.useful||0)).slice(0,n); }
+function autoRun(){ // show a working state at once with the free keyword search
+  const all=S.byDrug.get(S.drug)||[]; const per=keywordRun(all);
+  S.result={engine:"kw",list:all,per}; S.kw=per; afterRun();
+  $("runLog").textContent="Showing a quick keyword search. Read the reviews with the AI agent for reliable results.";
+}
+function afterRun(){
+  const rows=tally(S.result.list,S.result.per); S.alerts.set(S.drug, rows.filter(r=>!r.listed).length);
+  renderTiles(); renderResults(); resetAgent();
+}
+$("run").onclick=async()=>{
+  const engine=document.querySelector('input[name=engine]:checked').value;
+  const all=S.byDrug.get(S.drug)||[]; const prog=$("prog"), log=$("runLog");
+  $("run").disabled=true; prog.style.width="0%";
+  if(engine==="kw"){
+    log.textContent=`Searching ${all.length.toLocaleString("en")} reviews…`;
+    await new Promise(r=>setTimeout(r,300));
+    const per=keywordRun(all); prog.style.width="100%";
+    S.result={engine:"kw",list:all,per}; S.kw=per;
+    log.textContent=`Done. Keyword search on ${all.length.toLocaleString("en")} reviews.`;
+    $("run").disabled=false; afterRun(); clearAgent(); return;
+  }
+  const list=pickForAI(all, Number($("maxN").value));
+  S.runCtl=new AbortController(); $("stopRun").hidden=false;
+  log.textContent=`The AI agent is reading ${list.length} reviews…`;
+  try{
+    const per=await aiRun(list,S.runCtl,(d,t)=>{ prog.style.width=(100*d/t)+"%"; log.textContent=`The AI agent has read ${d} of ${t} reviews…`; });
+    S.result={engine:"ai",list,per}; S.kw=keywordRun(list);
+    log.textContent=`Done. The AI agent read ${list.length} reviews${all.length>list.length?`, the most helpful of ${all.length.toLocaleString("en")}`:""}.`;
+    afterRun(); clearAgent();
+  }catch(e){ log.textContent=runError(e); }
+  finally{ $("run").disabled=false; $("stopRun").hidden=true; }
+};
+$("stopRun").onclick=()=>S.runCtl?.abort();
+function runError(e){
+  const c=e&&e.code;
+  if(c==="cancelled") return "Stopped.";
+  if(c==="not_granted") return "Claude was not allowed for this page. Use Keywords, or allow Claude and try again.";
+  if(c==="rate_limited") return "Too many requests right now. Wait a minute and try again.";
+  if(c==="invalid_json") return "The AI answer could not be read. Try again.";
+  return "The AI agent could not finish. Try again, or use Keywords.";
+}
+
+/* ---------- Results ---------- */
+function tally(list,per){
+  const m=new Map();
+  for(const r of list){ for(const e of (per.get(r.id)||[])){ if(!m.has(e)) m.set(e,[]); m.get(e).push(r); } }
+  return [...m.entries()].map(([effect,revs])=>({effect,revs,count:revs.length,listed:S.known.has(effect)})).sort((a,b)=>b.count-a.count||a.effect.localeCompare(b.effect));
+}
+function quoteFor(text,effect,max=170){
+  const re=LEX[effect]; const m=re?text.match(re):null;
+  if(m){ const i=m.index, s=Math.max(0,i-70), e=Math.min(text.length,i+m[0].length+80);
+    return (s>0?"…":"")+esc(text.slice(s,i))+"<mark>"+esc(m[0])+"</mark>"+esc(text.slice(i+m[0].length,e))+(e<text.length?"…":""); }
+  return esc(text.length>max?text.slice(0,max)+"…":text);
+}
+function renderResults(){
+  const R=S.result;
+  if(!R){ $("headline").textContent=""; $("alerts").innerHTML=`<div class="empty">Pick a drug and read its reviews to see the alerts.</div>`; $("knownBox").hidden=true; renderAgg(); return; }
+  const rows=tally(R.list,R.per);
+  const withE=R.list.filter(r=>(R.per.get(r.id)||[]).length).length;
+  const alerts=rows.filter(r=>!r.listed), listed=rows.filter(r=>r.listed);
+  const engine=R.engine==="ai"?"The AI agent":"A keyword search";
+  $("headline").innerHTML=`${engine} read <b>${R.list.length.toLocaleString("en")} reviews</b> of ${esc(S.drug)}. <b>${pct(withE,R.list.length)}%</b> of patients describe at least one side effect, and <b>${alerts.length} ${alerts.length===1?"is":"are"}</b> not in the leaflet.`;
+  const ref=listed[0];
+  $("alerts").innerHTML = alerts.length ? alerts.slice(0,6).map((r,i)=>`
+    <article class="acard" style="animation-delay:${i*0.12}s">
+      <div><span class="atag"><i></i>Alert · not in the leaflet</span>
+        <h3>${esc(cap1(r.effect))}</h3><p class="desc">${esc(DESC[r.effect]||"Described by patients in their own words.")}</p>
+        <div class="qs">${r.revs.slice(0,3).map(v=>`<div class="q"><div>${quoteFor(v.text,r.effect)}<small>${v.rating?`Rating ${v.rating}/10 · `:""}review #${esc(v.id)}</small></div></div>`).join("")}</div></div>
+      <div class="stats">
+        <div class="stat"><div class="v">${r.count}<small> / ${R.list.length}</small></div><div class="k">patients mention it</div></div>
+        <div class="stat"><div class="v">${pct(r.count,R.list.length)}%</div><div class="k">of the reviews read</div></div>
+        ${ref?`<div class="cmpbars"><div class="cb"><span>${esc(cap1(r.effect))} · ${pct(r.count,R.list.length)}%</span><div class="tr"><span data-w="${pct(r.count,R.list.length)}"></span></div></div>
+        <div class="cb ref"><span>Most reported leaflet effect (${esc(ref.effect)}) · ${pct(ref.count,R.list.length)}%</span><div class="tr"><span data-w="${pct(ref.count,R.list.length)}"></span></div></div></div>`:""}
+      </div></article>`).join("") : `<div class="noalert">No alert. Every side effect patients mention is already in the leaflet.</div>`;
+  $("knownBox").hidden=!listed.length;
+  const max=Math.max(1,...listed.map(r=>r.count));
+  $("kgrid").innerHTML=listed.map(r=>`<div class="kr"><b>${esc(cap1(r.effect))}</b><span class="n">${r.count}</span><div class="tr"><span style="width:${(100*r.count/max).toFixed(0)}%"></span></div></div>`).join("");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll(".cb .tr span").forEach(s=>s.style.width=Math.max(2,s.dataset.w)+"%")));
+  renderAgg();
+}
+
+/* ---------- Why AI: live tester ---------- */
+function renderAgg(){
+  const R=S.result;
+  if(!R||R.engine!=="ai"||!S.kw){ $("agg").innerHTML=S.sample?"Read a drug’s reviews with the AI agent to see how many mistakes a keyword search makes on them.":""; return; }
+  let fp=0,fn=0;
+  for(const r of R.list){ const a=new Set(R.per.get(r.id)||[]), k=new Set(S.kw.get(r.id)||[]); for(const e of k) if(!a.has(e)) fp++; for(const e of a) if(!k.has(e)) fn++; }
+  $("agg").innerHTML=`On the ${R.list.length} ${esc(S.drug)} reviews, a keyword search raised <b>${fp} false alarm${fp===1?"":"s"}</b> and missed <b>${fn} real side effect${fn===1?"":"s"}</b>.`;
+}
+function whyNot(text,eff){
+  const m=text.match(LEX[eff]); if(!m) return "";
+  const before=text.slice(Math.max(0,m.index-28),m.index).toLowerCase();
+  if(/\b(no|zero|not|never|without)\b[^.]*$/.test(before)) return "denied by the patient";
+  if(/(afraid|scared|worried|fear)/.test(text.toLowerCase())) return "feared, not felt";
+  if(/better|gone/.test(text.slice(m.index,m.index+40).toLowerCase())) return "it improved";
+  return "not a side effect here";
+}
+let tryCtl=null;
+async function tryIt(){
+  const text=$("tryText").value.trim(); if(!text) return;
+  const kw=VOCAB.filter(k=>LEX[k].test(text));
+  $("kwN").innerHTML=`${kw.length} <small>effect${kw.length===1?"":"s"} found</small>`;
+  $("kwList").innerHTML=kw.map(k=>`<li>${esc(k)}</li>`).join("")||"<li>Nothing found.</li>";
+  if(!S.sample){ $("aiN").textContent="–"; $("aiList").innerHTML="<li>Turn on the AI agent to compare. Open the app in Claude or add an API key in Data and settings.</li>"; return; }
+  tryCtl?.abort(); tryCtl=new AbortController();
+  $("aiN").textContent="…"; $("aiList").innerHTML="<li>Reading…</li>"; $("tryBtn").disabled=true;
+  try{
+    const out=await S.sample.json(aiPrompt([{id:"live",text}],S.drug||"the drug"),{modelTier:"quick",signal:tryCtl.signal});
+    const o=(Array.isArray(out)?out:[]).find(x=>String(x.id)==="live")||(Array.isArray(out)?out[0]:null)||{effects:[]};
+    const ai=[...new Set((o.effects||[]).map(canon).filter(Boolean))];
+    $("aiN").innerHTML=`${ai.length} <small>real effect${ai.length===1?"":"s"}</small>`;
+    const items=ai.map(e=>`<li class="yes">${esc(e)}</li>`).concat(kw.filter(k=>!ai.includes(k)).map(k=>`<li class="no">${esc(k)} <span class="why">${esc(whyNot(text,k))}</span></li>`));
+    $("aiList").innerHTML=items.join("")||"<li>No side effect described.</li>";
+  }catch(e){ if(e&&e.code!=="cancelled"){ $("aiN").textContent="–"; $("aiList").innerHTML=`<li>${esc(runError(e))}</li>`; } }
+  finally{ $("tryBtn").disabled=false; }
+}
+$("tryBtn").onclick=tryIt;
+document.querySelectorAll(".ex").forEach(b=>b.onclick=()=>{ $("tryText").value=b.dataset.ex; tryIt(); });
+
+/* ---------- Agent ---------- */
+function clearAgent(){ $("thread").innerHTML=""; }
+function resetAgent(){
+  const ok=!!(S.sample&&S.result&&S.result.engine==="ai");
+  $("ask").disabled=!ok;
+  $("askStatus").textContent=ok?`The agent knows the ${S.drug} results. Pick a question or type your own.`:(S.sample?"Read the reviews with the AI agent first.":"The agent needs the AI. Open the app in Claude, or add an API key in Data and settings.");
+}
+function summary(){
+  const R=S.result, rows=tally(R.list,R.per);
+  return {drug:S.drug, demo_data:S.isDemo, engine:R.engine, reviews_analysed:R.list.length, leaflet_effects:[...S.known],
+    effects:rows.map(r=>({effect:r.effect,reviews:r.count,share_percent:pct(r.count,R.list.length),in_leaflet:r.listed}))};
+}
+function md(t){ return esc(t).split(/\n{2,}/).map(p=>"<p>"+p.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\n/g,"<br>")+"</p>").join(""); }
+async function ask(question){
+  if(!question.trim()||!S.sample||!S.result) return;
+  S.askCtl=new AbortController();
+  $("ask").disabled=true; $("stopAsk").hidden=false; $("q").value="";
+  const me=document.createElement("div"); me.className="bub me"; me.textContent=question;
+  const ag=document.createElement("div"); ag.className="bub ag"; ag.innerHTML='<div class="steps"></div><div class="txt"><p class="muted">Thinking…</p></div>';
+  $("thread").append(me,ag); ag.scrollIntoView({block:"nearest"});
+  const steps=ag.querySelector(".steps"), out=ag.querySelector(".txt");
+  $("askStatus").textContent="The agent is working…";
+  const step=t=>{ const s=document.createElement("span"); s.textContent=t; steps.append(s); };
+  const tools=[
+    {name:"get_signal_summary",description:"Returns the current analysis: drug, number of reviews analysed, the leaflet's known effects, and every detected effect with its number of reviews, share and whether it is in the leaflet.",
+     execute:()=>{ step("Read the alerts"); return summary(); }},
+    {name:"get_reviews_for_effect",description:"Returns up to 8 patient reviews (id, rating, text) in which the given side effect was detected. Use it to quote or describe what patients say.",
+     inputSchema:{type:"object",properties:{effect:{type:"string"},limit:{type:"number"}},required:["effect"]},
+     execute:(inp)=>{ const eff=canon(inp.effect); const lim=Math.min(8,Math.max(1,Number(inp.limit)||6));
+       const revs=S.result.list.filter(r=>(S.result.per.get(r.id)||[]).includes(eff)).slice(0,lim);
+       step(`Read ${revs.length} review${revs.length===1?"":"s"} on ${eff}`);
+       return revs.map(r=>({id:r.id,rating:r.rating,text:r.text.slice(0,600)})); }}
+  ];
+  const RULES=`You are the Vigi-Track pharmacovigilance agent. You help a drug safety team read weak signals found in patient reviews.
+Use your tools to read the analysis results and the reviews behind a signal before you answer. Only use this data.
+Be factual and short (under 220 words). Patient reviews are unverified and cannot prove the drug caused an effect: say so when you recommend action, and recommend checking official sources (EudraVigilance, ANSM, FDA FAERS). Never give medical advice to patients.
+${S.isDemo?"The data is a demo sample with fictional drug names. Mention it once.":""}
+Write plain text in short paragraphs. You may use **bold** and numbered lines. No headings with #.`;
+  try{
+    await S.sample([{role:"user",content:RULES},{role:"user",content:`Drug: ${S.drug}. Question: ${question}`}],
+      {tools,signal:S.askCtl.signal,onText:({text})=>{ out.innerHTML=md(text); }});
+    $("askStatus").textContent="Done. Ask a follow-up question or pick another drug.";
+  }catch(e){
+    const c=e&&e.code;
+    if(e&&e.text) out.innerHTML=md(e.text); else out.innerHTML=`<p class="muted">${c==="cancelled"?"Stopped.":"No answer."}</p>`;
+    $("askStatus").textContent = c==="cancelled"?"Stopped.":c==="not_granted"?"Claude was not allowed for this page.":c==="rate_limited"?"Too many requests. Try again in a minute.":c==="tools_unavailable"?"This Claude app cannot run the agent’s tools yet.":"The agent could not answer. Try again.";
+  }finally{ $("ask").disabled=false; $("stopAsk").hidden=true; }
+}
+$("ask").onclick=()=>ask($("q").value);
+$("q").onkeydown=e=>{ if(e.key==="Enter"&&!$("ask").disabled){ e.preventDefault(); ask($("q").value); } };
+$("stopAsk").onclick=()=>S.askCtl?.abort();
+document.querySelectorAll("#suggs button").forEach(b=>b.onclick=()=>{ if(!$("ask").disabled) ask(b.dataset.q); else $("askStatus").textContent="Read the reviews with the AI agent first, then ask."; });
+
+/* Open in a working state */
+setReviews(DEMO.map(r=>({...r})), true); autoRun();
+(()=>{ const t=$("tryText").value; const kw=VOCAB.filter(k=>LEX[k].test(t)); $("kwN").innerHTML=`${kw.length} <small>effects found</small>`; $("kwList").innerHTML=kw.map(k=>`<li>${esc(k)}</li>`).join(""); })();
+</script>
+</body></html>
