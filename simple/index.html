@@ -157,6 +157,36 @@ textarea{width:100%;min-height:96px;resize:vertical}
 .msg{font-weight:600;font-size:14.5px}
 .msg.err{color:var(--alert)}
 
+/* ---------- Why AI (dark band, copied from the full app) ---------- */
+:root{--night:#111218; --night2:#1B1C24; --night-ink:#F2F3F7; --night-muted:#A3A6B4; --night-line:#2C2E39}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--night:#07080B; --night2:#13141A; --night-line:#262833}}
+.night{background:var(--night);color:var(--night-ink);margin-top:30px;padding-block:56px}
+.night h2{font-size:clamp(30px,4vw,50px);line-height:1.02;margin-top:10px}
+.night p{color:var(--night-muted);max-width:60ch}
+.night .eyebrow{color:#9FA9FF}
+.tester{display:grid;gap:14px;margin-top:22px}
+.tester textarea{background:var(--night2);color:var(--night-ink);border:1.5px solid var(--night-line);border-radius:12px;padding:10px 12px;font-family:var(--serif);font-style:italic;font-size:19px;min-height:78px;width:100%;resize:vertical}
+.tester .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.tester .btn{background:var(--night-ink);color:var(--night)}
+.ex{background:var(--night2);color:var(--night-muted);border:1px solid var(--night-line);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.res{border-radius:20px;padding:18px 20px;display:grid;gap:10px;align-content:start;min-width:0}
+.res.kw{background:var(--night2);border:1px solid var(--night-line)}
+.res.ai{background:#FFFFFF;color:#0F1016}
+.res .who{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.res .big{font-family:var(--display);font-size:46px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.res .big small{font-size:17px;font-weight:600;opacity:.7}
+.res ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:15px}
+.res li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.res li .why{font-size:12.5px;opacity:.65}
+.res.ai li.no{color:#9095A3;text-decoration:line-through}
+.res.ai li.yes::before{content:"✓";color:#1E9E6A;font-weight:800}
+.res.kw li::before{content:"•";color:#9FA9FF}
+.res .src{font-size:12px;color:#646875}
+.keyline{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--night-muted)}
+.keyline input{background:var(--night2);color:var(--night-ink);border:1.5px solid var(--night-line);border-radius:999px;padding:7px 13px;font-size:13px;min-width:0;flex:1;max-width:340px}
+@media (max-width:700px){.duo{grid-template-columns:1fr}}
+
 footer{padding-block:34px 46px;color:var(--muted);font-size:13px;text-align:center}
 footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
 
@@ -248,6 +278,27 @@ footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
           <span class="msg" id="msg" role="status"></span>
         </div>
       </form>
+    </div>
+  </div></section>
+  <!-- ============ 4. Why AI (from the full app) ============ -->
+  <section class="night" id="why"><div class="in">
+    <div class="eyebrow">Why AI</div>
+    <h2>Why an AI, and not a keyword search?</h2>
+    <p>A patient writes “no nausea at all”. A keyword search counts nausea. An AI reads the whole sentence and understands it means the opposite. Try it with any review.</p>
+    <div class="tester">
+      <textarea id="tryText" aria-label="Review to test">No headache at all, but since I started this I have nightmares every night. My cough is much better.</textarea>
+      <div class="bar"><button class="btn" id="tryBtn">Compare</button>
+        <button class="ex" data-ex="0">Example 1</button>
+        <button class="ex" data-ex="1">Example 2</button>
+        <button class="ex" data-ex="2">Example 3</button></div>
+      <div class="duo">
+        <div class="res kw"><div class="who">Keyword search</div><div class="big" id="kwN">0 <small>effects found</small></div><ul id="kwList"></ul></div>
+        <div class="res ai"><div class="who">Vigi-Track AI</div><div class="big" id="aiN">–</div><ul id="aiList"><li>Click Compare.</li></ul><div class="src" id="aiSrc"></div></div>
+      </div>
+      <div class="keyline" id="keyLine">
+        <span>The 3 examples work as is. To test your own sentence, add an Anthropic API key (it stays in this tab):</span>
+        <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" aria-label="Anthropic API key">
+      </div>
     </div>
   </div></section>
 </main>
@@ -541,6 +592,80 @@ $("form").addEventListener("submit", async e => {
   justSent = report;
   location.hash = encodeURIComponent(drug.name);  /* back to Read, which reloads the reports */
 });
+
+/* ---------- 5. Why AI: keyword search vs AI on one sentence ---------- */
+/* The 3 examples come with the AI answer computed in advance, so they work without a key. */
+const EXAMPLES = [
+  { text: "No headache at all, but since I started this I have nightmares every night. My cough is much better.", ai: ["abnormal dreams"] },
+  { text: "I was scared of weight gain, but nothing so far. My heart is doing flips a few times a day though.", ai: ["palpitations"] },
+  { text: "Zero dizziness and no rash. I just feel exhausted and my calves hurt when I walk.", ai: ["fatigue", "muscle pain"] }
+];
+/* Same prompt as the full app */
+function aiPrompt(text){
+  return `You are a pharmacovigilance assistant reading patient reviews of the drug "the drug".
+For each review, list the side effects the patient says they actually experienced while taking this drug.
+Rules:
+- Ignore effects the patient denies ("no nausea"), only fears, or did not have.
+- Ignore symptoms of the illness being treated, and the effect the drug is taken for (for example weight loss with a weight loss pill), unless the patient blames the drug.
+- Use short lowercase medical terms. Use one of these terms when it fits: ${VOCAB.join(", ")}. Otherwise write a short standard term (for example "chest pain").
+- An empty list is fine.
+Reply with only a JSON array, one object per review, like [{"id":"r1","effects":["nausea"]}].
+
+Reviews:
+[live] ${text.slice(0, 900)}`;
+}
+/* Why the AI dropped a word the keyword search found */
+function whyNot(text, eff){
+  const m = text.match(LEX[eff]); if (!m) return "";
+  const before = text.slice(Math.max(0, m.index - 28), m.index).toLowerCase();
+  if (/\b(no|zero|not|never|without)\b[^.]*$/.test(before)) return "denied by the patient";
+  if (/(afraid|scared|worried|fear)/.test(text.toLowerCase())) return "feared, not felt";
+  if (/better|gone/.test(text.slice(m.index, m.index + 40).toLowerCase())) return "it improved";
+  return "not a side effect here";
+}
+/* Ask Claude: inside claude.ai the page can use Claude directly, elsewhere it needs an API key */
+let claudeSample = null;
+(async () => { try { claudeSample = window.claude ? await window.claude.use("sample") : null; } catch(e){} if (claudeSample) $("keyLine").hidden = true; })();
+async function askAI(text){
+  const prompt = aiPrompt(text);
+  let answer;
+  if (claudeSample){ const r = await claudeSample(prompt); answer = r.text || String(r); }
+  else {
+    const key = $("apiKey").value.trim();
+    if (!key) throw new Error("Add an Anthropic API key below to test your own sentence.");
+    const r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST",
+      headers: { "content-type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+      body: JSON.stringify({ model: "claude-haiku-5-5", max_tokens: 500, messages: [{ role: "user", content: prompt }] }) });
+    if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? "The API key was refused." : "The AI did not answer (" + r.status + "). Try again.");
+    answer = (await r.json()).content.filter(c => c.type === "text").map(c => c.text).join("");
+  }
+  const raw = answer.slice(answer.indexOf("["), answer.lastIndexOf("]") + 1);
+  const out = JSON.parse(raw);
+  return [...new Set(((out[0] && out[0].effects) || []).map(canonical).filter(Boolean))];
+}
+async function tryIt(){
+  const text = $("tryText").value.trim(); if (!text) return;
+  const kw = VOCAB.filter(k => LEX[k].test(text));
+  $("kwN").innerHTML = `${kw.length} <small>effect${kw.length === 1 ? "" : "s"} found</small>`;
+  $("kwList").innerHTML = kw.map(k => `<li>${esc(k)}</li>`).join("") || "<li>Nothing found.</li>";
+  const ex = EXAMPLES.find(e => e.text === text);
+  let ai;
+  $("aiSrc").textContent = "";
+  if (ex){ ai = ex.ai; $("aiSrc").textContent = "AI answer computed in advance for this example."; }
+  else {
+    $("aiN").textContent = "…"; $("aiList").innerHTML = "<li>Reading…</li>"; $("tryBtn").disabled = true;
+    try { ai = await askAI(text); }
+    catch(e){ $("aiN").textContent = "–"; $("aiList").innerHTML = `<li>${esc(e.message || "The AI answer could not be read. Try again.")}</li>`; return; }
+    finally { $("tryBtn").disabled = false; }
+  }
+  $("aiN").innerHTML = `${ai.length} <small>real effect${ai.length === 1 ? "" : "s"}</small>`;
+  const items = ai.map(e => `<li class="yes">${esc(e)}</li>`)
+    .concat(kw.filter(k => !ai.includes(k)).map(k => `<li class="no">${esc(k)} <span class="why">${esc(whyNot(text, k))}</span></li>`));
+  $("aiList").innerHTML = items.join("") || "<li>No side effect described.</li>";
+}
+$("tryBtn").onclick = tryIt;
+document.querySelectorAll(".ex").forEach(b => b.onclick = () => { $("tryText").value = EXAMPLES[+b.dataset.ex].text; tryIt(); });
+tryIt();
 
 /* ---------- Start ---------- */
 updateDataLine();
