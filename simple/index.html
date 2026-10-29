@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vigi-Track</title>
+<meta name="description" content="Read the side effects patients report for a drug, or report your own.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* ---------- Colours (light, then dark) ---------- */
+:root{
+  --bg:#F3F4F6; --surface:#FFFFFF; --soft:#EEF0F4; --ink:#12131A; --muted:#626777; --line:#DDE0E6;
+  --accent:#3247F5; --accent-ink:#FFFFFF; --accent-soft:#E7EAFF;
+  --flag:#C7362F; --flag-soft:#FCE8E6; --ok:#1E8A5E; --ok-soft:#E2F4EB;
+  --display:"Bricolage Grotesque","Arial Black",Arial,sans-serif;
+  --sans:"Instrument Sans","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(18,19,26,.05),0 6px 20px rgba(18,19,26,.06);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1015; --surface:#181A21; --soft:#21232C; --ink:#F1F2F6; --muted:#A2A6B4; --line:#2D303B;
+  --accent:#8592FF; --accent-ink:#0F1015; --accent-soft:#252A52;
+  --flag:#FF7A72; --flag-soft:#3A1F1E; --ok:#55D39C; --ok-soft:#173427;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.3); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0F1015; --surface:#181A21; --soft:#21232C; --ink:#F1F2F6; --muted:#A2A6B4; --line:#2D303B;
+  --accent:#8592FF; --accent-ink:#0F1015; --accent-soft:#252A52;
+  --flag:#FF7A72; --flag-soft:#3A1F1E; --ok:#55D39C; --ok-soft:#173427;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.3); color-scheme:dark;
+}
+
+/* ---------- Base ---------- */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans)}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+h1,h2{font-family:var(--display);font-weight:800;letter-spacing:-.025em;margin:0;line-height:1.05}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px}
+.muted{color:var(--muted)}
+[hidden]{display:none!important}
+
+/* ---------- Top band ---------- */
+.hero{background:var(--surface);border-bottom:1px solid var(--line);padding:22px 0 30px}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:26px}
+.logo{white-space:nowrap;display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.03em;text-decoration:none;color:inherit}
+.logo svg{width:26px;height:26px}
+.mode{font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
+.mode.live{background:var(--ok-soft);color:var(--ok)}
+.hero h1{font-size:clamp(32px,6vw,50px)}
+/* Once a drug is open, the top band shrinks to the search only */
+body.ondrug .hero h1,body.ondrug .hero > .wrap > p{display:none}
+body.ondrug .hero{padding-bottom:20px}
+body.ondrug .brand{margin-bottom:16px}
+@media (max-width:520px){.mode .long{display:none}}
+.showall{margin-top:10px;width:100%}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{font-size:17px;color:var(--muted);margin:12px 0 22px;max-width:52ch}
+
+/* ---------- Search ---------- */
+.search{position:relative}
+.search input{width:100%;font-size:18px;padding:15px 18px 15px 48px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg)}
+.search input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 4px var(--accent-soft)}
+.search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted)}
+.suggest{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);list-style:none;margin:0;padding:6px;z-index:5;max-height:330px;overflow:auto}
+.suggest li{padding:10px 12px;border-radius:9px;cursor:pointer;display:flex;justify-content:space-between;gap:12px}
+.suggest li small{color:var(--muted)}
+.suggest li.on,.suggest li:hover{background:var(--accent-soft)}
+.popular{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center;font-size:14px}
+.popular button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-weight:600;font-size:14px}
+.popular button:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ---------- Drug page ---------- */
+main{padding:26px 0 50px}
+.drughead{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.drughead h2{font-size:clamp(30px,5vw,42px)}
+.drughead .cls{color:var(--muted);font-weight:600;margin-top:4px}
+.back{background:none;border:0;color:var(--accent);font-weight:700;padding:0}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);border-radius:14px;padding:5px;margin-bottom:18px}
+.tabs button{border:0;background:none;border-radius:10px;padding:11px;font-weight:700;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:18px}
+
+/* Read */
+.summary{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px;font-size:14.5px}
+.switch{display:inline-flex;gap:8px;align-items:center;font-weight:600;cursor:pointer}
+.switch input{width:18px;height:18px;accent-color:var(--accent)}
+.list{display:grid;gap:8px}
+.row{border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.row > button{width:100%;text-align:left;background:none;border:0;padding:13px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center}
+.row .nm{font-weight:700;font-size:16.5px}
+.row .nm::first-letter{text-transform:uppercase}
+.row .n{font-variant-numeric:tabular-nums;font-size:13.5px;color:var(--muted);text-align:right;white-space:nowrap}
+.row .bar{grid-column:1/-1;height:6px;border-radius:99px;background:var(--soft);overflow:hidden;display:flex}
+.row .bar i{display:block;height:100%}
+.row .bar .u{background:var(--accent)}
+.row .bar .r{background:color-mix(in srgb,var(--accent) 35%,transparent)}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+.tag.flag{background:var(--flag-soft);color:var(--flag)}
+.tag.in{background:var(--soft);color:var(--muted)}
+.more{padding:0 14px 14px;display:grid;gap:8px;font-size:14.5px}
+.more .desc{color:var(--muted)}
+.quote{border-left:3px solid var(--line);padding:2px 0 2px 11px}
+.quote small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.empty{text-align:center;padding:26px 10px;color:var(--muted)}
+.foot{font-size:12.5px;color:var(--muted);margin-top:16px;display:grid;gap:6px}
+
+/* Report */
+.form{display:grid;gap:20px}
+.form h3{margin:0 0 4px;font-size:17px}
+.form .hint{font-size:13.5px;color:var(--muted);margin:0 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{position:relative;display:inline-flex;align-items:center;border-radius:999px;padding:7px 13px;font-size:14px;font-weight:600;cursor:pointer;background:var(--soft);color:var(--ink);user-select:none}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip:has(input:checked){background:var(--accent);color:var(--accent-ink)}
+.chip:has(input:checked)::before{content:"✓";margin-right:6px;font-size:12px}
+.chip:has(input:focus-visible){outline:2.5px solid var(--accent);outline-offset:2px}
+.other{display:flex;gap:8px;margin-top:10px}
+.other input,textarea{flex:1;min-width:0;border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;font-size:15px}
+textarea{width:100%;min-height:90px;resize:vertical}
+.btn{border:0;border-radius:999px;padding:12px 22px;font-weight:700;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:var(--soft);color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.send{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.warn{font-size:13px;color:var(--muted);background:var(--soft);border-radius:12px;padding:10px 12px}
+.msg{font-weight:600;font-size:14.5px}
+.msg.err{color:var(--flag)} .msg.ok{color:var(--ok)}
+.flash{animation:flash 1.6s ease}
+@keyframes flash{0%,40%{background:var(--accent-soft)}100%{background:var(--surface)}}
+
+/* Home: what is inside */
+.intro{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.intro .card h3{margin:0 0 6px;font-size:16px}
+.intro .card p{margin:0;font-size:14.5px;color:var(--muted)}
+footer{font-size:12.5px;color:var(--muted);padding:0 0 30px}
+</style>
+</head>
+<body>
+
+<!-- ============ 1. Top band: what it is + search ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">
+      <a class="logo" href="#" aria-label="Vigi-Track home">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#3247F5"/><path d="M8 17h4l2.5-6 4 11 2.5-5H25" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Vigi-Track
+      </a>
+      <span class="mode" id="mode"></span>
+    </div>
+    <h1>What do people <em>really</em> feel on their medication?</h1>
+    <p>Look up a drug. Read the side effects people report, or report your own. No account, 30 seconds.</p>
+    <div class="search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="text" placeholder="Search a drug, e.g. Sertraline" autocomplete="off"
+             role="combobox" aria-expanded="false" aria-controls="suggest" aria-label="Search a drug">
+      <ul class="suggest" id="suggest" role="listbox" hidden></ul>
+    </div>
+    <div class="popular" id="popular"><span class="muted">Popular:</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ Home (no drug chosen yet) ============ -->
+  <section id="home">
+    <div class="intro">
+      <div class="card"><h3>Read</h3><p>See which side effects come up most for a drug, and which ones the official leaflet does not mention.</p></div>
+      <div class="card"><h3>Report</h3><p>Tick what you felt while taking it. Your report is added for everyone to read, without your name.</p></div>
+      <div class="card"><h3>Where it comes from</h3><p>Reports from people using Vigi-Track, plus 5,550 public patient reviews from Drugs.com for 37 drugs.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 2. Drug page ============ -->
+  <section id="drug" hidden>
+    <div class="drughead">
+      <div><h2 id="dName"></h2><div class="cls" id="dCls"></div></div>
+      <button class="back" id="back">← Search another drug</button>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tabRead" aria-selected="true" aria-controls="read">Read symptoms</button>
+      <button role="tab" id="tabReport" aria-selected="false" aria-controls="report">Report a symptom</button>
+    </div>
+
+    <!-- 2a. Read -->
+    <div id="read" role="tabpanel" class="card">
+      <div class="summary">
+        <span id="sum" class="muted"></span>
+        <label class="switch"><input type="checkbox" id="onlyNew"> Only not in the leaflet</label>
+      </div>
+      <div class="list" id="list"></div>
+      <div class="legend">
+        <span><i style="background:var(--accent)"></i>Reported on Vigi-Track</span>
+        <span><i style="background:color-mix(in srgb,var(--accent) 35%,transparent)"></i>Mentioned in Drugs.com reviews</span>
+      </div>
+      <div class="foot" id="foot"></div>
+    </div>
+
+    <!-- 2b. Report -->
+    <div id="report" role="tabpanel" class="card" hidden>
+      <form class="form" id="form">
+        <div>
+          <h3>What did you feel while taking <span class="dn"></span>?</h3>
+          <p class="hint">Tick everything that applies.</p>
+          <div class="chips" id="chips"></div>
+          <div class="other">
+            <input type="text" id="otherIn" maxlength="40" placeholder="Something else? e.g. chest pain">
+            <button type="button" class="btn ghost" id="otherAdd">Add</button>
+          </div>
+        </div>
+        <div>
+          <h3>Anything to add? <span class="muted" style="font-weight:500">(optional)</span></h3>
+          <p class="hint">When it started, how strong it was, if it went away…</p>
+          <textarea id="note" maxlength="500" placeholder="It started after two weeks and faded after a month."></textarea>
+        </div>
+        <p class="warn">Please do not write your name, email or phone number. For a serious effect, talk to your doctor or pharmacist, and report it to your national drug agency (in France: signalement-sante.gouv.fr).</p>
+        <div class="send">
+          <button class="btn" id="sendBtn" type="submit" disabled>Send my report</button>
+          <span class="msg" id="msg" role="status"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  Student project, ESSEC. Not medical advice: a report is a personal experience, not proof that the drug caused it.
+</footer>
+
+<script src="config.js"></script>
+<script src="vocab.js"></script>
+<script src="seed.js"></script>
+<script>
+/* =====================================================================
+   Vigi-Track Simple
+   1. Storage: Supabase if config.js is filled in, otherwise this browser
+   2. Data: build the list of drugs and count symptoms
+   3. Search
+   4. Drug page: Read and Report tabs
+   ===================================================================== */
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const SEED = window.VT_SEED.drugs;
+
+/* ---------- 1. Storage ---------- */
+const CFG = window.VT_CONFIG || {};
+const LIVE = Boolean(CFG.supabaseUrl && CFG.supabaseKey);
+
+const store = LIVE ? {
+  /* Supabase: every table gets a REST address, /rest/v1/<table> */
+  headers(){
+    const h = { apikey: CFG.supabaseKey, "Content-Type": "application/json" };
+    if (!CFG.supabaseKey.startsWith("sb_")) h.Authorization = "Bearer " + CFG.supabaseKey; /* legacy anon key */
+    return h;
+  },
+  url(q){ return CFG.supabaseUrl.replace(/\/$/, "") + "/rest/v1/reports" + q; },
+  async list(drug){
+    const r = await fetch(this.url("?select=symptoms,note,created_at&order=created_at.desc&limit=1000&drug=eq." + encodeURIComponent(drug)), { headers: this.headers() });
+    if (!r.ok) throw new Error("Could not load reports (" + r.status + ")");
+    return r.json();
+  },
+  async drugNames(){
+    const r = await fetch(this.url("?select=drug&limit=5000"), { headers: this.headers() });
+    if (!r.ok) return [];
+    return (await r.json()).map(x => x.drug);
+  },
+  async add(report){
+    const r = await fetch(this.url(""), { method: "POST", headers: { ...this.headers(), Prefer: "return=minimal" }, body: JSON.stringify(report) });
+    if (!r.ok) throw new Error("Could not save your report (" + r.status + ")");
+  }
+} : {
+  /* Demo: reports are kept in this browser only (localStorage) */
+  all(){ try { return JSON.parse(localStorage.getItem("vt_reports") || "[]"); } catch(e){ return this.mem || []; } },
+  async list(drug){ return this.all().filter(x => x.drug === drug).reverse(); },
+  async drugNames(){ return this.all().map(x => x.drug); },
+  async add(report){
+    const all = this.all(); all.push({ ...report, created_at: new Date().toISOString() });
+    this.mem = all;
+    try { localStorage.setItem("vt_reports", JSON.stringify(all)); } catch(e){}
+  }
+};
+
+$("mode").innerHTML = LIVE ? "Shared database" : "Demo mode<span class=\"long\">: reports stay in this browser</span>";
+$("mode").classList.toggle("live", LIVE);
+
+/* ---------- 2. Data ---------- */
+let DRUGS = SEED.map(d => ({ ...d, key: d.name.toLowerCase() }));
+
+function findDrug(name){
+  const k = name.trim().toLowerCase();
+  return DRUGS.find(d => d.key === k);
+}
+/* A drug someone reported that is not in the Drugs.com data */
+function addDrug(name){
+  name = name.trim().replace(/\s+/g, " ").slice(0, 80);
+  let d = findDrug(name);
+  if (!d){ d = { name, cls: "Added by a user", reviews: 0, leaflet: null, skipped: [], symptoms: {}, key: name.toLowerCase() }; DRUGS.push(d); }
+  return d;
+}
+
+/* Merge Drugs.com mentions and user reports into one list of symptoms */
+function countSymptoms(drug, reports){
+  const map = new Map();
+  const get = name => map.get(name) || map.set(name, { name, users: 0, reviews: 0, quotes: [], notes: [] }).get(name);
+  for (const [name, s] of Object.entries(drug.symptoms)){ const x = get(name); x.reviews = s.n; x.quotes = s.quotes; }
+  for (const rep of reports){
+    for (const name of rep.symptoms){
+      const x = get(String(name).toLowerCase());
+      x.users++;
+      if (rep.note && x.notes.length < 3) x.notes.push(rep);
+    }
+  }
+  return [...map.values()].sort((a, b) => (b.users * 3 + b.reviews) - (a.users * 3 + a.reviews));
+}
+
+/* ---------- 3. Search ---------- */
+const q = $("q"), sug = $("suggest");
+let hits = [], cur = -1;
+
+function showSuggest(){
+  const t = q.value.trim().toLowerCase();
+  if (!t){ sug.hidden = true; q.setAttribute("aria-expanded", "false"); return; }
+  hits = DRUGS.filter(d => d.key.includes(t) || d.cls.toLowerCase().includes(t))
+              .sort((a, b) => a.key.indexOf(t) - b.key.indexOf(t) || b.reviews - a.reviews).slice(0, 8);
+  const exact = findDrug(t);
+  let html = hits.map((d, i) => `<li role="option" data-i="${i}"><span>${esc(d.name)}</span><small>${esc(d.cls)}</small></li>`).join("");
+  if (!hits.length && !exact) html += `<li role="option" data-new="1"><span>Report for “${esc(q.value.trim())}”</span><small>Not in the list</small></li>`;
+  sug.innerHTML = html; cur = -1;
+  sug.hidden = false; q.setAttribute("aria-expanded", "true");
+}
+function pick(li){
+  if (!li) return;
+  const d = li.dataset.new ? addDrug(q.value) : hits[+li.dataset.i];
+  q.value = ""; sug.hidden = true;
+  location.hash = encodeURIComponent(d.name) + (li.dataset.new ? "/report" : "");
+}
+q.addEventListener("input", showSuggest);
+q.addEventListener("keydown", e => {
+  const items = [...sug.querySelectorAll("li")];
+  if (e.key === "ArrowDown" || e.key === "ArrowUp"){
+    e.preventDefault();
+    cur = (cur + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+    items.forEach((li, i) => li.classList.toggle("on", i === cur));
+  } else if (e.key === "Enter"){ pick(items[cur] || items[0]); }
+  else if (e.key === "Escape"){ sug.hidden = true; }
+});
+sug.addEventListener("mousedown", e => { e.preventDefault(); pick(e.target.closest("li")); });
+q.addEventListener("blur", () => setTimeout(() => sug.hidden = true, 100));
+
+for (const name of ["Sertraline", "Mirena", "Phentermine", "Zolpidem", "Isotretinoin", "Varenicline"]){
+  const b = document.createElement("button");
+  b.textContent = name;
+  b.onclick = () => location.hash = encodeURIComponent(name);
+  $("popular").append(b);
+}
+
+/* ---------- 4. Drug page ---------- */
+let drug = null, reports = [], openRow = null, showAll = false, picked = new Set(), justSent = null;
+
+/* The address bar keeps the page: #Sertraline (Read) or #Sertraline/report */
+async function route(){
+  const [name, tab] = decodeURIComponent(location.hash.slice(1)).split("/");
+  document.body.classList.toggle("ondrug", Boolean(name));
+  if (!name){ $("home").hidden = false; $("drug").hidden = true; drug = null; document.title = "Vigi-Track"; return; }
+  const changed = !drug || drug.name.toLowerCase() !== name.toLowerCase();
+  drug = findDrug(name) || addDrug(name);
+  $("home").hidden = true; $("drug").hidden = false;
+  $("dName").textContent = drug.name; $("dCls").textContent = drug.cls;
+  document.querySelectorAll(".dn").forEach(e => e.textContent = drug.name);
+  document.title = drug.name + " · Vigi-Track";
+  showTab(tab === "report" ? "report" : "read");
+  if (changed){ openRow = null; showAll = false; window.scrollTo({ top: $("drug").offsetTop - 10, behavior: "smooth" }); }
+  await loadReports();
+}
+window.addEventListener("hashchange", route);
+
+async function loadReports(){
+  $("list").innerHTML = `<div class="empty">Loading…</div>`;
+  try { reports = await store.list(drug.name); }
+  catch(e){ reports = []; $("list").innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+  renderRead(justSent && justSent.symptoms[0]); renderChips();
+  if (justSent){ $("sum").textContent = "Thank you, your report was added. " + $("sum").textContent; justSent = null; }
+}
+
+function showTab(which){
+  $("tabRead").setAttribute("aria-selected", which === "read");
+  $("tabReport").setAttribute("aria-selected", which === "report");
+  $("read").hidden = which !== "read";
+  $("report").hidden = which !== "report";
+}
+$("tabRead").onclick = () => location.hash = encodeURIComponent(drug.name);
+$("tabReport").onclick = () => location.hash = encodeURIComponent(drug.name) + "/report";
+$("back").onclick = () => { location.hash = ""; q.focus(); };
+
+/* ----- 4a. Read ----- */
+const inLeaflet = name => drug.leaflet ? drug.leaflet.includes(name) : null;
+
+function renderRead(flashName){
+  const all = countSymptoms(drug, reports).filter(s => !$("onlyNew").checked || inLeaflet(s.name) === false);
+  const TOP = 8;  /* show the 8 most frequent first, the rest on demand */
+  const rows = showAll ? all : all.slice(0, TOP);
+  const max = Math.max(1, ...rows.map(s => s.users + s.reviews));
+  $("sum").textContent = `${reports.length} report${reports.length === 1 ? "" : "s"} on Vigi-Track` +
+                         (drug.reviews ? ` · ${drug.reviews} Drugs.com reviews read` : "");
+  if (!rows.length){
+    $("list").innerHTML = `<div class="empty">${$("onlyNew").checked ? "Nothing outside the leaflet so far." : "No symptoms reported yet."}<br><br>
+      <button class="btn" onclick="location.hash=encodeURIComponent(drug.name)+'/report'">Be the first to report</button></div>`;
+  } else {
+    $("list").innerHTML = rows.map(s => {
+      const leaf = inLeaflet(s.name);
+      const tag = leaf === false ? `<span class="tag flag">Not in leaflet</span>` : leaf ? `<span class="tag in">In leaflet</span>` : "";
+      const n = [s.users && `${s.users} reported`, s.reviews && `${s.reviews} in reviews`].filter(Boolean).join(" · ");
+      const open = openRow === s.name;
+      const quotes = [
+        ...s.notes.map(r => `<div class="quote">${esc(r.note)}<small>Vigi-Track user · ${new Date(r.created_at).toLocaleDateString()}</small></div>`),
+        ...s.quotes.map(t => `<div class="quote">${esc(t)}<small>Drugs.com review</small></div>`)
+      ].join("");
+      return `<div class="row${s.name === flashName ? " flash" : ""}">
+        <button aria-expanded="${open}" data-name="${esc(s.name)}">
+          <span class="nm">${esc(s.name)}${tag}</span><span class="n">${n}</span>
+          <span class="bar"><i class="u" style="width:${s.users / max * 100}%"></i><i class="r" style="width:${s.reviews / max * 100}%"></i></span>
+        </button>
+        ${open ? `<div class="more">${DESC[s.name] ? `<div class="desc">${esc(DESC[s.name])}</div>` : ""}${quotes || `<div class="desc">No comments yet.</div>`}</div>` : ""}
+      </div>`;
+    }).join("") + (all.length > TOP && !showAll ? `<button class="btn ghost showall" id="showAll">Show all ${all.length} symptoms</button>` : "");
+  }
+  const foot = [];
+  if (drug.reviews) foot.push("Drugs.com mentions are found by keyword search, so a few are false matches (for example “my acne is gone”). Open a symptom to read the quotes.");
+  if (drug.skipped.length) foot.push(`Reviews are not counted for ${drug.skipped.join(", ")}, because ${drug.name} is taken for it and reviews mostly describe the illness, not a side effect. Users can still report them.`);
+  if (drug.leaflet) foot.push("Leaflet: side effects named in the FDA label.");
+  else foot.push("No leaflet on file for this drug.");
+  $("foot").innerHTML = foot.map(t => `<div>${esc(t)}</div>`).join("");
+}
+$("list").addEventListener("click", e => {
+  if (e.target.id === "showAll"){ showAll = true; renderRead(); return; }
+  const b = e.target.closest("button[data-name]");
+  if (!b) return;
+  openRow = openRow === b.dataset.name ? null : b.dataset.name;
+  renderRead();
+});
+$("onlyNew").onchange = () => renderRead();
+
+/* ----- 4b. Report ----- */
+function renderChips(){
+  picked = new Set();
+  /* Most frequent symptoms for this drug first, then the rest of the list */
+  const known = countSymptoms(drug, reports).map(s => s.name);
+  const names = [...new Set([...known.filter(n => VOCAB.includes(n)), ...VOCAB])];
+  $("chips").innerHTML = names.map(n => chipHtml(n, false)).join("");
+  $("note").value = ""; $("otherIn").value = ""; $("msg").textContent = "";
+  updateSend();
+}
+const chipHtml = (n, checked) => `<label class="chip"><input type="checkbox" value="${esc(n)}"${checked ? " checked" : ""}>${esc(cap(n))}</label>`;
+
+$("chips").addEventListener("change", e => {
+  e.target.checked ? picked.add(e.target.value) : picked.delete(e.target.value);
+  updateSend();
+});
+function addOther(){
+  const v = $("otherIn").value.trim().toLowerCase().replace(/\s+/g, " ");
+  if (!v) return;
+  const name = canonical(v);
+  const box = [...$("chips").querySelectorAll("input")].find(i => i.value === name);
+  if (box) box.checked = true;
+  else $("chips").insertAdjacentHTML("afterbegin", chipHtml(name, true));
+  picked.add(name); $("otherIn").value = ""; updateSend();
+}
+/* "throwing up" becomes "nausea", so the same symptom is counted once */
+function canonical(t){
+  if (LEX[t]) return t;
+  for (const k of VOCAB) if (LEX[k].test(t)) return k;
+  return t.slice(0, 40);
+}
+$("otherAdd").onclick = addOther;
+$("otherIn").addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); addOther(); } });
+
+function updateSend(){
+  $("sendBtn").disabled = picked.size === 0;
+  $("sendBtn").textContent = picked.size ? `Send my report (${picked.size})` : "Send my report";
+}
+
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!picked.size) return;
+  const report = { drug: drug.name, symptoms: [...picked].slice(0, 15), note: $("note").value.trim() || null };
+  $("sendBtn").disabled = true; $("msg").className = "msg"; $("msg").textContent = "Sending…";
+  try {
+    await store.add(report);
+  } catch(err){
+    $("msg").className = "msg err"; $("msg").textContent = err.message; updateSend(); return;
+  }
+  justSent = report;
+  location.hash = encodeURIComponent(drug.name);  /* back to Read, which reloads the reports */
+});
+
+/* ---------- Start ---------- */
+store.drugNames().then(names => names.forEach(n => findDrug(n) || addDrug(n))).catch(() => {});
+route();
+</script>
+</body>
+</html>

@@ -6,6 +6,8 @@ An AI agent that reads patient reviews and flags the drug side effects missing f
 
 Final project, AI for Business, ESSEC.
 
+> **New:** a lighter version, where people can read and report symptoms for a drug, with a Supabase database. See [`simple/`](simple/README.md).
+
 Before launch, a drug is tested on a few thousand patients. After launch, millions of people take it for years, and rare side effects only show up then. Most of them are never reported to the authorities. Patients do talk about them online.
 
 Vigi-Track reads patient reviews of a drug. An AI agent lists the side effects each patient really had. The app compares them with the official leaflet and turns every effect that is **not in the leaflet** into an alert for the safety team. The agent can then write a short signal report.
