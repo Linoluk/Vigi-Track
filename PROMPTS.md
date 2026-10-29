@@ -98,3 +98,12 @@ We then reviewed each version and asked for changes, mainly a more dynamic video
 - The dataset size in the video (215,063 reviews) is the size of the UCI Drugs.com dataset.
 - The under-reporting figure in the video (94% median) comes from Hazell and Shakir, "Under-reporting of adverse drug reactions: a systematic review", Drug Safety, 2006.
 - In the video, the AI answers were produced by `video-tools/mock.js` so the demo could be filmed offline. They match what the app shows with the demo data. The live app calls the real Claude.
+
+## Part 3. The lighter version (`simple/`)
+
+Built after the main project with Claude, as an exercise in app structure: a page, a Supabase database and GitHub Pages hosting.
+
+- Claude wrote `simple/index.html`, `vocab.js`, `build_seed.js` and `supabase/setup.sql`, reusing the full app's design, vocabulary and extraction prompt (1.1). We asked for a simpler page (search a drug, then read or report symptoms), the same look as the full app, the *Why AI* section, a *How it works* section, and one AI feature that is easy to understand.
+- **Describe it in your own words** uses prompt 1.1 on one free sentence and ticks the symptoms it returns. The user checks them before sending.
+- The answers shown for the built-in examples (3 in *Why AI*, 2 in *Report*) were written in advance, so the page works without a key. They are labelled as such on the page.
+- Drugs.com counts in this version come from keyword search, not from the AI (see `simple/README.md`).
