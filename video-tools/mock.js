@@ -3,7 +3,7 @@
 const GOLD={
  z1:["nausea"],z2:["palpitations"],z3:[],z4:["dry mouth","dizziness"],z5:["hair loss"],z6:["palpitations"],z7:["insomnia"],
  z8:["headache"],z9:["palpitations"],z10:["headache","nausea"],z11:["hair loss"],z12:["insomnia"],z13:["palpitations"],z14:["decreased appetite"],
- c1:["ankle swelling"],c2:["tinnitus"],c3:["fatigue"],c4:["muscle pain"],c5:[],c6:["tinnitus"],c7:["dizziness"],c8:["muscle pain"],
+ c1:["swelling"],c2:["tinnitus"],c3:["fatigue"],c4:["muscle pain"],c5:[],c6:["tinnitus"],c7:["dizziness"],c8:["muscle pain"],
  c9:["cough"],c10:["headache"],c11:[],c12:["tinnitus"],c13:["fatigue","muscle pain"],c14:[],
  d1:["drowsiness"],d2:["abnormal dreams"],d3:["memory problems"],d4:[],d5:["sleepwalking","memory problems"],d6:["dry mouth","taste changes"],
  d7:["abnormal dreams"],d8:["headache"],d9:["sleepwalking"],d10:["abnormal dreams"],d11:["memory problems"],d12:["nausea"],d13:[],d14:["drowsiness","dizziness"],
@@ -53,7 +53,14 @@ Joint pain appears in 3 of 12 reviews (25%) and is not in the leaflet. One patie
 
 Before any action, compare with official reports (EudraVigilance, ANSM). Reviews are unverified and cannot prove causality.`
 };
-ANSWERS.Calmarin=ANSWERS.Zentrolix;
+ANSWERS.Calmarin=`**Safety signal report · Calmarin** (demo data, fictional drug)
+
+The agent read 14 patient reviews. Two effects reported by patients are not in the leaflet.
+
+1. **Muscle pain**, 3 reviews (21%). Aching legs, cramps and sore shoulders after a few weeks. One doctor is running tests. Priority high.
+2. **Tinnitus**, 3 reviews (21%). Ringing or buzzing in the ears, getting worse for one patient. Priority medium.
+
+**Next step.** Check these signals against EudraVigilance and the ANSM database. Reviews are unverified and cannot prove causality.`;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function stream(text,onText){ let out=""; const parts=text.match(/\S+\s*/g)||[]; for(const p of parts){ out+=p; onText&&onText({text:out,delta:p}); await sleep(24);} return out; }
 async function sample(input,opts={}){
