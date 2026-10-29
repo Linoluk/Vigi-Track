@@ -157,6 +157,19 @@ textarea{width:100%;min-height:96px;resize:vertical}
 .msg{font-weight:600;font-size:14.5px}
 .msg.err{color:var(--alert)}
 
+/* ---------- Menu links and How it works ---------- */
+.links{display:flex;gap:4px;margin-left:auto}
+.links button{background:none;border:0;font-weight:600;font-size:14px;padding:7px 12px;border-radius:999px;color:var(--muted)}
+.links button:hover{background:var(--surface2);color:var(--ink)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.step{background:var(--surface);border-radius:20px;padding:20px;box-shadow:var(--shadow);display:grid;gap:8px;align-content:start}
+.step .num{font-family:var(--display);font-weight:800;font-size:15px;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:#fff}
+.step h3{font-size:21px}
+.step p{margin:0;color:var(--muted);font-size:15px}
+.step p b{color:var(--ink);font-weight:600}
+.limits{margin-top:14px;font-size:13.5px;color:var(--muted);max-width:90ch}
+@media (max-width:700px){.links{display:none}}
+
 /* ---------- Why AI (dark band, copied from the full app) ---------- */
 :root{--night:#111218; --night2:#1B1C24; --night-ink:#F2F3F7; --night-muted:#A3A6B4; --night-line:#2C2E39}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--night:#07080B; --night2:#13141A; --night-line:#262833}}
@@ -200,6 +213,7 @@ footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
 <!-- ============ Nav ============ -->
 <nav class="top"><div class="in">
   <a class="logo" href="#"><svg viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(-45 16 16)"><rect x="4" y="10" width="24" height="12" rx="6" fill="var(--accent)"/><path d="M16 10h6a6 6 0 0 1 0 12h-6z" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/></g></svg>Vigi-Track</a>
+  <div class="links"><button data-go="drugs">Drugs</button><button data-go="how">How it works</button><button data-go="why">Why AI</button></div>
   <span class="pill" id="mode"><i></i><span id="modeTxt"></span></span>
 </div></nav>
 
@@ -280,7 +294,24 @@ footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
       </form>
     </div>
   </div></section>
-  <!-- ============ 4. Why AI (from the full app) ============ -->
+  <!-- ============ 4. How it works ============ -->
+  <section id="how"><div class="in">
+    <div class="eyebrow">How it works</div>
+    <div class="sec-h" style="margin-top:10px"><h2>From patient words to a safety signal</h2></div>
+    <div class="steps">
+      <div class="step"><div class="num" style="background:var(--t1)">1</div><h3>Pick a drug</h3>
+        <p>Search or tap a tile. <b>37 widely used drugs</b> come with real patient reviews. Any other drug can be added by the first person who reports on it.</p></div>
+      <div class="step"><div class="num" style="background:var(--t2)">2</div><h3>Read</h3>
+        <p>Side effects are counted from two sources: <b>5,550 Drugs.com reviews</b> and <b>reports made here</b>. Each one is checked against the official FDA leaflet. A red tag marks an effect the leaflet does not list: a possible weak signal.</p></div>
+      <div class="step"><div class="num" style="background:var(--t3)">3</div><h3>Report</h3>
+        <p>Tick what you felt while taking the drug and add a note if you want. Your report is saved <b>without your name</b> in a shared database (Supabase) and shows up for everyone at once.</p></div>
+      <div class="step"><div class="num" style="background:var(--t5)">4</div><h3>Read it right</h3>
+        <p>This light version finds effects in reviews with <b>keywords</b>, so it makes mistakes. The full Vigi-Track uses an <b>AI</b> that reads each sentence. See why just below.</p></div>
+    </div>
+    <p class="limits">Reviews and reports are personal experiences, not verified, and not proof that the drug caused the effect. A weak signal is a question to check against official data (EMA EudraVigilance, ANSM, FDA FAERS). Not medical advice: for a serious effect, see a doctor and report it to your national drug agency.</p>
+  </div></section>
+
+  <!-- ============ 5. Why AI (from the full app) ============ -->
   <section class="night" id="why"><div class="in">
     <div class="eyebrow">Why AI</div>
     <h2>Why an AI, and not a keyword search?</h2>
@@ -593,7 +624,7 @@ $("form").addEventListener("submit", async e => {
   location.hash = encodeURIComponent(drug.name);  /* back to Read, which reloads the reports */
 });
 
-/* ---------- 5. Why AI: keyword search vs AI on one sentence ---------- */
+/* ---------- 6. Why AI: keyword search vs AI on one sentence ---------- */
 /* The 3 examples come with the AI answer computed in advance, so they work without a key. */
 const EXAMPLES = [
   { text: "No headache at all, but since I started this I have nightmares every night. My cough is much better.", ai: ["abnormal dreams"] },
@@ -666,6 +697,12 @@ async function tryIt(){
 $("tryBtn").onclick = tryIt;
 document.querySelectorAll(".ex").forEach(b => b.onclick = () => { $("tryText").value = EXAMPLES[+b.dataset.ex].text; tryIt(); });
 tryIt();
+
+/* ---------- Menu: scroll to a section (not #links: the address bar is used for drugs) ---------- */
+document.querySelectorAll(".links button").forEach(b => b.onclick = () => {
+  if (b.dataset.go === "drugs" && location.hash){ location.hash = ""; }
+  setTimeout(() => $(b.dataset.go).scrollIntoView({ behavior: "smooth" }), 30);
+});
 
 /* ---------- Start ---------- */
 updateDataLine();
