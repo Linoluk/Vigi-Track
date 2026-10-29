@@ -9,6 +9,6 @@
    This key is made to be public. What visitors can do with it is decided by the
    rules in supabase/setup.sql (read and add reports, nothing else). */
 window.VT_CONFIG = {
-  supabaseUrl: "",
-  supabaseKey: ""
+  supabaseUrl: "https://qdhfaeteclfpxsnomjyz.supabase.co",
+  supabaseKey: "sb_publishable_XVMSqC3Uwex59z23b7pbIg_D9AVeNsL"
 };
