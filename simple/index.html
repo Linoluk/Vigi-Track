@@ -6,202 +6,227 @@
 <title>Vigi-Track</title>
 <meta name="description" content="Read the side effects patients report for a drug, or report your own.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@1,400;1,500&display=swap">
 <style>
-/* ---------- Colours (light, then dark) ---------- */
+/* Same look as the full app (app/index.html): colours, fonts, logo, tiles, quotes.
+   Layout: nav, hero with search, drug tiles, then one drug with two tabs (Read / Report). */
+
+/* ---------- Colours, fonts (copied from the full app) ---------- */
 :root{
-  --bg:#F3F4F6; --surface:#FFFFFF; --soft:#EEF0F4; --ink:#12131A; --muted:#626777; --line:#DDE0E6;
-  --accent:#3247F5; --accent-ink:#FFFFFF; --accent-soft:#E7EAFF;
-  --flag:#C7362F; --flag-soft:#FCE8E6; --ok:#1E8A5E; --ok-soft:#E2F4EB;
-  --display:"Bricolage Grotesque","Arial Black",Arial,sans-serif;
+  --bg:#EDEEF1; --surface:#FFFFFF; --surface2:#F6F7F9; --ink:#0F1016; --muted:#646875; --line:#DFE1E6;
+  --accent:#3247F5; --accent-ink:#FFFFFF; --accent-soft:#E6E9FF;
+  --hl:#FFD24A; --alert:#E0393E; --alert-soft:#FDE7E7; --ok:#1E9E6A; --ok-soft:#E1F5EC;
+  --t1:#3247F5; --t2:#DE1C6F; --t3:#0C817D; --t4:#F2A516; --t5:#CE470F; --t6:#7A4DF2; --t7:#278442;
+  --display:"Bricolage Grotesque","Arial Black","Helvetica Neue",Arial,sans-serif;
   --sans:"Instrument Sans","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
-  --shadow:0 1px 2px rgba(18,19,26,.05),0 6px 20px rgba(18,19,26,.06);
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --shadow:0 1px 2px rgba(15,16,22,.05),0 8px 28px rgba(15,16,22,.07);
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0F1015; --surface:#181A21; --soft:#21232C; --ink:#F1F2F6; --muted:#A2A6B4; --line:#2D303B;
-  --accent:#8592FF; --accent-ink:#0F1015; --accent-soft:#252A52;
-  --flag:#FF7A72; --flag-soft:#3A1F1E; --ok:#55D39C; --ok-soft:#173427;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.3); color-scheme:dark;
-}}
+  --bg:#0E0F13; --surface:#17181E; --surface2:#1E1F27; --ink:#F1F2F6; --muted:#A0A4B2; --line:#2B2D37;
+  --accent:#7F8CFF; --accent-ink:#0E0F13; --accent-soft:#23264A; --hl:#E9B92E; --alert:#FF6468; --alert-soft:#3B1D20;
+  --ok:#4FD39A; --ok-soft:#163327; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.35); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0F1015; --surface:#181A21; --soft:#21232C; --ink:#F1F2F6; --muted:#A2A6B4; --line:#2D303B;
-  --accent:#8592FF; --accent-ink:#0F1015; --accent-soft:#252A52;
-  --flag:#FF7A72; --flag-soft:#3A1F1E; --ok:#55D39C; --ok-soft:#173427;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.3); color-scheme:dark;
-}
+  --bg:#0E0F13; --surface:#17181E; --surface2:#1E1F27; --ink:#F1F2F6; --muted:#A0A4B2; --line:#2B2D37;
+  --accent:#7F8CFF; --accent-ink:#0E0F13; --accent-soft:#23264A; --hl:#E9B92E; --alert:#FF6468; --alert-soft:#3B1D20;
+  --ok:#4FD39A; --ok-soft:#163327; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.35); color-scheme:dark}
 
 /* ---------- Base ---------- */
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans)}
-.wrap{max-width:760px;margin:0 auto;padding:0 16px}
-h1,h2{font-family:var(--display);font-weight:800;letter-spacing:-.025em;margin:0;line-height:1.05}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.5}
+.in{max-width:1180px;margin:0 auto;padding-left:20px;padding-right:20px}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.025em;margin:0;text-wrap:balance;font-weight:800}
+a{color:inherit}
 button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
-:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px}
-.muted{color:var(--muted)}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-within{outline:2.5px solid var(--accent);outline-offset:2px}
 [hidden]{display:none!important}
+.eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
 
-/* ---------- Top band ---------- */
-.hero{background:var(--surface);border-bottom:1px solid var(--line);padding:22px 0 30px}
-.brand{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:26px}
-.logo{white-space:nowrap;display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.03em;text-decoration:none;color:inherit}
-.logo svg{width:26px;height:26px}
-.mode{font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
-.mode.live{background:var(--ok-soft);color:var(--ok)}
-.hero h1{font-size:clamp(32px,6vw,50px)}
-/* Once a drug is open, the top band shrinks to the search only */
-body.ondrug .hero h1,body.ondrug .hero > .wrap > p{display:none}
-body.ondrug .hero{padding-bottom:20px}
-body.ondrug .brand{margin-bottom:16px}
-@media (max-width:520px){.mode .long{display:none}}
-.showall{margin-top:10px;width:100%}
+/* ---------- Nav ---------- */
+nav.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav.top .in{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:800;font-size:21px;letter-spacing:-.03em;text-decoration:none;white-space:nowrap}
+.logo svg{width:28px;height:28px}
+.pill{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--surface2);color:var(--muted);display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.pill i{width:8px;height:8px;border-radius:50%;background:#B9BCC7}
+.pill.on{background:var(--ok-soft);color:var(--ok)} .pill.on i{background:var(--ok);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 25%,transparent)}
+
+/* ---------- Hero ---------- */
+.hero .in{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px;align-items:center;padding-block:48px 26px}
+.hero h1{font-size:clamp(40px,6vw,76px);line-height:.95;margin-top:12px}
 .hero h1 em{font-style:normal;color:var(--accent)}
-.hero p{font-size:17px;color:var(--muted);margin:12px 0 22px;max-width:52ch}
-
-/* ---------- Search ---------- */
-.search{position:relative}
-.search input{width:100%;font-size:18px;padding:15px 18px 15px 48px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg)}
+.hero p.sub{font-size:18.5px;color:var(--muted);max-width:50ch;margin:18px 0 22px}
+.search{position:relative;max-width:520px}
+.search input{width:100%;font-size:17px;padding:15px 18px 15px 48px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);box-shadow:var(--shadow)}
 .search input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 4px var(--accent-soft)}
-.search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted)}
-.suggest{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);list-style:none;margin:0;padding:6px;z-index:5;max-height:330px;overflow:auto}
-.suggest li{padding:10px 12px;border-radius:9px;cursor:pointer;display:flex;justify-content:space-between;gap:12px}
-.suggest li small{color:var(--muted)}
-.suggest li.on,.suggest li:hover{background:var(--accent-soft)}
-.popular{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center;font-size:14px}
-.popular button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-weight:600;font-size:14px}
-.popular button:hover{border-color:var(--accent);color:var(--accent)}
+.search svg{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted)}
+.quotes{position:relative;min-height:330px}
+.qcard{position:absolute;background:var(--surface);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);width:min(330px,88%);font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.35}
+.qcard small{display:block;font-family:var(--sans);font-style:normal;font-size:12px;color:var(--muted);margin-top:8px}
+.qcard u{text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:3px}
+.qcard:nth-child(1){top:0;left:6%;transform:rotate(-3deg)}
+.qcard:nth-child(2){top:118px;right:0;transform:rotate(2.5deg)}
+.qcard:nth-child(3){top:232px;left:0;transform:rotate(-1deg)}
 
-/* ---------- Drug page ---------- */
-main{padding:26px 0 50px}
-.drughead{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-.drughead h2{font-size:clamp(30px,5vw,42px)}
-.drughead .cls{color:var(--muted);font-weight:600;margin-top:4px}
-.back{background:none;border:0;color:var(--accent);font-weight:700;padding:0}
-.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);border-radius:14px;padding:5px;margin-bottom:18px}
-.tabs button{border:0;background:none;border-radius:10px;padding:11px;font-weight:700;color:var(--muted)}
-.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
-.card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:18px}
+/* ---------- Sections and tiles ---------- */
+section{padding-block:28px}
+.sec-h{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.sec-h h2{font-size:clamp(28px,3.4vw,40px);line-height:1.02}
+.sec-h .side{font-size:13.5px;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:12px}
+.tile{border:0;border-radius:18px;padding:14px 15px 13px;color:#fff;text-align:left;display:grid;gap:22px;min-height:150px;align-content:space-between;transition:transform .2s ease;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.tile:hover{transform:translateY(-3px)}
+.tile .cls{font-size:12px;font-weight:600;opacity:.9}
+.tile .nm{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1;overflow-wrap:anywhere}
+.tile .ft{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:600;gap:6px}
+.tile .badge{background:rgba(255,255,255,.95);color:#C62828;border-radius:999px;padding:2px 8px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.tile.dark{color:#16130A}
+.tile .nm.long{font-size:19px}
+.tile.add{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 2px var(--line);border:0}
+.tile.add .nm{color:var(--accent)}
+.btn{border:0;border-radius:999px;padding:13px 22px;font-weight:700;font-size:15px;background:var(--ink);color:var(--bg);display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn.blue{background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn:hover{filter:brightness(1.08)} .btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.more{margin-top:14px}
 
-/* Read */
-.summary{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px;font-size:14.5px}
-.switch{display:inline-flex;gap:8px;align-items:center;font-weight:600;cursor:pointer}
-.switch input{width:18px;height:18px;accent-color:var(--accent)}
-.list{display:grid;gap:8px}
-.row{border:1px solid var(--line);border-radius:14px;background:var(--surface)}
-.row > button{width:100%;text-align:left;background:none;border:0;padding:13px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center}
-.row .nm{font-weight:700;font-size:16.5px}
-.row .nm::first-letter{text-transform:uppercase}
-.row .n{font-variant-numeric:tabular-nums;font-size:13.5px;color:var(--muted);text-align:right;white-space:nowrap}
-.row .bar{grid-column:1/-1;height:6px;border-radius:99px;background:var(--soft);overflow:hidden;display:flex}
+/* ---------- Drug bar (like the full app's run bar) ---------- */
+.runbar{background:var(--surface);border-radius:20px;padding:18px 20px;box-shadow:var(--shadow);display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.runbar .who{display:flex;align-items:center;gap:14px;min-width:0}
+.runbar .dot{width:46px;height:46px;border-radius:14px;flex:none;display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:800;font-size:20px}
+.runbar .who b{font-family:var(--display);font-size:26px;letter-spacing:-.02em;display:block;line-height:1.1}
+.runbar .who span{font-size:13.5px;color:var(--muted)}
+.seg{display:inline-flex;background:var(--surface2);border-radius:999px;padding:4px}
+.seg button{white-space:nowrap;border:0;background:none;padding:9px 16px;border-radius:999px;font-weight:700;font-size:14px;color:var(--muted)}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.back{background:none;border:0;color:var(--accent);font-weight:700;padding:0;margin-bottom:12px}
+
+/* ---------- Read ---------- */
+.panel{background:var(--surface);border-radius:24px;padding:22px 24px;box-shadow:var(--shadow)}
+.summary{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px;font-size:14.5px}
+.headline{font-family:var(--display);font-weight:700;font-size:clamp(22px,2.6vw,30px);letter-spacing:-.02em;line-height:1.15;margin:0 0 6px}
+.headline b{font-weight:800;color:var(--accent)}
+.chip{position:relative;display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600;cursor:pointer;background:var(--surface2);user-select:none;color:var(--muted)}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip:has(input:checked){background:var(--ink);color:var(--bg)}
+.chip:has(input:checked)::before{content:"✓";font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.list{display:grid;gap:10px}
+.row{border:1px solid var(--line);border-radius:18px}
+.row > button{width:100%;text-align:left;background:none;border:0;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 14px;align-items:center}
+.row .nm{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.025em;line-height:1.1;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.row .n{text-align:right;font-variant-numeric:tabular-nums;line-height:1.2}
+.row .n b{font-family:var(--display);font-size:24px;font-weight:800}
+.row .n small{display:block;font-size:12px;color:var(--muted)}
+.row .bar{grid-column:1/-1;height:8px;border-radius:99px;background:var(--surface2);overflow:hidden;display:flex}
 .row .bar i{display:block;height:100%}
 .row .bar .u{background:var(--accent)}
-.row .bar .r{background:color-mix(in srgb,var(--accent) 35%,transparent)}
-.tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:2px}
-.tag.flag{background:var(--flag-soft);color:var(--flag)}
-.tag.in{background:var(--soft);color:var(--muted)}
-.more{padding:0 14px 14px;display:grid;gap:8px;font-size:14.5px}
-.more .desc{color:var(--muted)}
-.quote{border-left:3px solid var(--line);padding:2px 0 2px 11px}
-.quote small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:12px}
+.row .bar .r{background:#B9BCC7}
+.row.alert .bar .r{background:color-mix(in srgb,var(--alert) 55%,transparent)}
+.row.alert .bar .u{background:var(--alert)}
+.atag{display:inline-flex;align-items:center;gap:7px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:0;color:var(--alert);background:var(--alert-soft);border-radius:999px;padding:3px 10px}
+.atag i{width:7px;height:7px;border-radius:50%;background:var(--alert)}
+.itag{font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:0;color:var(--muted);background:var(--surface2);border-radius:999px;padding:3px 10px}
+.detail{padding:0 16px 16px;display:grid;gap:12px}
+.detail .desc{color:var(--muted)}
+.q{font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.4;display:grid;grid-template-columns:18px 1fr;gap:6px}
+.q::before{content:"“";font-size:30px;line-height:1;color:var(--accent);font-style:normal}
+.q mark{background:none;color:inherit;text-decoration:underline;text-decoration-color:var(--hl);text-decoration-thickness:3px;text-underline-offset:3px}
+.q small{display:block;font-family:var(--sans);font-style:normal;font-size:12px;color:var(--muted);margin-top:2px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:14px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 .empty{text-align:center;padding:26px 10px;color:var(--muted)}
-.foot{font-size:12.5px;color:var(--muted);margin-top:16px;display:grid;gap:6px}
+.foot{font-size:12.5px;color:var(--muted);margin-top:14px;display:grid;gap:6px}
+.flash{animation:flash 1.8s ease}
+@keyframes flash{0%,40%{background:var(--accent-soft)}100%{background:transparent}}
 
-/* Report */
-.form{display:grid;gap:20px}
-.form h3{margin:0 0 4px;font-size:17px}
+/* ---------- Report ---------- */
+.form{display:grid;gap:22px}
+.form h3{font-size:20px;margin-bottom:4px}
 .form .hint{font-size:13.5px;color:var(--muted);margin:0 0 10px}
-.chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{position:relative;display:inline-flex;align-items:center;border-radius:999px;padding:7px 13px;font-size:14px;font-weight:600;cursor:pointer;background:var(--soft);color:var(--ink);user-select:none}
-.chip input{position:absolute;opacity:0;pointer-events:none}
-.chip:has(input:checked){background:var(--accent);color:var(--accent-ink)}
-.chip:has(input:checked)::before{content:"✓";margin-right:6px;font-size:12px}
-.chip:has(input:focus-visible){outline:2.5px solid var(--accent);outline-offset:2px}
-.other{display:flex;gap:8px;margin-top:10px}
-.other input,textarea{flex:1;min-width:0;border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;font-size:15px}
-textarea{width:100%;min-height:90px;resize:vertical}
-.btn{border:0;border-radius:999px;padding:12px 22px;font-weight:700;background:var(--accent);color:var(--accent-ink)}
-.btn.ghost{background:var(--soft);color:var(--ink)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
+.other{display:flex;gap:8px;margin-top:12px;max-width:520px}
+.other input,textarea{flex:1;min-width:0;font-size:15px;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px}
+.other .btn{padding:10px 18px}
+textarea{width:100%;min-height:96px;resize:vertical}
+.warn{font-size:13px;color:var(--muted);background:var(--surface2);border-radius:12px;padding:10px 12px;margin:0}
 .send{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.warn{font-size:13px;color:var(--muted);background:var(--soft);border-radius:12px;padding:10px 12px}
 .msg{font-weight:600;font-size:14.5px}
-.msg.err{color:var(--flag)} .msg.ok{color:var(--ok)}
-.flash{animation:flash 1.6s ease}
-@keyframes flash{0%,40%{background:var(--accent-soft)}100%{background:var(--surface)}}
+.msg.err{color:var(--alert)}
 
-/* Home: what is inside */
-.intro{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-.intro .card h3{margin:0 0 6px;font-size:16px}
-.intro .card p{margin:0;font-size:14.5px;color:var(--muted)}
-footer{font-size:12.5px;color:var(--muted);padding:0 0 30px}
+footer{padding-block:34px 46px;color:var(--muted);font-size:13px;text-align:center}
+footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
+
+@media (max-width:900px){.hero .in{grid-template-columns:1fr}.quotes{min-height:310px}}
+@media (max-width:560px){.pill .long{display:none}.row .nm{font-size:19px}.panel{padding:16px}.runbar .seg{width:100%}.seg button{flex:1;padding:9px 8px;font-size:13.5px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 
-<!-- ============ 1. Top band: what it is + search ============ -->
-<header class="hero">
-  <div class="wrap">
-    <div class="brand">
-      <a class="logo" href="#" aria-label="Vigi-Track home">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#3247F5"/><path d="M8 17h4l2.5-6 4 11 2.5-5H25" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Vigi-Track
-      </a>
-      <span class="mode" id="mode"></span>
-    </div>
-    <h1>What do people <em>really</em> feel on their medication?</h1>
-    <p>Look up a drug. Read the side effects people report, or report your own. No account, 30 seconds.</p>
+<!-- ============ Nav ============ -->
+<nav class="top"><div class="in">
+  <a class="logo" href="#"><svg viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(-45 16 16)"><rect x="4" y="10" width="24" height="12" rx="6" fill="var(--accent)"/><path d="M16 10h6a6 6 0 0 1 0 12h-6z" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/></g></svg>Vigi-Track</a>
+  <span class="pill" id="mode"><i></i><span id="modeTxt"></span></span>
+</div></nav>
+
+<!-- ============ 1. Hero: what it is + search ============ -->
+<header class="hero"><div class="in">
+  <div>
+    <div class="eyebrow">Drug safety, powered by patients</div>
+    <h1>Patients say it <em>before</em> the leaflet does.</h1>
+    <p class="sub">Pick a drug. Read the side effects patients report, and the ones missing from the official leaflet. Or report your own, no account needed.</p>
     <div class="search" role="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="text" placeholder="Search a drug, e.g. Sertraline" autocomplete="off"
-             role="combobox" aria-expanded="false" aria-controls="suggest" aria-label="Search a drug">
-      <ul class="suggest" id="suggest" role="listbox" hidden></ul>
+      <input id="q" type="text" placeholder="Search a drug, e.g. Sertraline" autocomplete="off" aria-label="Search a drug">
     </div>
-    <div class="popular" id="popular"><span class="muted">Popular:</span></div>
   </div>
-</header>
+  <div class="quotes" aria-label="Real patient quotes from Drugs.com">
+    <div class="qcard">“I'm depressed I now have <u>anxiety attacks</u>.”<small>Mirena · review #182430 · rating 3/10</small></div>
+    <div class="qcard">“Also I had <u>insanely vivid dreams</u>.”<small>Bupropion · review #225525 · rating 9/10</small></div>
+    <div class="qcard">“My <u>mood swings</u> are at what i would call a dangerous level.”<small>Depo-Provera · review #199089 · rating 1/10</small></div>
+  </div>
+</div></header>
 
-<main class="wrap">
+<main>
+  <!-- ============ 2. Choose a drug ============ -->
+  <section id="drugs"><div class="in">
+    <div class="sec-h"><h2 id="drugsTitle">Choose a drug</h2><div class="side" id="dataLine"></div></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="more"><button class="btn ghost" id="showMore" hidden></button></div>
+  </div></section>
 
-  <!-- ============ Home (no drug chosen yet) ============ -->
-  <section id="home">
-    <div class="intro">
-      <div class="card"><h3>Read</h3><p>See which side effects come up most for a drug, and which ones the official leaflet does not mention.</p></div>
-      <div class="card"><h3>Report</h3><p>Tick what you felt while taking it. Your report is added for everyone to read, without your name.</p></div>
-      <div class="card"><h3>Where it comes from</h3><p>Reports from people using Vigi-Track, plus 5,550 public patient reviews from Drugs.com for 37 drugs.</p></div>
+  <!-- ============ 3. One drug: Read or Report ============ -->
+  <section id="drug" hidden><div class="in">
+    <button class="back" id="back">← All drugs</button>
+    <div class="runbar">
+      <div class="who"><div class="dot" id="dDot"></div><div><b id="dName"></b><span id="dCls"></span></div></div>
+      <div class="seg" role="tablist">
+        <button role="tab" id="tabRead" aria-selected="true" aria-controls="read">Read symptoms</button>
+        <button role="tab" id="tabReport" aria-selected="false" aria-controls="report">Report a symptom</button>
+      </div>
     </div>
-  </section>
 
-  <!-- ============ 2. Drug page ============ -->
-  <section id="drug" hidden>
-    <div class="drughead">
-      <div><h2 id="dName"></h2><div class="cls" id="dCls"></div></div>
-      <button class="back" id="back">← Search another drug</button>
-    </div>
-
-    <div class="tabs" role="tablist">
-      <button role="tab" id="tabRead" aria-selected="true" aria-controls="read">Read symptoms</button>
-      <button role="tab" id="tabReport" aria-selected="false" aria-controls="report">Report a symptom</button>
-    </div>
-
-    <!-- 2a. Read -->
-    <div id="read" role="tabpanel" class="card">
+    <!-- 3a. Read -->
+    <div id="read" role="tabpanel" class="panel">
+      <p class="headline" id="headline"></p>
       <div class="summary">
         <span id="sum" class="muted"></span>
-        <label class="switch"><input type="checkbox" id="onlyNew"> Only not in the leaflet</label>
+        <label class="chip"><input type="checkbox" id="onlyNew">Only not in the leaflet</label>
       </div>
       <div class="list" id="list"></div>
       <div class="legend">
         <span><i style="background:var(--accent)"></i>Reported on Vigi-Track</span>
-        <span><i style="background:color-mix(in srgb,var(--accent) 35%,transparent)"></i>Mentioned in Drugs.com reviews</span>
+        <span><i style="background:#B9BCC7"></i>Mentioned in Drugs.com reviews</span>
       </div>
       <div class="foot" id="foot"></div>
     </div>
 
-    <!-- 2b. Report -->
-    <div id="report" role="tabpanel" class="card" hidden>
+    <!-- 3b. Report -->
+    <div id="report" role="tabpanel" class="panel" hidden>
       <form class="form" id="form">
         <div>
           <h3>What did you feel while taking <span class="dn"></span>?</h3>
@@ -213,23 +238,21 @@ footer{font-size:12.5px;color:var(--muted);padding:0 0 30px}
           </div>
         </div>
         <div>
-          <h3>Anything to add? <span class="muted" style="font-weight:500">(optional)</span></h3>
+          <h3>Anything to add? <span class="muted" style="font-family:var(--sans);font-weight:500;font-size:15px">(optional)</span></h3>
           <p class="hint">When it started, how strong it was, if it went away…</p>
           <textarea id="note" maxlength="500" placeholder="It started after two weeks and faded after a month."></textarea>
         </div>
         <p class="warn">Please do not write your name, email or phone number. For a serious effect, talk to your doctor or pharmacist, and report it to your national drug agency (in France: signalement-sante.gouv.fr).</p>
         <div class="send">
-          <button class="btn" id="sendBtn" type="submit" disabled>Send my report</button>
+          <button class="btn blue" id="sendBtn" type="submit" disabled>Send my report</button>
           <span class="msg" id="msg" role="status"></span>
         </div>
       </form>
     </div>
-  </section>
+  </div></section>
 </main>
 
-<footer class="wrap">
-  Student project, ESSEC. Not medical advice: a report is a personal experience, not proof that the drug caused it.
-</footer>
+<footer><div class="logo">Vigi-Track</div>Patients say it before the leaflet does. A course prototype, ESSEC. Not medical advice.</footer>
 
 <script src="config.js"></script>
 <script src="vocab.js"></script>
@@ -238,15 +261,15 @@ footer{font-size:12.5px;color:var(--muted);padding:0 0 30px}
 /* =====================================================================
    Vigi-Track Simple
    1. Storage: Supabase if config.js is filled in, otherwise this browser
-   2. Data: build the list of drugs and count symptoms
-   3. Search
-   4. Drug page: Read and Report tabs
+   2. Data: the list of drugs, and symptom counts
+   3. Choose a drug: search + tiles
+   4. One drug: Read and Report tabs
    ===================================================================== */
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
-const SEED = window.VT_SEED.drugs;
+const TILE_COLORS = ["--t1","--t2","--t3","--t4","--t5","--t6","--t7"];
 
 /* ---------- 1. Storage ---------- */
 const CFG = window.VT_CONFIG || {};
@@ -276,7 +299,8 @@ const store = LIVE ? {
   }
 } : {
   /* Demo: reports are kept in this browser only (localStorage) */
-  all(){ try { return JSON.parse(localStorage.getItem("vt_reports") || "[]"); } catch(e){ return this.mem || []; } },
+  mem: [],
+  all(){ try { return JSON.parse(localStorage.getItem("vt_reports") || "[]"); } catch(e){ return this.mem; } },
   async list(drug){ return this.all().filter(x => x.drug === drug).reverse(); },
   async drugNames(){ return this.all().map(x => x.drug); },
   async add(report){
@@ -286,11 +310,12 @@ const store = LIVE ? {
   }
 };
 
-$("mode").innerHTML = LIVE ? "Shared database" : "Demo mode<span class=\"long\">: reports stay in this browser</span>";
-$("mode").classList.toggle("live", LIVE);
+$("mode").classList.toggle("on", LIVE);
+$("modeTxt").innerHTML = LIVE ? "Shared database" : "Demo mode<span class=\"long\">: reports stay in this browser</span>";
 
 /* ---------- 2. Data ---------- */
-let DRUGS = SEED.map(d => ({ ...d, key: d.name.toLowerCase() }));
+let DRUGS = window.VT_SEED.drugs.map(d => ({ ...d, key: d.name.toLowerCase() }));
+const reportCount = new Map();   /* drug name -> number of Vigi-Track reports */
 
 function findDrug(name){
   const k = name.trim().toLowerCase();
@@ -300,9 +325,10 @@ function findDrug(name){
 function addDrug(name){
   name = name.trim().replace(/\s+/g, " ").slice(0, 80);
   let d = findDrug(name);
-  if (!d){ d = { name, cls: "Added by a user", reviews: 0, leaflet: null, skipped: [], symptoms: {}, key: name.toLowerCase() }; DRUGS.push(d); }
+  if (!d){ d = { name, cls: "Added by a user", total: 0, reviews: 0, leaflet: null, skipped: [], symptoms: {}, key: name.toLowerCase() }; DRUGS.push(d); }
   return d;
 }
+const colorOf = d => TILE_COLORS[DRUGS.indexOf(d) % TILE_COLORS.length];
 
 /* Merge Drugs.com mentions and user reports into one list of symptoms */
 function countSymptoms(drug, reports){
@@ -319,63 +345,67 @@ function countSymptoms(drug, reports){
   return [...map.values()].sort((a, b) => (b.users * 3 + b.reviews) - (a.users * 3 + a.reviews));
 }
 
-/* ---------- 3. Search ---------- */
-const q = $("q"), sug = $("suggest");
-let hits = [], cur = -1;
+/* ---------- 3. Choose a drug: search + tiles ---------- */
+const q = $("q");
+let showAllTiles = false;
 
-function showSuggest(){
+function renderTiles(){
   const t = q.value.trim().toLowerCase();
-  if (!t){ sug.hidden = true; q.setAttribute("aria-expanded", "false"); return; }
-  hits = DRUGS.filter(d => d.key.includes(t) || d.cls.toLowerCase().includes(t))
-              .sort((a, b) => a.key.indexOf(t) - b.key.indexOf(t) || b.reviews - a.reviews).slice(0, 8);
-  const exact = findDrug(t);
-  let html = hits.map((d, i) => `<li role="option" data-i="${i}"><span>${esc(d.name)}</span><small>${esc(d.cls)}</small></li>`).join("");
-  if (!hits.length && !exact) html += `<li role="option" data-new="1"><span>Report for “${esc(q.value.trim())}”</span><small>Not in the list</small></li>`;
-  sug.innerHTML = html; cur = -1;
-  sug.hidden = false; q.setAttribute("aria-expanded", "true");
+  const hits = t ? DRUGS.filter(d => d.key.includes(t) || d.cls.toLowerCase().includes(t)) : DRUGS;
+  const shown = (t || showAllTiles) ? hits : hits.slice(0, 12);
+  let html = shown.map(d => {
+    const c = colorOf(d), n = reportCount.get(d.name) || 0;
+    return `<button class="tile${c === "--t4" ? " dark" : ""}" style="background:var(${c})" data-d="${esc(d.name)}">
+      <span class="cls">${esc(d.cls)}</span><span class="nm${d.name.length > 14 ? " long" : ""}">${esc(d.name)}</span>
+      <span class="ft"><span>${d.total ? d.total.toLocaleString("en") + " reviews" : "New"}</span>${n ? `<span class="badge">● ${n} report${n > 1 ? "s" : ""}</span>` : ""}</span></button>`;
+  }).join("");
+  /* No exact match: offer to report for the name typed */
+  if (t && !hits.length) html += `<button class="tile add" data-new="1"><span class="cls">Not in the list</span><span class="nm">Report for “${esc(q.value.trim())}”</span><span class="ft"><span>Add this drug</span></span></button>`;
+  $("tiles").innerHTML = html;
+  $("drugsTitle").textContent = t ? (hits.length ? "Matching drugs" : "No match") : "Choose a drug";
+  $("showMore").hidden = Boolean(t) || showAllTiles || hits.length <= 12;
+  $("showMore").textContent = `Show all ${hits.length} drugs`;
 }
-function pick(li){
-  if (!li) return;
-  const d = li.dataset.new ? addDrug(q.value) : hits[+li.dataset.i];
-  q.value = ""; sug.hidden = true;
-  location.hash = encodeURIComponent(d.name) + (li.dataset.new ? "/report" : "");
+function openTile(tile){
+  if (!tile) return;
+  const name = tile.dataset.new ? addDrug(q.value).name : tile.dataset.d;
+  q.value = "";                                   /* clear the search for next time */
+  location.hash = encodeURIComponent(name) + (tile.dataset.new ? "/report" : "");
 }
-q.addEventListener("input", showSuggest);
-q.addEventListener("keydown", e => {
-  const items = [...sug.querySelectorAll("li")];
-  if (e.key === "ArrowDown" || e.key === "ArrowUp"){
-    e.preventDefault();
-    cur = (cur + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
-    items.forEach((li, i) => li.classList.toggle("on", i === cur));
-  } else if (e.key === "Enter"){ pick(items[cur] || items[0]); }
-  else if (e.key === "Escape"){ sug.hidden = true; }
+$("tiles").addEventListener("click", e => openTile(e.target.closest(".tile")));
+$("showMore").onclick = () => { showAllTiles = true; renderTiles(); };
+q.addEventListener("input", () => {
+  renderTiles();
+  if (location.hash) location.hash = "";          /* typing goes back to the drug list */
 });
-sug.addEventListener("mousedown", e => { e.preventDefault(); pick(e.target.closest("li")); });
-q.addEventListener("blur", () => setTimeout(() => sug.hidden = true, 100));
+q.addEventListener("keydown", e => { if (e.key === "Enter") openTile($("tiles").querySelector(".tile")); });
 
-for (const name of ["Sertraline", "Mirena", "Phentermine", "Zolpidem", "Isotretinoin", "Varenicline"]){
-  const b = document.createElement("button");
-  b.textContent = name;
-  b.onclick = () => location.hash = encodeURIComponent(name);
-  $("popular").append(b);
+function updateDataLine(){
+  const total = [...reportCount.values()].reduce((a, b) => a + b, 0);
+  $("dataLine").textContent = `${window.VT_SEED.drugs.length} real drugs · 5,550 Drugs.com reviews · ${total} report${total === 1 ? "" : "s"} on Vigi-Track`;
 }
 
-/* ---------- 4. Drug page ---------- */
+/* ---------- 4. One drug ---------- */
 let drug = null, reports = [], openRow = null, showAll = false, picked = new Set(), justSent = null;
 
 /* The address bar keeps the page: #Sertraline (Read) or #Sertraline/report */
 async function route(){
   const [name, tab] = decodeURIComponent(location.hash.slice(1)).split("/");
-  document.body.classList.toggle("ondrug", Boolean(name));
-  if (!name){ $("home").hidden = false; $("drug").hidden = true; drug = null; document.title = "Vigi-Track"; return; }
-  const changed = !drug || drug.name.toLowerCase() !== name.toLowerCase();
+  if (!name){
+    $("drugs").hidden = false; $("drug").hidden = true; drug = null; document.title = "Vigi-Track";
+    renderTiles(); return;
+  }
+  const changed = !drug || drug.key !== name.toLowerCase();
   drug = findDrug(name) || addDrug(name);
-  $("home").hidden = true; $("drug").hidden = false;
+  $("drugs").hidden = true; $("drug").hidden = false;
+  const c = colorOf(drug);
+  $("dDot").style.background = `var(${c})`; $("dDot").style.color = c === "--t4" ? "#16130A" : "#fff";
+  $("dDot").textContent = drug.name.charAt(0).toUpperCase();
   $("dName").textContent = drug.name; $("dCls").textContent = drug.cls;
   document.querySelectorAll(".dn").forEach(e => e.textContent = drug.name);
   document.title = drug.name + " · Vigi-Track";
   showTab(tab === "report" ? "report" : "read");
-  if (changed){ openRow = null; showAll = false; window.scrollTo({ top: $("drug").offsetTop - 10, behavior: "smooth" }); }
+  if (changed){ openRow = null; showAll = false; $("drug").scrollIntoView({ behavior: "smooth" }); }
   await loadReports();
 }
 window.addEventListener("hashchange", route);
@@ -384,6 +414,7 @@ async function loadReports(){
   $("list").innerHTML = `<div class="empty">Loading…</div>`;
   try { reports = await store.list(drug.name); }
   catch(e){ reports = []; $("list").innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+  reportCount.set(drug.name, reports.length); updateDataLine();
   renderRead(justSent && justSent.symptoms[0]); renderChips();
   if (justSent){ $("sum").textContent = "Thank you, your report was added. " + $("sum").textContent; justSent = null; }
 }
@@ -396,49 +427,64 @@ function showTab(which){
 }
 $("tabRead").onclick = () => location.hash = encodeURIComponent(drug.name);
 $("tabReport").onclick = () => location.hash = encodeURIComponent(drug.name) + "/report";
-$("back").onclick = () => { location.hash = ""; q.focus(); };
+$("back").onclick = () => { location.hash = ""; };
 
 /* ----- 4a. Read ----- */
 const inLeaflet = name => drug.leaflet ? drug.leaflet.includes(name) : null;
 
+/* Underline the symptom words in a quote, like the full app does */
+function markQuote(text, name){
+  const m = LEX[name] && text.match(LEX[name]);
+  if (!m) return esc(text);
+  return esc(text.slice(0, m.index)) + "<mark>" + esc(m[0]) + "</mark>" + esc(text.slice(m.index + m[0].length));
+}
+
 function renderRead(flashName){
-  const all = countSymptoms(drug, reports).filter(s => !$("onlyNew").checked || inLeaflet(s.name) === false);
+  const all = countSymptoms(drug, reports);
+  const alerts = all.filter(s => inLeaflet(s.name) === false);
+  const list = $("onlyNew").checked ? alerts : all;
   const TOP = 8;  /* show the 8 most frequent first, the rest on demand */
-  const rows = showAll ? all : all.slice(0, TOP);
+  const rows = showAll ? list : list.slice(0, TOP);
   const max = Math.max(1, ...rows.map(s => s.users + s.reviews));
+
+  $("headline").innerHTML = drug.leaflet
+    ? `<b>${alerts.length}</b> reported side effect${alerts.length === 1 ? " is" : "s are"} not in the leaflet of ${esc(drug.name)}.`
+    : `What people report for ${esc(drug.name)}.`;
   $("sum").textContent = `${reports.length} report${reports.length === 1 ? "" : "s"} on Vigi-Track` +
                          (drug.reviews ? ` · ${drug.reviews} Drugs.com reviews read` : "");
+
   if (!rows.length){
     $("list").innerHTML = `<div class="empty">${$("onlyNew").checked ? "Nothing outside the leaflet so far." : "No symptoms reported yet."}<br><br>
-      <button class="btn" onclick="location.hash=encodeURIComponent(drug.name)+'/report'">Be the first to report</button></div>`;
+      <button class="btn blue" id="firstReport">Be the first to report</button></div>`;
   } else {
     $("list").innerHTML = rows.map(s => {
       const leaf = inLeaflet(s.name);
-      const tag = leaf === false ? `<span class="tag flag">Not in leaflet</span>` : leaf ? `<span class="tag in">In leaflet</span>` : "";
-      const n = [s.users && `${s.users} reported`, s.reviews && `${s.reviews} in reviews`].filter(Boolean).join(" · ");
+      const tag = leaf === false ? `<span class="atag"><i></i>Not in the leaflet</span>` : leaf ? `<span class="itag">In the leaflet</span>` : "";
       const open = openRow === s.name;
       const quotes = [
-        ...s.notes.map(r => `<div class="quote">${esc(r.note)}<small>Vigi-Track user · ${new Date(r.created_at).toLocaleDateString()}</small></div>`),
-        ...s.quotes.map(t => `<div class="quote">${esc(t)}<small>Drugs.com review</small></div>`)
+        ...s.notes.map(r => `<div class="q"><div>${esc(r.note)}<small>Vigi-Track report · ${new Date(r.created_at).toLocaleDateString("en-GB")}</small></div></div>`),
+        ...s.quotes.map(t => `<div class="q"><div>${markQuote(t, s.name)}<small>Drugs.com review</small></div></div>`)
       ].join("");
-      return `<div class="row${s.name === flashName ? " flash" : ""}">
+      return `<div class="row${leaf === false ? " alert" : ""}${s.name === flashName ? " flash" : ""}">
         <button aria-expanded="${open}" data-name="${esc(s.name)}">
-          <span class="nm">${esc(s.name)}${tag}</span><span class="n">${n}</span>
+          <span class="nm">${esc(cap(s.name))}${tag}</span>
+          <span class="n"><b>${s.users + s.reviews}</b><small>${[s.users && `${s.users} reported`, s.reviews && `${s.reviews} in reviews`].filter(Boolean).join(" · ")}</small></span>
           <span class="bar"><i class="u" style="width:${s.users / max * 100}%"></i><i class="r" style="width:${s.reviews / max * 100}%"></i></span>
         </button>
-        ${open ? `<div class="more">${DESC[s.name] ? `<div class="desc">${esc(DESC[s.name])}</div>` : ""}${quotes || `<div class="desc">No comments yet.</div>`}</div>` : ""}
+        ${open ? `<div class="detail">${DESC[s.name] ? `<div class="desc">${esc(DESC[s.name])}</div>` : ""}${quotes || `<div class="desc">No comments yet.</div>`}</div>` : ""}
       </div>`;
-    }).join("") + (all.length > TOP && !showAll ? `<button class="btn ghost showall" id="showAll">Show all ${all.length} symptoms</button>` : "");
+    }).join("") + (list.length > TOP && !showAll ? `<button class="btn ghost" id="showAll">Show all ${list.length} symptoms</button>` : "");
   }
+
   const foot = [];
   if (drug.reviews) foot.push("Drugs.com mentions are found by keyword search, so a few are false matches (for example “my acne is gone”). Open a symptom to read the quotes.");
   if (drug.skipped.length) foot.push(`Reviews are not counted for ${drug.skipped.join(", ")}, because ${drug.name} is taken for it and reviews mostly describe the illness, not a side effect. Users can still report them.`);
-  if (drug.leaflet) foot.push("Leaflet: side effects named in the FDA label.");
-  else foot.push("No leaflet on file for this drug.");
+  foot.push(drug.leaflet ? "Leaflet: side effects named in the FDA label." : "No leaflet on file for this drug.");
   $("foot").innerHTML = foot.map(t => `<div>${esc(t)}</div>`).join("");
 }
 $("list").addEventListener("click", e => {
   if (e.target.id === "showAll"){ showAll = true; renderRead(); return; }
+  if (e.target.id === "firstReport"){ $("tabReport").click(); return; }
   const b = e.target.closest("button[data-name]");
   if (!b) return;
   openRow = openRow === b.dataset.name ? null : b.dataset.name;
@@ -462,6 +508,12 @@ $("chips").addEventListener("change", e => {
   e.target.checked ? picked.add(e.target.value) : picked.delete(e.target.value);
   updateSend();
 });
+/* "throwing up" becomes "nausea", so the same symptom is counted once */
+function canonical(t){
+  if (LEX[t]) return t;
+  for (const k of VOCAB) if (LEX[k].test(t)) return k;
+  return t.slice(0, 40);
+}
 function addOther(){
   const v = $("otherIn").value.trim().toLowerCase().replace(/\s+/g, " ");
   if (!v) return;
@@ -470,12 +522,6 @@ function addOther(){
   if (box) box.checked = true;
   else $("chips").insertAdjacentHTML("afterbegin", chipHtml(name, true));
   picked.add(name); $("otherIn").value = ""; updateSend();
-}
-/* "throwing up" becomes "nausea", so the same symptom is counted once */
-function canonical(t){
-  if (LEX[t]) return t;
-  for (const k of VOCAB) if (LEX[k].test(t)) return k;
-  return t.slice(0, 40);
 }
 $("otherAdd").onclick = addOther;
 $("otherIn").addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); addOther(); } });
@@ -490,17 +536,21 @@ $("form").addEventListener("submit", async e => {
   if (!picked.size) return;
   const report = { drug: drug.name, symptoms: [...picked].slice(0, 15), note: $("note").value.trim() || null };
   $("sendBtn").disabled = true; $("msg").className = "msg"; $("msg").textContent = "Sending…";
-  try {
-    await store.add(report);
-  } catch(err){
-    $("msg").className = "msg err"; $("msg").textContent = err.message; updateSend(); return;
-  }
+  try { await store.add(report); }
+  catch(err){ $("msg").className = "msg err"; $("msg").textContent = err.message; updateSend(); return; }
   justSent = report;
   location.hash = encodeURIComponent(drug.name);  /* back to Read, which reloads the reports */
 });
 
 /* ---------- Start ---------- */
-store.drugNames().then(names => names.forEach(n => findDrug(n) || addDrug(n))).catch(() => {});
+updateDataLine();
+renderTiles();
+store.drugNames().then(names => {
+  const counts = new Map();
+  for (const n of names){ const d = findDrug(n) || addDrug(n); counts.set(d.name, (counts.get(d.name) || 0) + 1); }
+  counts.forEach((n, name) => reportCount.set(name, n));
+  updateDataLine(); if (!drug) renderTiles();
+}).catch(() => {});
 route();
 </script>
 </body>
