@@ -22,6 +22,7 @@ body{{margin:0;font:14px system-ui}} img{{max-width:100%}} [hidden]{{display:non
 @font-face{{font-family:"Newsreader";font-weight:500;font-style:italic;src:url(file://{FONTS}/newsreader/files/newsreader-latin-500-italic.woff2)}}
 """
     body = re.sub(r'<link[^>]+fonts.googleapis[^>]+>\n?', '', src)
+    body = body.replace('<script src="real_data.js"></script>', '')   # the video films the demo sample
     body = body.replace('https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js',
                         f'file://{ROOT}/node_modules/papaparse/papaparse.min.js')
     mock = f'<script src="file://{ROOT}/mock.js"></script>' if with_mock else ''

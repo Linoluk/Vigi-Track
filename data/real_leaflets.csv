@@ -1,0 +1,972 @@
+drugName,known_side_effect
+Mirena,nausea
+Mirena,headache
+Mirena,hair loss
+Mirena,weight gain
+Mirena,depression
+Mirena,swelling
+Mirena,stomach pain
+Mirena,rash
+Mirena,acne
+Mirena,irregular bleeding
+Nexplanon,nausea
+Nexplanon,headache
+Nexplanon,insomnia
+Nexplanon,dizziness
+Nexplanon,hair loss
+Nexplanon,weight gain
+Nexplanon,weight loss
+Nexplanon,anxiety
+Nexplanon,depression
+Nexplanon,fatigue
+Nexplanon,swelling
+Nexplanon,cough
+Nexplanon,muscle pain
+Nexplanon,drowsiness
+Nexplanon,mood changes
+Nexplanon,sore throat
+Nexplanon,stomach pain
+Nexplanon,joint pain
+Nexplanon,rash
+Nexplanon,acne
+Nexplanon,diarrhea
+Nexplanon,constipation
+Nexplanon,sexual dysfunction
+Nexplanon,irregular bleeding
+Ethinyl estradiol / norethindrone,nausea
+Ethinyl estradiol / norethindrone,headache
+Ethinyl estradiol / norethindrone,dizziness
+Ethinyl estradiol / norethindrone,anxiety
+Ethinyl estradiol / norethindrone,depression
+Ethinyl estradiol / norethindrone,fatigue
+Ethinyl estradiol / norethindrone,swelling
+Ethinyl estradiol / norethindrone,muscle pain
+Ethinyl estradiol / norethindrone,mood changes
+Ethinyl estradiol / norethindrone,rash
+Ethinyl estradiol / norethindrone,acne
+Ethinyl estradiol / norethindrone,diarrhea
+Ethinyl estradiol / norethindrone,sexual dysfunction
+Ethinyl estradiol / norethindrone,irregular bleeding
+Depo-Provera,nausea
+Depo-Provera,headache
+Depo-Provera,insomnia
+Depo-Provera,dizziness
+Depo-Provera,decreased appetite
+Depo-Provera,palpitations
+Depo-Provera,hair loss
+Depo-Provera,weight gain
+Depo-Provera,anxiety
+Depo-Provera,depression
+Depo-Provera,fatigue
+Depo-Provera,swelling
+Depo-Provera,drowsiness
+Depo-Provera,hoarse voice
+Depo-Provera,stomach pain
+Depo-Provera,joint pain
+Depo-Provera,rash
+Depo-Provera,acne
+Depo-Provera,sweating
+Depo-Provera,sexual dysfunction
+Depo-Provera,irregular bleeding
+Sertraline,nausea
+Sertraline,headache
+Sertraline,insomnia
+Sertraline,dry mouth
+Sertraline,dizziness
+Sertraline,decreased appetite
+Sertraline,palpitations
+Sertraline,hair loss
+Sertraline,weight loss
+Sertraline,anxiety
+Sertraline,depression
+Sertraline,fatigue
+Sertraline,swelling
+Sertraline,tinnitus
+Sertraline,muscle pain
+Sertraline,drowsiness
+Sertraline,memory problems
+Sertraline,mood changes
+Sertraline,suicidal thoughts
+Sertraline,tremor
+Sertraline,stomach pain
+Sertraline,joint pain
+Sertraline,blurred vision
+Sertraline,rash
+Sertraline,diarrhea
+Sertraline,constipation
+Sertraline,sweating
+Sertraline,sexual dysfunction
+Escitalopram,nausea
+Escitalopram,headache
+Escitalopram,insomnia
+Escitalopram,dry mouth
+Escitalopram,dizziness
+Escitalopram,decreased appetite
+Escitalopram,palpitations
+Escitalopram,hair loss
+Escitalopram,weight gain
+Escitalopram,weight loss
+Escitalopram,anxiety
+Escitalopram,depression
+Escitalopram,fatigue
+Escitalopram,swelling
+Escitalopram,cough
+Escitalopram,tinnitus
+Escitalopram,muscle pain
+Escitalopram,drowsiness
+Escitalopram,abnormal dreams
+Escitalopram,memory problems
+Escitalopram,mood changes
+Escitalopram,suicidal thoughts
+Escitalopram,tremor
+Escitalopram,stomach pain
+Escitalopram,joint pain
+Escitalopram,blurred vision
+Escitalopram,rash
+Escitalopram,diarrhea
+Escitalopram,constipation
+Escitalopram,sweating
+Escitalopram,sexual dysfunction
+Escitalopram,irregular bleeding
+Citalopram,nausea
+Citalopram,headache
+Citalopram,insomnia
+Citalopram,dry mouth
+Citalopram,dizziness
+Citalopram,decreased appetite
+Citalopram,palpitations
+Citalopram,hair loss
+Citalopram,weight gain
+Citalopram,weight loss
+Citalopram,anxiety
+Citalopram,depression
+Citalopram,fatigue
+Citalopram,swelling
+Citalopram,cough
+Citalopram,tinnitus
+Citalopram,muscle pain
+Citalopram,drowsiness
+Citalopram,memory problems
+Citalopram,taste changes
+Citalopram,mood changes
+Citalopram,suicidal thoughts
+Citalopram,sore throat
+Citalopram,tremor
+Citalopram,stomach pain
+Citalopram,joint pain
+Citalopram,blurred vision
+Citalopram,rash
+Citalopram,acne
+Citalopram,diarrhea
+Citalopram,constipation
+Citalopram,sweating
+Citalopram,sexual dysfunction
+Citalopram,irregular bleeding
+Fluoxetine,nausea
+Fluoxetine,headache
+Fluoxetine,insomnia
+Fluoxetine,dry mouth
+Fluoxetine,dizziness
+Fluoxetine,decreased appetite
+Fluoxetine,palpitations
+Fluoxetine,hair loss
+Fluoxetine,weight loss
+Fluoxetine,anxiety
+Fluoxetine,depression
+Fluoxetine,fatigue
+Fluoxetine,swelling
+Fluoxetine,drowsiness
+Fluoxetine,abnormal dreams
+Fluoxetine,memory problems
+Fluoxetine,taste changes
+Fluoxetine,mood changes
+Fluoxetine,suicidal thoughts
+Fluoxetine,sore throat
+Fluoxetine,tremor
+Fluoxetine,stomach pain
+Fluoxetine,joint pain
+Fluoxetine,blurred vision
+Fluoxetine,rash
+Fluoxetine,diarrhea
+Fluoxetine,constipation
+Fluoxetine,sweating
+Fluoxetine,sexual dysfunction
+Fluoxetine,irregular bleeding
+Paroxetine,nausea
+Paroxetine,headache
+Paroxetine,insomnia
+Paroxetine,dry mouth
+Paroxetine,dizziness
+Paroxetine,decreased appetite
+Paroxetine,palpitations
+Paroxetine,weight gain
+Paroxetine,weight loss
+Paroxetine,anxiety
+Paroxetine,depression
+Paroxetine,fatigue
+Paroxetine,swelling
+Paroxetine,cough
+Paroxetine,tinnitus
+Paroxetine,muscle pain
+Paroxetine,drowsiness
+Paroxetine,memory problems
+Paroxetine,taste changes
+Paroxetine,mood changes
+Paroxetine,suicidal thoughts
+Paroxetine,tremor
+Paroxetine,stomach pain
+Paroxetine,blurred vision
+Paroxetine,rash
+Paroxetine,diarrhea
+Paroxetine,constipation
+Paroxetine,sweating
+Paroxetine,sexual dysfunction
+Venlafaxine,nausea
+Venlafaxine,headache
+Venlafaxine,insomnia
+Venlafaxine,dry mouth
+Venlafaxine,dizziness
+Venlafaxine,decreased appetite
+Venlafaxine,palpitations
+Venlafaxine,hair loss
+Venlafaxine,weight gain
+Venlafaxine,weight loss
+Venlafaxine,anxiety
+Venlafaxine,depression
+Venlafaxine,fatigue
+Venlafaxine,swelling
+Venlafaxine,cough
+Venlafaxine,tinnitus
+Venlafaxine,muscle pain
+Venlafaxine,drowsiness
+Venlafaxine,abnormal dreams
+Venlafaxine,memory problems
+Venlafaxine,taste changes
+Venlafaxine,mood changes
+Venlafaxine,suicidal thoughts
+Venlafaxine,sore throat
+Venlafaxine,tremor
+Venlafaxine,stomach pain
+Venlafaxine,blurred vision
+Venlafaxine,rash
+Venlafaxine,acne
+Venlafaxine,diarrhea
+Venlafaxine,constipation
+Venlafaxine,sweating
+Venlafaxine,sexual dysfunction
+Venlafaxine,irregular bleeding
+Duloxetine,nausea
+Duloxetine,headache
+Duloxetine,insomnia
+Duloxetine,dry mouth
+Duloxetine,dizziness
+Duloxetine,decreased appetite
+Duloxetine,palpitations
+Duloxetine,weight gain
+Duloxetine,weight loss
+Duloxetine,anxiety
+Duloxetine,depression
+Duloxetine,fatigue
+Duloxetine,swelling
+Duloxetine,cough
+Duloxetine,tinnitus
+Duloxetine,muscle pain
+Duloxetine,drowsiness
+Duloxetine,abnormal dreams
+Duloxetine,memory problems
+Duloxetine,taste changes
+Duloxetine,mood changes
+Duloxetine,suicidal thoughts
+Duloxetine,sore throat
+Duloxetine,tremor
+Duloxetine,stomach pain
+Duloxetine,blurred vision
+Duloxetine,rash
+Duloxetine,diarrhea
+Duloxetine,constipation
+Duloxetine,sweating
+Duloxetine,sexual dysfunction
+Bupropion,nausea
+Bupropion,headache
+Bupropion,insomnia
+Bupropion,dry mouth
+Bupropion,dizziness
+Bupropion,decreased appetite
+Bupropion,palpitations
+Bupropion,hair loss
+Bupropion,weight gain
+Bupropion,weight loss
+Bupropion,anxiety
+Bupropion,depression
+Bupropion,fatigue
+Bupropion,swelling
+Bupropion,cough
+Bupropion,tinnitus
+Bupropion,muscle pain
+Bupropion,drowsiness
+Bupropion,memory problems
+Bupropion,taste changes
+Bupropion,mood changes
+Bupropion,suicidal thoughts
+Bupropion,sore throat
+Bupropion,tremor
+Bupropion,stomach pain
+Bupropion,joint pain
+Bupropion,blurred vision
+Bupropion,rash
+Bupropion,diarrhea
+Bupropion,constipation
+Bupropion,sweating
+Bupropion,sexual dysfunction
+Vortioxetine,nausea
+Vortioxetine,headache
+Vortioxetine,insomnia
+Vortioxetine,dry mouth
+Vortioxetine,dizziness
+Vortioxetine,palpitations
+Vortioxetine,weight gain
+Vortioxetine,anxiety
+Vortioxetine,depression
+Vortioxetine,fatigue
+Vortioxetine,tinnitus
+Vortioxetine,abnormal dreams
+Vortioxetine,memory problems
+Vortioxetine,taste changes
+Vortioxetine,mood changes
+Vortioxetine,suicidal thoughts
+Vortioxetine,tremor
+Vortioxetine,stomach pain
+Vortioxetine,rash
+Vortioxetine,diarrhea
+Vortioxetine,constipation
+Vortioxetine,sweating
+Vortioxetine,sexual dysfunction
+Mirtazapine,nausea
+Mirtazapine,headache
+Mirtazapine,dry mouth
+Mirtazapine,dizziness
+Mirtazapine,decreased appetite
+Mirtazapine,palpitations
+Mirtazapine,hair loss
+Mirtazapine,weight gain
+Mirtazapine,weight loss
+Mirtazapine,anxiety
+Mirtazapine,depression
+Mirtazapine,fatigue
+Mirtazapine,swelling
+Mirtazapine,cough
+Mirtazapine,muscle pain
+Mirtazapine,drowsiness
+Mirtazapine,abnormal dreams
+Mirtazapine,memory problems
+Mirtazapine,taste changes
+Mirtazapine,mood changes
+Mirtazapine,suicidal thoughts
+Mirtazapine,sore throat
+Mirtazapine,tremor
+Mirtazapine,stomach pain
+Mirtazapine,joint pain
+Mirtazapine,rash
+Mirtazapine,acne
+Mirtazapine,diarrhea
+Mirtazapine,constipation
+Mirtazapine,sweating
+Mirtazapine,sexual dysfunction
+Mirtazapine,irregular bleeding
+Trazodone,nausea
+Trazodone,headache
+Trazodone,insomnia
+Trazodone,dry mouth
+Trazodone,dizziness
+Trazodone,palpitations
+Trazodone,hair loss
+Trazodone,weight gain
+Trazodone,weight loss
+Trazodone,anxiety
+Trazodone,depression
+Trazodone,fatigue
+Trazodone,swelling
+Trazodone,tinnitus
+Trazodone,drowsiness
+Trazodone,abnormal dreams
+Trazodone,memory problems
+Trazodone,mood changes
+Trazodone,suicidal thoughts
+Trazodone,tremor
+Trazodone,blurred vision
+Trazodone,rash
+Trazodone,diarrhea
+Trazodone,constipation
+Trazodone,sweating
+Trazodone,sexual dysfunction
+Amitriptyline,nausea
+Amitriptyline,headache
+Amitriptyline,insomnia
+Amitriptyline,dry mouth
+Amitriptyline,dizziness
+Amitriptyline,decreased appetite
+Amitriptyline,palpitations
+Amitriptyline,hair loss
+Amitriptyline,weight gain
+Amitriptyline,anxiety
+Amitriptyline,depression
+Amitriptyline,fatigue
+Amitriptyline,swelling
+Amitriptyline,tinnitus
+Amitriptyline,drowsiness
+Amitriptyline,abnormal dreams
+Amitriptyline,memory problems
+Amitriptyline,taste changes
+Amitriptyline,mood changes
+Amitriptyline,suicidal thoughts
+Amitriptyline,tremor
+Amitriptyline,blurred vision
+Amitriptyline,rash
+Amitriptyline,diarrhea
+Amitriptyline,constipation
+Amitriptyline,sweating
+Amitriptyline,sexual dysfunction
+Phentermine,headache
+Phentermine,insomnia
+Phentermine,dry mouth
+Phentermine,dizziness
+Phentermine,palpitations
+Phentermine,weight loss
+Phentermine,swelling
+Phentermine,taste changes
+Phentermine,tremor
+Phentermine,rash
+Phentermine,diarrhea
+Phentermine,constipation
+Phentermine,sexual dysfunction
+Contrave,nausea
+Contrave,headache
+Contrave,insomnia
+Contrave,dry mouth
+Contrave,dizziness
+Contrave,decreased appetite
+Contrave,palpitations
+Contrave,hair loss
+Contrave,weight loss
+Contrave,anxiety
+Contrave,depression
+Contrave,fatigue
+Contrave,swelling
+Contrave,tinnitus
+Contrave,muscle pain
+Contrave,abnormal dreams
+Contrave,memory problems
+Contrave,taste changes
+Contrave,mood changes
+Contrave,suicidal thoughts
+Contrave,tremor
+Contrave,stomach pain
+Contrave,joint pain
+Contrave,rash
+Contrave,diarrhea
+Contrave,constipation
+Contrave,sweating
+Contrave,sexual dysfunction
+Liraglutide,nausea
+Liraglutide,headache
+Liraglutide,dizziness
+Liraglutide,decreased appetite
+Liraglutide,hair loss
+Liraglutide,swelling
+Liraglutide,drowsiness
+Liraglutide,taste changes
+Liraglutide,hoarse voice
+Liraglutide,sore throat
+Liraglutide,stomach pain
+Liraglutide,rash
+Liraglutide,diarrhea
+Liraglutide,constipation
+Clonazepam,nausea
+Clonazepam,headache
+Clonazepam,insomnia
+Clonazepam,dry mouth
+Clonazepam,dizziness
+Clonazepam,decreased appetite
+Clonazepam,palpitations
+Clonazepam,hair loss
+Clonazepam,weight gain
+Clonazepam,weight loss
+Clonazepam,anxiety
+Clonazepam,depression
+Clonazepam,fatigue
+Clonazepam,swelling
+Clonazepam,cough
+Clonazepam,muscle pain
+Clonazepam,drowsiness
+Clonazepam,abnormal dreams
+Clonazepam,memory problems
+Clonazepam,taste changes
+Clonazepam,mood changes
+Clonazepam,suicidal thoughts
+Clonazepam,hoarse voice
+Clonazepam,sore throat
+Clonazepam,tremor
+Clonazepam,stomach pain
+Clonazepam,joint pain
+Clonazepam,blurred vision
+Clonazepam,rash
+Clonazepam,acne
+Clonazepam,diarrhea
+Clonazepam,constipation
+Clonazepam,sexual dysfunction
+Alprazolam,nausea
+Alprazolam,headache
+Alprazolam,insomnia
+Alprazolam,dry mouth
+Alprazolam,dizziness
+Alprazolam,decreased appetite
+Alprazolam,palpitations
+Alprazolam,weight gain
+Alprazolam,weight loss
+Alprazolam,anxiety
+Alprazolam,depression
+Alprazolam,fatigue
+Alprazolam,swelling
+Alprazolam,muscle pain
+Alprazolam,drowsiness
+Alprazolam,memory problems
+Alprazolam,taste changes
+Alprazolam,mood changes
+Alprazolam,suicidal thoughts
+Alprazolam,tremor
+Alprazolam,blurred vision
+Alprazolam,rash
+Alprazolam,diarrhea
+Alprazolam,constipation
+Alprazolam,sweating
+Alprazolam,sexual dysfunction
+Buspirone,nausea
+Buspirone,headache
+Buspirone,insomnia
+Buspirone,dry mouth
+Buspirone,dizziness
+Buspirone,decreased appetite
+Buspirone,palpitations
+Buspirone,hair loss
+Buspirone,weight gain
+Buspirone,weight loss
+Buspirone,anxiety
+Buspirone,depression
+Buspirone,fatigue
+Buspirone,swelling
+Buspirone,cough
+Buspirone,tinnitus
+Buspirone,muscle pain
+Buspirone,drowsiness
+Buspirone,abnormal dreams
+Buspirone,taste changes
+Buspirone,mood changes
+Buspirone,suicidal thoughts
+Buspirone,sore throat
+Buspirone,tremor
+Buspirone,blurred vision
+Buspirone,rash
+Buspirone,acne
+Buspirone,diarrhea
+Buspirone,constipation
+Buspirone,sweating
+Buspirone,sexual dysfunction
+Buspirone,irregular bleeding
+Gabapentin,nausea
+Gabapentin,headache
+Gabapentin,insomnia
+Gabapentin,dry mouth
+Gabapentin,dizziness
+Gabapentin,decreased appetite
+Gabapentin,weight gain
+Gabapentin,anxiety
+Gabapentin,depression
+Gabapentin,fatigue
+Gabapentin,swelling
+Gabapentin,cough
+Gabapentin,drowsiness
+Gabapentin,memory problems
+Gabapentin,mood changes
+Gabapentin,suicidal thoughts
+Gabapentin,sore throat
+Gabapentin,tremor
+Gabapentin,stomach pain
+Gabapentin,blurred vision
+Gabapentin,rash
+Gabapentin,diarrhea
+Gabapentin,constipation
+Gabapentin,sweating
+Gabapentin,sexual dysfunction
+Pregabalin,nausea
+Pregabalin,headache
+Pregabalin,insomnia
+Pregabalin,dry mouth
+Pregabalin,dizziness
+Pregabalin,hair loss
+Pregabalin,weight gain
+Pregabalin,anxiety
+Pregabalin,depression
+Pregabalin,fatigue
+Pregabalin,swelling
+Pregabalin,tinnitus
+Pregabalin,muscle pain
+Pregabalin,drowsiness
+Pregabalin,abnormal dreams
+Pregabalin,memory problems
+Pregabalin,taste changes
+Pregabalin,mood changes
+Pregabalin,suicidal thoughts
+Pregabalin,sore throat
+Pregabalin,tremor
+Pregabalin,stomach pain
+Pregabalin,joint pain
+Pregabalin,blurred vision
+Pregabalin,rash
+Pregabalin,diarrhea
+Pregabalin,constipation
+Pregabalin,sweating
+Pregabalin,sexual dysfunction
+Pregabalin,irregular bleeding
+Tramadol,nausea
+Tramadol,headache
+Tramadol,insomnia
+Tramadol,dry mouth
+Tramadol,dizziness
+Tramadol,decreased appetite
+Tramadol,palpitations
+Tramadol,weight loss
+Tramadol,anxiety
+Tramadol,depression
+Tramadol,fatigue
+Tramadol,swelling
+Tramadol,cough
+Tramadol,tinnitus
+Tramadol,muscle pain
+Tramadol,drowsiness
+Tramadol,abnormal dreams
+Tramadol,mood changes
+Tramadol,suicidal thoughts
+Tramadol,sore throat
+Tramadol,tremor
+Tramadol,stomach pain
+Tramadol,joint pain
+Tramadol,blurred vision
+Tramadol,rash
+Tramadol,diarrhea
+Tramadol,constipation
+Tramadol,sweating
+Tramadol,sexual dysfunction
+Topiramate,nausea
+Topiramate,headache
+Topiramate,insomnia
+Topiramate,dry mouth
+Topiramate,dizziness
+Topiramate,decreased appetite
+Topiramate,hair loss
+Topiramate,weight gain
+Topiramate,weight loss
+Topiramate,anxiety
+Topiramate,depression
+Topiramate,fatigue
+Topiramate,swelling
+Topiramate,cough
+Topiramate,muscle pain
+Topiramate,drowsiness
+Topiramate,memory problems
+Topiramate,taste changes
+Topiramate,mood changes
+Topiramate,suicidal thoughts
+Topiramate,sore throat
+Topiramate,tremor
+Topiramate,stomach pain
+Topiramate,joint pain
+Topiramate,blurred vision
+Topiramate,rash
+Topiramate,acne
+Topiramate,diarrhea
+Topiramate,constipation
+Topiramate,sweating
+Topiramate,sexual dysfunction
+Topiramate,irregular bleeding
+Quetiapine,nausea
+Quetiapine,headache
+Quetiapine,insomnia
+Quetiapine,dry mouth
+Quetiapine,dizziness
+Quetiapine,decreased appetite
+Quetiapine,palpitations
+Quetiapine,weight gain
+Quetiapine,anxiety
+Quetiapine,depression
+Quetiapine,fatigue
+Quetiapine,swelling
+Quetiapine,cough
+Quetiapine,drowsiness
+Quetiapine,abnormal dreams
+Quetiapine,memory problems
+Quetiapine,mood changes
+Quetiapine,suicidal thoughts
+Quetiapine,sore throat
+Quetiapine,tremor
+Quetiapine,stomach pain
+Quetiapine,joint pain
+Quetiapine,blurred vision
+Quetiapine,rash
+Quetiapine,acne
+Quetiapine,diarrhea
+Quetiapine,constipation
+Quetiapine,sweating
+Quetiapine,sexual dysfunction
+Quetiapine,irregular bleeding
+Aripiprazole,nausea
+Aripiprazole,headache
+Aripiprazole,insomnia
+Aripiprazole,dry mouth
+Aripiprazole,dizziness
+Aripiprazole,decreased appetite
+Aripiprazole,palpitations
+Aripiprazole,hair loss
+Aripiprazole,weight gain
+Aripiprazole,weight loss
+Aripiprazole,anxiety
+Aripiprazole,depression
+Aripiprazole,fatigue
+Aripiprazole,swelling
+Aripiprazole,cough
+Aripiprazole,muscle pain
+Aripiprazole,drowsiness
+Aripiprazole,memory problems
+Aripiprazole,mood changes
+Aripiprazole,suicidal thoughts
+Aripiprazole,sore throat
+Aripiprazole,tremor
+Aripiprazole,stomach pain
+Aripiprazole,joint pain
+Aripiprazole,blurred vision
+Aripiprazole,rash
+Aripiprazole,diarrhea
+Aripiprazole,constipation
+Aripiprazole,sweating
+Aripiprazole,sexual dysfunction
+Aripiprazole,irregular bleeding
+Lamotrigine,nausea
+Lamotrigine,headache
+Lamotrigine,insomnia
+Lamotrigine,dry mouth
+Lamotrigine,dizziness
+Lamotrigine,decreased appetite
+Lamotrigine,palpitations
+Lamotrigine,hair loss
+Lamotrigine,weight gain
+Lamotrigine,weight loss
+Lamotrigine,anxiety
+Lamotrigine,depression
+Lamotrigine,fatigue
+Lamotrigine,swelling
+Lamotrigine,cough
+Lamotrigine,tinnitus
+Lamotrigine,muscle pain
+Lamotrigine,drowsiness
+Lamotrigine,abnormal dreams
+Lamotrigine,memory problems
+Lamotrigine,taste changes
+Lamotrigine,mood changes
+Lamotrigine,suicidal thoughts
+Lamotrigine,sore throat
+Lamotrigine,tremor
+Lamotrigine,stomach pain
+Lamotrigine,joint pain
+Lamotrigine,blurred vision
+Lamotrigine,rash
+Lamotrigine,acne
+Lamotrigine,diarrhea
+Lamotrigine,constipation
+Lamotrigine,sweating
+Lamotrigine,sexual dysfunction
+Lamotrigine,irregular bleeding
+Varenicline,nausea
+Varenicline,headache
+Varenicline,insomnia
+Varenicline,dry mouth
+Varenicline,dizziness
+Varenicline,decreased appetite
+Varenicline,palpitations
+Varenicline,weight gain
+Varenicline,anxiety
+Varenicline,depression
+Varenicline,fatigue
+Varenicline,swelling
+Varenicline,tinnitus
+Varenicline,muscle pain
+Varenicline,drowsiness
+Varenicline,abnormal dreams
+Varenicline,memory problems
+Varenicline,taste changes
+Varenicline,mood changes
+Varenicline,suicidal thoughts
+Varenicline,tremor
+Varenicline,stomach pain
+Varenicline,joint pain
+Varenicline,blurred vision
+Varenicline,rash
+Varenicline,acne
+Varenicline,diarrhea
+Varenicline,constipation
+Varenicline,sweating
+Varenicline,sexual dysfunction
+Zolpidem,nausea
+Zolpidem,headache
+Zolpidem,insomnia
+Zolpidem,dry mouth
+Zolpidem,dizziness
+Zolpidem,decreased appetite
+Zolpidem,palpitations
+Zolpidem,weight loss
+Zolpidem,anxiety
+Zolpidem,depression
+Zolpidem,fatigue
+Zolpidem,swelling
+Zolpidem,cough
+Zolpidem,tinnitus
+Zolpidem,muscle pain
+Zolpidem,drowsiness
+Zolpidem,abnormal dreams
+Zolpidem,memory problems
+Zolpidem,sleepwalking
+Zolpidem,taste changes
+Zolpidem,mood changes
+Zolpidem,suicidal thoughts
+Zolpidem,sore throat
+Zolpidem,tremor
+Zolpidem,stomach pain
+Zolpidem,joint pain
+Zolpidem,blurred vision
+Zolpidem,rash
+Zolpidem,acne
+Zolpidem,diarrhea
+Zolpidem,constipation
+Zolpidem,sweating
+Zolpidem,sexual dysfunction
+Lisdexamfetamine,nausea
+Lisdexamfetamine,headache
+Lisdexamfetamine,insomnia
+Lisdexamfetamine,dry mouth
+Lisdexamfetamine,dizziness
+Lisdexamfetamine,decreased appetite
+Lisdexamfetamine,palpitations
+Lisdexamfetamine,hair loss
+Lisdexamfetamine,weight gain
+Lisdexamfetamine,weight loss
+Lisdexamfetamine,anxiety
+Lisdexamfetamine,depression
+Lisdexamfetamine,swelling
+Lisdexamfetamine,drowsiness
+Lisdexamfetamine,abnormal dreams
+Lisdexamfetamine,taste changes
+Lisdexamfetamine,mood changes
+Lisdexamfetamine,suicidal thoughts
+Lisdexamfetamine,tremor
+Lisdexamfetamine,stomach pain
+Lisdexamfetamine,blurred vision
+Lisdexamfetamine,rash
+Lisdexamfetamine,diarrhea
+Lisdexamfetamine,constipation
+Lisdexamfetamine,sweating
+Lisdexamfetamine,sexual dysfunction
+Methylphenidate,nausea
+Methylphenidate,headache
+Methylphenidate,insomnia
+Methylphenidate,dry mouth
+Methylphenidate,dizziness
+Methylphenidate,decreased appetite
+Methylphenidate,palpitations
+Methylphenidate,hair loss
+Methylphenidate,weight loss
+Methylphenidate,anxiety
+Methylphenidate,depression
+Methylphenidate,fatigue
+Methylphenidate,swelling
+Methylphenidate,cough
+Methylphenidate,muscle pain
+Methylphenidate,drowsiness
+Methylphenidate,mood changes
+Methylphenidate,suicidal thoughts
+Methylphenidate,sore throat
+Methylphenidate,stomach pain
+Methylphenidate,joint pain
+Methylphenidate,blurred vision
+Methylphenidate,rash
+Methylphenidate,diarrhea
+Methylphenidate,constipation
+Methylphenidate,sweating
+Methylphenidate,sexual dysfunction
+Isotretinoin,nausea
+Isotretinoin,headache
+Isotretinoin,insomnia
+Isotretinoin,dry mouth
+Isotretinoin,dizziness
+Isotretinoin,decreased appetite
+Isotretinoin,palpitations
+Isotretinoin,hair loss
+Isotretinoin,weight loss
+Isotretinoin,anxiety
+Isotretinoin,depression
+Isotretinoin,fatigue
+Isotretinoin,swelling
+Isotretinoin,tinnitus
+Isotretinoin,muscle pain
+Isotretinoin,drowsiness
+Isotretinoin,mood changes
+Isotretinoin,suicidal thoughts
+Isotretinoin,sore throat
+Isotretinoin,stomach pain
+Isotretinoin,joint pain
+Isotretinoin,blurred vision
+Isotretinoin,rash
+Isotretinoin,acne
+Isotretinoin,diarrhea
+Isotretinoin,constipation
+Isotretinoin,sweating
+Isotretinoin,sexual dysfunction
+Doxycycline,nausea
+Doxycycline,headache
+Doxycycline,insomnia
+Doxycycline,decreased appetite
+Doxycycline,anxiety
+Doxycycline,depression
+Doxycycline,swelling
+Doxycycline,abnormal dreams
+Doxycycline,suicidal thoughts
+Doxycycline,stomach pain
+Doxycycline,blurred vision
+Doxycycline,rash
+Doxycycline,diarrhea
+Metronidazole,nausea
+Metronidazole,headache
+Metronidazole,insomnia
+Metronidazole,dry mouth
+Metronidazole,dizziness
+Metronidazole,decreased appetite
+Metronidazole,depression
+Metronidazole,taste changes
+Metronidazole,mood changes
+Metronidazole,joint pain
+Metronidazole,rash
+Metronidazole,diarrhea
+Metronidazole,constipation
+Metronidazole,sexual dysfunction
+Nitrofurantoin,nausea
+Nitrofurantoin,headache
+Nitrofurantoin,dizziness
+Nitrofurantoin,hair loss
+Nitrofurantoin,depression
+Nitrofurantoin,fatigue
+Nitrofurantoin,swelling
+Nitrofurantoin,cough
+Nitrofurantoin,muscle pain
+Nitrofurantoin,drowsiness
+Nitrofurantoin,stomach pain
+Nitrofurantoin,joint pain
+Nitrofurantoin,rash
+Nitrofurantoin,diarrhea
+Nitrofurantoin,constipation
