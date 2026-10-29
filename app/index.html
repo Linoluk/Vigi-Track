@@ -409,7 +409,7 @@ const LEX = {
   "sleepwalking":/sleep ?walk\w*|sleep-walk\w*/i,
   "taste changes":/metallic taste|taste chang\w*|dysgeusia/i,
   "mood changes":/mood (swings?|changes?)|irritab\w*|short-tempered|aggressi\w*/i,
-  "depression":/\bdepress\w*/i,
+  "depression":/(?<!(respiratory|cns|breathing|bone marrow) )\bdepress(ed|ion|ive|ing)\b/i,
   "suicidal thoughts":/suicid\w*/i,
   "hoarse voice":/hoarse\w*/i,
   "sore throat":/sore throat/i,
@@ -423,7 +423,7 @@ const LEX = {
   "constipation":/constipat\w*/i,
   "sweating":/sweating|night sweats|hyperhidrosis/i,
   "sexual dysfunction":/libido|sex drive|erectile/i,
-  "irregular bleeding":/\bbleed\w*|\bspotting\b|(irregular|heavy) periods?/i
+  "irregular bleeding":/\bspotting\b|breakthrough bleed\w*|bleed\w* between periods|(irregular|heavy|prolonged|constant|non-?stop|continuous) (periods?|bleed\w*)|vaginal bleed\w*|\bbled\b|bleeding (for|every|all|non-?stop|constantly|on and off)|irregular bleeding/i
 };
 const DESC = {
   "palpitations":"A racing, pounding or skipping heartbeat.","hair loss":"Hair thinning or falling out.","tinnitus":"Ringing or buzzing in the ears.",
