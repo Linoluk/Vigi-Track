@@ -170,6 +170,21 @@ textarea{width:100%;min-height:96px;resize:vertical}
 .limits{margin-top:14px;font-size:13.5px;color:var(--muted);max-width:90ch}
 @media (max-width:700px){.links{display:none}}
 
+/* ---------- AI helper in the Report tab ---------- */
+.aibox{border:1.5px dashed color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:18px;padding:16px;background:color-mix(in srgb,var(--accent-soft) 45%,transparent);display:grid;gap:10px}
+.aibox .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.aibox h3{font-size:18px}
+.aibox textarea{min-height:70px;font-family:var(--serif);font-style:italic;font-size:17px}
+.aibox .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.aibox .ex2{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--muted)}
+.aibox .ex2:hover{border-color:var(--accent);color:var(--accent)}
+.aibox .status{font-size:13.5px;color:var(--muted)}
+.aibox .status b{color:var(--ink)}
+.aibox .status .why{text-decoration:line-through}
+.aibox .keyrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.aibox .keyrow input{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px;flex:1;min-width:0;max-width:300px}
+.chip.ai-new{box-shadow:0 0 0 3px var(--accent-soft)}
+
 /* ---------- Why AI (dark band, copied from the full app) ---------- */
 :root{--night:#111218; --night2:#1B1C24; --night-ink:#F2F3F7; --night-muted:#A3A6B4; --night-line:#2C2E39}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--night:#07080B; --night2:#13141A; --night-line:#262833}}
@@ -272,6 +287,21 @@ footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
     <!-- 3b. Report -->
     <div id="report" role="tabpanel" class="panel" hidden>
       <form class="form" id="form">
+        <div class="aibox">
+          <div class="top"><h3>Describe it in your own words</h3><span class="pill" id="aiPill"><i></i><span id="aiPillTxt">AI needs a key</span></span></div>
+          <textarea id="freeText" maxlength="600" placeholder="e.g. My head spins every morning and I barely sleep since I started it."></textarea>
+          <div class="acts">
+            <button type="button" class="btn blue" id="freeBtn">Find my symptoms with AI</button>
+            <span class="muted" style="font-size:13px">or try:</span>
+            <button type="button" class="ex2" data-fx="0">Example 1</button>
+            <button type="button" class="ex2" data-fx="1">Example 2</button>
+          </div>
+          <div class="status" id="freeStatus">The AI reads your sentence and ticks the matching symptoms below. You check them, then send.</div>
+          <div class="keyrow" id="freeKeyRow">
+            <span>On this page the AI runs with an Anthropic API key (it stays in this tab). The examples show what it does without one.</span>
+            <input type="password" class="apiKeyIn" placeholder="sk-ant-..." autocomplete="off" aria-label="Anthropic API key">
+          </div>
+        </div>
         <div>
           <h3>What did you feel while taking <span class="dn"></span>?</h3>
           <p class="hint">Tick everything that applies.</p>
@@ -304,7 +334,7 @@ footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
       <div class="step"><div class="num" style="background:var(--t2)">2</div><h3>Read</h3>
         <p>Side effects are counted from two sources: <b>5,550 Drugs.com reviews</b> and <b>reports made here</b>. Each one is checked against the official FDA leaflet. A red tag marks an effect the leaflet does not list: a possible weak signal.</p></div>
       <div class="step"><div class="num" style="background:var(--t3)">3</div><h3>Report</h3>
-        <p>Tick what you felt while taking the drug and add a note if you want. Your report is saved <b>without your name</b> in a shared database (Supabase) and shows up for everyone at once.</p></div>
+        <p>Tick what you felt, or <b>describe it in your own words</b> and let the AI tick the boxes for you. Your report is saved <b>without your name</b> in a shared database (Supabase) and shows up for everyone at once.</p></div>
       <div class="step"><div class="num" style="background:var(--t5)">4</div><h3>Read it right</h3>
         <p>This light version finds effects in reviews with <b>keywords</b>, so it makes mistakes. The full Vigi-Track uses an <b>AI</b> that reads each sentence. See why just below.</p></div>
     </div>
@@ -328,7 +358,7 @@ footer .logo{justify-content:center;margin-bottom:6px;color:var(--ink)}
       </div>
       <div class="keyline" id="keyLine">
         <span>The 3 examples work as is. To test your own sentence, add an Anthropic API key (it stays in this tab):</span>
-        <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" aria-label="Anthropic API key">
+        <input type="password" id="apiKey" class="apiKeyIn" placeholder="sk-ant-..." autocomplete="off" aria-label="Anthropic API key">
       </div>
     </div>
   </div></section>
@@ -582,6 +612,7 @@ function renderChips(){
   const names = [...new Set([...known.filter(n => VOCAB.includes(n)), ...VOCAB])];
   $("chips").innerHTML = names.map(n => chipHtml(n, false)).join("");
   $("note").value = ""; $("otherIn").value = ""; $("msg").textContent = "";
+  $("freeText").value = ""; $("freeStatus").textContent = "The AI reads your sentence and ticks the matching symptoms below. You check them, then send.";
   updateSend();
 }
 const chipHtml = (n, checked) => `<label class="chip"><input type="checkbox" value="${esc(n)}"${checked ? " checked" : ""}>${esc(cap(n))}</label>`;
@@ -656,14 +687,27 @@ function whyNot(text, eff){
 }
 /* Ask Claude: inside claude.ai the page can use Claude directly, elsewhere it needs an API key */
 let claudeSample = null;
-(async () => { try { claudeSample = window.claude ? await window.claude.use("sample") : null; } catch(e){} if (claudeSample) $("keyLine").hidden = true; })();
+/* One key for the whole page: typing it in one field fills the other, and turns the AI on */
+const getKey = () => $("apiKey").value.trim();
+const aiOn = () => Boolean(claudeSample || getKey());
+function updateAIPill(){
+  $("aiPill").classList.toggle("on", aiOn());
+  $("aiPillTxt").textContent = claudeSample ? "AI on (Claude)" : getKey() ? "AI on (your key)" : "AI needs a key";
+  $("freeKeyRow").hidden = $("keyLine").hidden = Boolean(claudeSample);
+}
+document.querySelectorAll(".apiKeyIn").forEach(inp => inp.addEventListener("input", () => {
+  document.querySelectorAll(".apiKeyIn").forEach(o => { if (o !== inp) o.value = inp.value; });
+  updateAIPill();
+}));
+(async () => { try { claudeSample = window.claude ? await window.claude.use("sample") : null; } catch(e){} updateAIPill(); })();
+updateAIPill();
 async function askAI(text){
   const prompt = aiPrompt(text);
   let answer;
   if (claudeSample){ const r = await claudeSample(prompt); answer = r.text || String(r); }
   else {
-    const key = $("apiKey").value.trim();
-    if (!key) throw new Error("Add an Anthropic API key below to test your own sentence.");
+    const key = getKey();
+    if (!key) throw new Error("Add an Anthropic API key to let the AI read your own sentence.");
     const r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST",
       headers: { "content-type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
       body: JSON.stringify({ model: "claude-haiku-5-5", max_tokens: 500, messages: [{ role: "user", content: prompt }] }) });
@@ -697,6 +741,48 @@ async function tryIt(){
 $("tryBtn").onclick = tryIt;
 document.querySelectorAll(".ex").forEach(b => b.onclick = () => { $("tryText").value = EXAMPLES[+b.dataset.ex].text; tryIt(); });
 tryIt();
+
+/* ---------- 7. Report: describe it in your own words (AI) ---------- */
+/* The 2 examples come with the AI answer computed in advance, so they work without a key. */
+const FREE_EXAMPLES = [
+  { text: "My head spins every morning and I barely sleep since I started it. No nausea though.", ai: ["dizziness", "insomnia"] },
+  { text: "I put on 6 kilos in two months and I feel tired all day. I was worried about hair loss but it's fine.", ai: ["weight gain", "fatigue"] }
+];
+let lastFree = "";
+async function findFromText(){
+  const text = $("freeText").value.trim();
+  if (!text){ $("freeStatus").textContent = "Write a sentence first, or try an example."; return; }
+  const ex = FREE_EXAMPLES.find(e => e.text === text);
+  let found;
+  if (ex) found = ex.ai;
+  else {
+    if (!aiOn()){
+      $("freeStatus").innerHTML = "<b>The AI is off on this page.</b> Add an Anthropic API key below and it will read your sentence. Meanwhile, tick the symptoms by hand, or try an example.";
+      return;
+    }
+    $("freeBtn").disabled = true; $("freeStatus").textContent = "The AI is reading…";
+    try { found = await askAI(text); }
+    catch(e){ $("freeStatus").textContent = e.message || "The AI answer could not be read. Try again."; return; }
+    finally { $("freeBtn").disabled = false; }
+  }
+  /* Tick the boxes the AI found, and add the ones that are not in the list */
+  /* A new analysis replaces the boxes the AI ticked last time (boxes ticked by hand stay) */
+  document.querySelectorAll(".chip.ai-new").forEach(c => { const i = c.querySelector("input"); i.checked = false; picked.delete(i.value); c.classList.remove("ai-new"); });
+  for (const name of found){
+    let box = [...$("chips").querySelectorAll("input")].find(i => i.value === name);
+    if (!box){ $("chips").insertAdjacentHTML("afterbegin", chipHtml(name, false)); box = $("chips").querySelector("input"); }
+    box.checked = true; picked.add(name); box.closest(".chip").classList.add("ai-new");
+  }
+  const ignored = VOCAB.filter(k => LEX[k].test(text) && !found.includes(k));
+  if (!$("note").value.trim() || $("note").value === lastFree) $("note").value = text;   /* keep their words as the note */
+  lastFree = text;
+  updateSend();
+  $("freeStatus").innerHTML = (found.length ? `AI found <b>${found.map(esc).join(", ")}</b> and ticked ${found.length === 1 ? "it" : "them"} below.` : "The AI found no side effect in this sentence.") +
+    (ignored.length ? ` Ignored: <span class="why">${ignored.map(esc).join(", ")}</span> (not really felt).` : "") +
+    (ex ? " <i>Answer computed in advance for this example.</i>" : "") + " Check, then send.";
+}
+$("freeBtn").onclick = findFromText;
+document.querySelectorAll(".ex2").forEach(b => b.onclick = () => { $("freeText").value = FREE_EXAMPLES[+b.dataset.fx].text; findFromText(); });
 
 /* ---------- Menu: scroll to a section (not #links: the address bar is used for drugs) ---------- */
 document.querySelectorAll(".links button").forEach(b => b.onclick = () => {
