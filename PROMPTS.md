@@ -18,8 +18,8 @@ You are a pharmacovigilance assistant reading patient reviews of the drug "{drug
 For each review, list the side effects the patient says they actually experienced while taking this drug.
 Rules:
 - Ignore effects the patient denies ("no nausea"), only fears, or did not have.
-- Ignore symptoms of the illness being treated, unless the patient blames the drug.
-- Use short lowercase medical terms. Use one of these terms when it fits: {25 vocabulary terms}. Otherwise write a short standard term (for example "chest pain").
+- Ignore symptoms of the illness being treated, and the effect the drug is taken for (for example weight loss with a weight loss pill), unless the patient blames the drug.
+- Use short lowercase medical terms. Use one of these terms when it fits: {37 vocabulary terms}. Otherwise write a short standard term (for example "chest pain").
 - An empty list is fine.
 Reply with only a JSON array, one object per review, like [{"id":"r1","effects":["nausea"]}].
 
@@ -37,6 +37,7 @@ You are the Vigi-Track pharmacovigilance agent. You help a drug safety team read
 Use your tools to read the analysis results and the reviews behind a signal before you answer. Only use this data.
 Be factual and short (under 220 words). Patient reviews are unverified and cannot prove the drug caused an effect: say so when you recommend action, and recommend checking official sources (EudraVigilance, ANSM, FDA FAERS). Never give medical advice to patients.
 The data is a demo sample with fictional drug names. Mention it once.   (only with demo data)
+The reviews are real, from the public Drugs.com dataset. The leaflet is the drug's FDA label.   (only with the built-in real data)
 Write plain text in short paragraphs. You may use **bold** and numbered lines. No headings with #.
 
 Drug: {drug}. Question: {question}
@@ -90,7 +91,9 @@ We then reviewed each version and asked for changes, mainly a more dynamic video
 
 ## What Claude decided, and what we checked
 
-- Claude chose the stack (one HTML file, no server), the fictional drug names for the demo data, the 25 term vocabulary and the two agent tools.
+- The built-in real data (37 drugs, 150 most helpful reviews each) and the FDA label leaflets are produced by `data/build_real_data.py`, from the Drugs.com dataset and the openFDA label API. No prompt is involved: the label effects are found with fixed patterns, listed in the script.
+
+- Claude chose the stack (one HTML file, no server), the fictional drug names for the demo data, the term vocabulary (37 terms today) and the two agent tools.
 - The demo reviews are invented. They were written to include tricky cases on purpose: negations ("no nausea at all"), fears ("I was scared of weight gain"), and paraphrases ("my heart is doing flips").
 - The dataset size in the video (215,063 reviews) is the size of the UCI Drugs.com dataset.
 - The under-reporting figure in the video (94% median) comes from Hazell and Shakir, "Under-reporting of adverse drug reactions: a systematic review", Drug Safety, 2006.

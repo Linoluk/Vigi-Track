@@ -1,0 +1,122 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Vigi-Track User Guide</title>
+<style>
+@font-face{font-family:"Bricolage Grotesque";font-weight:800;src:url(../../video-tools/node_modules/@fontsource/bricolage-grotesque/files/bricolage-grotesque-latin-800-normal.woff2)}
+@font-face{font-family:"Instrument Sans";font-weight:400;src:url(../../video-tools/node_modules/@fontsource/instrument-sans/files/instrument-sans-latin-400-normal.woff2)}
+@font-face{font-family:"Instrument Sans";font-weight:600;src:url(../../video-tools/node_modules/@fontsource/instrument-sans/files/instrument-sans-latin-600-normal.woff2)}
+@font-face{font-family:"Instrument Sans";font-weight:700;src:url(../../video-tools/node_modules/@fontsource/instrument-sans/files/instrument-sans-latin-700-normal.woff2)}
+@page{size:A4;margin:16mm 16mm 18mm}
+:root{--ink:#0F1016;--muted:#646875;--blue:#3247F5;--line:#DFE1E6;--soft:#EDEEF1;--red:#E0393E}
+body{font-family:"Instrument Sans",Arial,sans-serif;color:var(--ink);font-size:10.5pt;line-height:1.5;margin:0}
+h1,h2,h3{font-family:"Bricolage Grotesque",Arial,sans-serif;letter-spacing:-.02em;font-weight:800;margin:0}
+.cover{box-sizing:border-box;height:276mm;display:grid;align-content:space-between;background:var(--soft);margin:-16mm -16mm 0;padding:24mm 20mm 18mm;page-break-after:always}
+.cover .eye{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:9pt;color:var(--blue)}
+.cover h1{font-size:50pt;margin-top:3mm}
+.cover p{font-family:"Bricolage Grotesque";font-weight:800;font-size:22pt;line-height:1.1;margin:5mm 0 0;max-width:150mm}
+.cover p span{color:var(--blue)}
+.cover img{width:100%;border-radius:4mm;box-shadow:0 4mm 12mm rgba(0,0,0,.12)}
+.cover small{font-size:8.5pt;color:var(--muted)}
+h2{font-size:19pt;margin:0 0 3mm;break-after:avoid}
+h3{font-size:13pt;margin:4mm 0 1.5mm;break-after:avoid}
+p{margin:0 0 2.5mm;max-width:172mm}
+section{margin-bottom:6mm}
+.step{break-inside:avoid;margin-bottom:6mm;border-top:1px solid var(--line);padding-top:4mm;display:grid;gap:3mm}
+.step img{width:100%;border:1px solid var(--line);border-radius:2.5mm}
+.step img.half{width:70%}
+.num{display:inline-grid;place-items:center;width:7mm;height:7mm;border-radius:50%;background:var(--blue);color:#fff;font-family:"Instrument Sans";font-size:9.5pt;font-weight:700;margin-right:2mm;vertical-align:1px}
+ul,ol{margin:0 0 2.5mm;padding-left:5.5mm} li{margin-bottom:1.2mm}
+.box{background:var(--soft);border-radius:2.5mm;padding:4mm 5mm;break-inside:avoid;margin-bottom:4mm}
+.red{color:var(--red);font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:9.5pt;margin-bottom:3mm}
+th,td{border-bottom:1px solid var(--line);padding:2mm;text-align:left;vertical-align:top}
+th{font-weight:700;font-size:8pt;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+code{font-family:Consolas,monospace;font-size:9pt;background:var(--soft);padding:0 1mm;border-radius:1mm}
+.pb{page-break-before:always}
+</style></head><body>
+
+<div class="cover">
+  <div><div class="eye">User guide</div><h1>Vigi-Track</h1><p>Patients say it <span>before</span> the leaflet does.</p></div>
+  <img src="../img/overview.png" alt="Vigi-Track home screen">
+  <small>AI for Business · Final project · ESSEC · Demo data uses fictional drugs · Not medical advice</small>
+</div>
+
+<section>
+<h2>What Vigi-Track does</h2>
+<p>Vigi-Track reads what patients write about a drug online. An AI agent lists the side effects each patient really had. The app compares them with the official leaflet. Side effects that patients report but that are <span class="red">not in the leaflet</span> become alerts.</p>
+<p>The app ships with <b>5,550 real Drugs.com reviews of 37 common drugs</b>, each with the side effects named in its <b>FDA label</b>. A demo sample of 5 fictional drugs is one click away.</p>
+<p>An alert is an early clue that a side effect may be unknown. It is not a proof. Drug safety experts check it against official data before they act.</p>
+<h3>Who it is for</h3>
+<ul><li>Drug safety (pharmacovigilance) teams in pharmaceutical labs.</li><li>Health authorities that watch medicines after launch.</li><li>Anyone who wants to explore patient reviews.</li></ul>
+</section>
+
+<section>
+<h2>Before you start</h2>
+<table><tr><th>How you open it</th><th>What works</th><th>What you need</th></tr>
+<tr><td><b>In Claude</b>, the published app</td><td>Everything. The AI agent runs on your Claude account.</td><td>A Claude account. The first time, Claude asks you to allow the app to use Claude.</td></tr>
+<tr><td><b>On your computer</b>, <code>app/index.html</code></td><td>Keyword search at once. The AI agent after you add an API key.</td><td>A recent browser, an internet connection, and an Anthropic API key.</td></tr></table>
+<p>The badge at the top right shows the mode. <b>AI agent on</b> means the AI works. <b>Keyword mode</b> means only the keyword search works for now. The menu at the top jumps to each part of the page.</p>
+</section>
+
+<div class="pb"></div>
+<h2>Using the app</h2>
+
+<div class="step"><h3><span class="num">1</span>Choose a drug</h3>
+<p>Click a coloured tile. Each tile shows the type of drug, the number of reviews and, once read, the number of alerts. The app opens on the real data. The 10 drugs with the most reviews are tiles, and the <b>All drugs</b> list holds the 37. For each drug, the app keeps its 150 most helpful reviews.</p>
+<p>When you click a tile, Vigi-Track runs a quick keyword search right away so you see something. For reliable results, read the reviews with the AI agent (step 3).</p>
+<img src="../img/drugs.png" alt="Drug tiles"></div>
+
+<div class="step"><h3><span class="num">2</span>Check the leaflet</h3>
+<p>The line <b>The FDA label lists</b> shows the side effects already named in the drug’s official FDA label, with a link to that label. Click <b>Edit</b> to tick or untick effects, or to add one. Click <b>Done</b> to close. Your edits are kept for each drug.</p>
+<p>An effect outside the app’s vocabulary is also checked against the full label text before it becomes an alert. With the demo sample, the leaflets are filled in for you. With an uploaded file, tick the effects yourself from the drug’s official leaflet.</p>
+<img src="../img/leaflet.png" alt="Leaflet editor"></div>
+
+<div class="step"><h3><span class="num">3</span>Read the reviews with the AI agent</h3>
+<p>Choose <b>AI agent</b>, then click <b>Read … reviews with AI</b>. The bar shows progress. Click <b>Stop</b> to cancel. <b>Keywords</b> is a fast word search, kept as a comparison.</p></div>
+
+<div class="step"><h3><span class="num">4</span>Read the alerts</h3>
+<p>The sentence at the top sums up the result. Then each alert gets its own card.</p>
+<ul><li>The red tag means the effect is <span class="red">not in the leaflet</span>.</li>
+<li>The quotes are the patients’ own words. The key words are underlined.</li>
+<li>On the right, the number of patients who mention it, the share of reviews, and a comparison with the most reported leaflet effect.</li></ul>
+<p>Below the alerts, <b>Already in the leaflet</b> lists the known effects patients mention. The example below comes from the demo sample, read by the AI agent.</p>
+<img src="../img/alert.png" alt="An alert card"></div>
+
+<div class="step"><h3><span class="num">5</span>See why AI beats keywords</h3>
+<p>In the dark section, type or paste any review, then click <b>Compare</b>. Keyword search lists every word it finds. Vigi-Track AI keeps only the real side effects, and crosses out the others with the reason, for example “denied by the patient”. <b>Example 2</b> and <b>Example 3</b> load ready-made tests.</p>
+<p>The last line counts how many false alarms and missed effects keyword search made on the drug you just read.</p>
+<img src="../img/why.png" alt="AI versus keywords"></div>
+
+<div class="pb"></div>
+<div class="step"><h3><span class="num">6</span>Ask the agent</h3>
+<p>After an AI reading, click a suggested question or type your own, then click <b>Ask</b>. The example below uses the demo sample. The small blue tags show what the agent did, for example “Read 3 reviews on mood changes”. It only uses the data loaded in the app.</p>
+<img src="../img/agent.png" alt="Agent chat"></div>
+
+<div class="step"><h3><span class="num">7</span>Data and settings</h3>
+<ul><li><b>Real reviews.</b> <b>Real data</b> reloads the 37 built-in drugs. <b>Demo sample</b> loads the 5 fictional drugs (or add <code>?demo</code> to the address). To study any of the other 3,600 drugs, click <b>Upload a file</b> and pick <code>drugsComTrain_raw.csv</code> (or the <code>.tsv</code>) from Kaggle or UCI.</li>
+<li><b>Run outside Claude.</b> Paste an Anthropic API key and click <b>Use key</b>. The key stays in the browser tab and is sent only to <code>api.anthropic.com</code>.</li>
+<li><b>AI reading limit.</b> 30, 60 or 120 reviews per run. For big drugs, the most helpful reviews are read first.</li></ul>
+<img src="../img/data.png" alt="Data and settings"></div>
+
+<div class="pb"></div>
+<section>
+<h2>Questions and problems</h2>
+<table>
+<tr><th>What you see</th><th>What to do</th></tr>
+<tr><td><b>AI agent</b> is greyed out.</td><td>Open the app in Claude, or add an API key in Data and settings.</td></tr>
+<tr><td>“Claude was not allowed for this page.”</td><td>You declined the request to use Claude. Reload and allow it, or use Keywords.</td></tr>
+<tr><td>“Too many requests right now.”</td><td>Wait a minute and try again. Lower the AI reading limit.</td></tr>
+<tr><td>“No reviews found” after an upload.</td><td>The file needs the columns <code>drugName</code> and <code>review</code>. Use the original Drugs.com file.</td></tr>
+<tr><td><b>Ask</b> is disabled.</td><td>Read the reviews with the AI agent first. The agent does not work on keyword results.</td></tr>
+<tr><td>An alert looks wrong.</td><td>Read its quotes. The AI can make mistakes, and every alert shows the real words behind it.</td></tr>
+</table>
+</section>
+<section>
+<h2>Use it responsibly</h2>
+<div class="box"><ul>
+<li>An alert is a hypothesis. Confirm it with official sources such as ANSM, EMA EudraVigilance or FDA FAERS before any decision.</li>
+<li>Online reviews are unverified. People who write them are not a random sample of patients.</li>
+<li>The app stores nothing. Reviews and results stay in your browser tab.</li>
+<li>Vigi-Track does not give medical advice. Patients should talk to their doctor or pharmacist.</li></ul></div>
+<h3>The data in this project</h3>
+<p>The real reviews come from the public Drugs.com review dataset (UCI Machine Learning Repository, Gräßer et al. 2018, 215,063 reviews). The leaflets come from the FDA labels (openFDA, DailyMed). <code>data/build_real_data.py</code> rebuilds this data into <code>app/real_data.js</code> and <code>data/real_leaflets.csv</code>. <code>data/demo_reviews.csv</code> holds the 66 demo reviews, written for this project, about 5 invented drugs.</p>
+</section>
+</body></html>
