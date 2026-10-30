@@ -6,7 +6,7 @@ An AI agent that reads patient reviews and flags the drug side effects missing f
 
 Final project, AI for Business, ESSEC.
 
-> **New:** a lighter version, where people can read and report symptoms for a drug, with a shared Supabase database. **[Open it live](https://linoluk.github.io/Vigi-Track/simple/)** · [how it is built](simple/README.md).
+> **New:** a lighter version, where people can read and report symptoms for a drug, with a shared Supabase database. **[Open it live](https://linoluk.github.io/Vigi-Track/)** · [how it is built](simple/README.md).
 
 Before launch, a drug is tested on a few thousand patients. After launch, millions of people take it for years, and rare side effects only show up then. Most of them are never reported to the authorities. Patients do talk about them online.
 
@@ -34,6 +34,7 @@ Vigi-Track reads patient reviews of a drug. An AI agent lists the side effects e
 | `docs/guide/` | Source of the user guide (`USER_GUIDE.html`) and `build_guide.py`, which turns it into the PDF. |
 | `PROMPTS.md` | Every prompt used, in the app and to build the project. |
 | `video/Vigi-Track-demo.mp4` | The demo video (1080p, 2 min 37, with music). |
+| `index.html` | Sends visitors of the live site (`linoluk.github.io/Vigi-Track/`) to the lighter version. |
 | `simple/` | The lighter version: one page to read and report symptoms, with a Supabase database. See [`simple/README.md`](simple/README.md). |
 | `supabase/setup.sql` | Creates the database table of the lighter version and its security rules. |
 | `video-tools/` | Scripts that filmed the demo (`film.html` for the animated scenes, `record.py`) and generated the music (`music.py`). |
@@ -42,7 +43,7 @@ Vigi-Track reads patient reviews of a drug. An AI agent lists the side effects e
 
 **[Open Vigi-Track in Claude](https://claude.ai/artifact/DgS7dT4zHKniHtZe1xF8pX)**. Nothing to install. The AI agent runs on your own Claude account.
 
-**[Open the lighter version](https://linoluk.github.io/Vigi-Track/simple/)** (GitHub Pages). Read and report symptoms for a drug, saved in a shared database. Its AI features need an Anthropic API key outside Claude.
+**[Open the lighter version](https://linoluk.github.io/Vigi-Track/)** (GitHub Pages). Read and report symptoms for a drug, saved in a shared database. Its AI features need an Anthropic API key outside Claude.
 
 ## How to run it
 

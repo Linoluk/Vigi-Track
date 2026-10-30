@@ -2,7 +2,7 @@
 
 ## Lighter version (`simple/`), after the submission
 
-- New page `simple/index.html`, live at https://linoluk.github.io/Vigi-Track/simple/. Search a drug, then read the side effects people report or report your own. Same design as the full app.
+- New page `simple/index.html`, live at https://linoluk.github.io/Vigi-Track/. Search a drug, then read the side effects people report or report your own. Same design as the full app.
 - Reports are saved in a Supabase database (`supabase/setup.sql`). Without one, the page runs in demo mode and keeps reports in the browser.
 - Read counts the Drugs.com reviews by keyword (`simple/seed.js`, built by `simple/build_seed.js`) plus the reports made on the page, and flags effects that are not in the FDA leaflet.
 - AI: *Describe it in your own words* ticks symptoms from a free sentence, and the *Why AI* demo is back. Both run with Claude inside claude.ai, or with an Anthropic API key elsewhere. Their examples work without a key.

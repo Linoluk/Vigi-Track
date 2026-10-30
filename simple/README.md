@@ -2,7 +2,7 @@
 
 A lighter version of Vigi-Track, made to practise a real app structure: a page, a database, hosting, and an AI that runs only when a key is there.
 
-**Live:** https://linoluk.github.io/Vigi-Track/simple/
+**Live:** https://linoluk.github.io/Vigi-Track/
 
 The idea in one line: **search a drug, then read the side effects people report, or report your own.**
 It keeps the look of the full app (`app/index.html`): same logo, colours, fonts, tiles and quotes.
