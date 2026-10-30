@@ -6,7 +6,7 @@ An AI agent that reads patient reviews and flags the drug side effects missing f
 
 Final project, AI for Business, ESSEC.
 
-> **New:** a lighter version, where people can read and report symptoms for a drug, with a Supabase database. See [`simple/`](simple/README.md).
+> **New:** a lighter version, where people can read and report symptoms for a drug, with a shared Supabase database. **[Open it live](https://linoluk.github.io/Vigi-Track/simple/)** · [how it is built](simple/README.md).
 
 Before launch, a drug is tested on a few thousand patients. After launch, millions of people take it for years, and rare side effects only show up then. Most of them are never reported to the authorities. Patients do talk about them online.
 
@@ -29,15 +29,20 @@ Vigi-Track reads patient reviews of a drug. An AI agent lists the side effects e
 | `data/build_real_data.py` | Rebuilds `app/real_data.js` and `data/real_leaflets.csv` from the Drugs.com dataset and openFDA. |
 | `data/precompute_ai.py` | Runs the AI extraction once on all real reviews and writes `app/real_ai.js`. Needs an Anthropic API key. |
 | `tests/test_app.py` | End-to-end tests of the app in headless Chromium. Fakes the Claude API, so no key is needed. |
+| `tests/test_simple.py` | End-to-end tests of the lighter version. Fakes Supabase and the Claude API. |
 | `docs/USER_GUIDE.pdf` | Step by step user guide with screenshots. |
 | `docs/guide/` | Source of the user guide (`USER_GUIDE.html`) and `build_guide.py`, which turns it into the PDF. |
 | `PROMPTS.md` | Every prompt used, in the app and to build the project. |
 | `video/Vigi-Track-demo.mp4` | The demo video (1080p, 2 min 37, with music). |
+| `simple/` | The lighter version: one page to read and report symptoms, with a Supabase database. See [`simple/README.md`](simple/README.md). |
+| `supabase/setup.sql` | Creates the database table of the lighter version and its security rules. |
 | `video-tools/` | Scripts that filmed the demo (`film.html` for the animated scenes, `record.py`) and generated the music (`music.py`). |
 
 ## Try it now
 
 **[Open Vigi-Track in Claude](https://claude.ai/artifact/DgS7dT4zHKniHtZe1xF8pX)**. Nothing to install. The AI agent runs on your own Claude account.
+
+**[Open the lighter version](https://linoluk.github.io/Vigi-Track/simple/)** (GitHub Pages). Read and report symptoms for a drug, saved in a shared database. Its AI features need an Anthropic API key outside Claude.
 
 ## How to run it
 
@@ -104,6 +109,7 @@ In class we built a bag of words and counted words. Vigi-Track uses a large lang
 ```bash
 pip install playwright && python3 -m playwright install chromium
 python3 tests/test_app.py
+python3 tests/test_simple.py   # the lighter version
 ```
 
 The tests open the app in headless Chromium and check the demo, the built-in real data, the keyword search, the AI extraction, the agent and its tools, errors, the stop button, file upload, escaping of untrusted text, mobile width and dark mode. The Claude API is faked, so no key is needed.
